@@ -1,0 +1,24 @@
+{
+  "npmScope": "helping-hand",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "helping-hand-app-e2e": {
+      "tags": []
+    },
+    "helping-hand-app": {
+      "tags": []
+    },
+    "api": {
+      "tags": []
+    },
+    "api-interfaces": {
+      "tags": []
+    }
+  }
+}
