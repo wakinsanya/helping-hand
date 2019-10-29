@@ -1,0 +1,27 @@
+<div class="login__container">
+  <div class="login__banner">
+    <h1 class="login__banner__text">
+      Welcome to Helping Hand 🤝<br>
+      Become part of favour-giving<br>
+      and favour-asking communites.
+    </h1>
+  </div>
+  <div class="login__form__wrap">
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()" autocomplete="off">
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Email or username:</mat-label>
+          <input type="email" formControlName="email" matInput required />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Password:</mat-label>
+          <input type="password" formControlName="password" matInput required />
+        </mat-form-field>
+      </p>
+      <button mat-stroked-button>Log In</button>
+      <button mat-button>Create an account</button>
+    </form>
+  </div>
+</div>
