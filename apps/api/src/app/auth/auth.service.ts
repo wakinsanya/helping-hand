@@ -19,4 +19,8 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  async loginWithOAuth(profile: any) {
+    console.log(profile);
+  }
 }

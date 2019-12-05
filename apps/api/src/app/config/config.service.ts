@@ -32,11 +32,16 @@ export class ConfigService {
   private validateEnv(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
       NODE_ENV: Joi.string()
-        .valid('development', 'production', 'test', 'provision')
+        .valid('development', 'production', 'staging')
         .default('development'),
       PORT: Joi.number().default(3000),
       API_AUTH_ENABLED: Joi.boolean().required(),
-      MONGO_URI: Joi.string().uri()
+      MONGO_URI: Joi.string().uri(),
+      GOOGLE_CLIENT_ID: Joi.string(),
+      GOOGLE_CLIENT_SECRET: Joi.string(),
+      GOOGLE_CALLBACK_URL: Joi.string().uri(),
+      GOOGLE_REDIRECT_URL_SUCCESS: Joi.string().uri(),
+      GOOGLE_REDIRECT_URL_FAILURE: Joi.string().uri()
     });
 
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
