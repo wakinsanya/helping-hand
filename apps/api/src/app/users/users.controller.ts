@@ -8,16 +8,15 @@ import {
   Patch
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserDto } from './dtos/user.dto';
 import { Observable } from 'rxjs';
-import { User } from './interfaces/user.interface';
+import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/common';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() userDto: UserDto): Observable<User> {
+  create(@Body() userDto: CreateUserDto): Observable<User> {
     return this.usersService.create(userDto);
   }
 
@@ -32,12 +31,17 @@ export class UsersController {
   }
 
   @Patch()
-  update(@Body() userDto: UserDto): Observable<User> {
-    return this.usersService.update(userDto);
+  update(
+    @Param('userId') userId: string,
+    @Body() userDto: UpdateUserDto
+  ): Observable<User> {
+    return this.usersService.update(userId, userDto);
   }
 
-  @Delete(':id')
-  delete(@Param('id') id: string): Observable<{ [key: string]: number }> {
-    return this.usersService.delete(id);
+  @Delete(':userId')
+  delete(
+    @Param('userId') userId: string
+  ): Observable<any> {
+    return this.usersService.delete(userId);
   }
 }

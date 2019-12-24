@@ -1,15 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { User } from './interfaces/user.interface';
 import { USER_MODEL } from '../constants';
-import { UserDto } from './dtos/user.dto';
+import { CreateUserDto, UpdateUserDto, UserDocument, User } from '@helping-hand/common';
 import { Observable, from } from 'rxjs';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(USER_MODEL) private readonly userModel: Model<User>) {}
+  constructor(@Inject(USER_MODEL) private readonly userModel: Model<UserDocument>) {}
 
-  create(user: UserDto): Observable<User> {
+  create(user: CreateUserDto): Observable<User> {
     return from(this.userModel.create(user));
   }
 
@@ -17,9 +16,9 @@ export class UsersService {
     return from(this.userModel.findOne({ _id }));
   }
 
-  update(user: UserDto): Observable<User> {
+  update(thirdPartyId: string, user: UpdateUserDto): Observable<User> {
     return from(
-      this.userModel.updateOne({ email: user.email }, user, { new: true })
+      this.userModel.updateOne({ thirdPartyId }, user, { new: true })
     );
   }
 
@@ -29,5 +28,9 @@ export class UsersService {
 
   delete(_id: string) {
     return from(this.userModel.deleteOne({ _id }));
+  }
+
+  getByThirdPartyId(thirdPartyId: string): Observable<User> {
+    return from(this.userModel.findOne({ thirdPartyId }));
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
+import { API_ROOT_PATH } from '../constants';
 
 export interface EnvConfig {
   [key: string]: string;
@@ -11,8 +12,8 @@ export interface EnvConfig {
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };
 
-  constructor(filePath: string) {
-    const config = dotenv.parse(fs.readFileSync(`./apps/api/${filePath}`));
+  constructor(readonly filePath: string) {
+    const config = dotenv.parse(fs.readFileSync(`${API_ROOT_PATH}${filePath}`));
     this.envConfig = this.validateEnv(config);
   }
 
@@ -32,10 +33,11 @@ export class ConfigService {
   private validateEnv(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
       NODE_ENV: Joi.string()
-        .valid('development', 'production', 'staging')
+        .valid('development', 'production')
         .default('development'),
       PORT: Joi.number().default(3000),
       API_AUTH_ENABLED: Joi.boolean().required(),
+      JWT_SECRET_KEY: Joi.string(),
       MONGO_URI: Joi.string().uri(),
       GOOGLE_CLIENT_ID: Joi.string(),
       GOOGLE_CLIENT_SECRET: Joi.string(),
