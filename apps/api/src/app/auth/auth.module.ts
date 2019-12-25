@@ -8,6 +8,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/services/config.service';
 import { ConfigKeys } from '../enums/config-keys.enum';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -17,12 +18,12 @@ import { ConfigKeys } from '../enums/config-keys.enum';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get(ConfigKeys.JWT_SECRET_KEY),
+        secret: configService.get(ConfigKeys.JWT_SECRET_KEY)
       }),
-      inject: [ConfigService],
-    }),
+      inject: [ConfigService]
+    })
   ],
-  providers: [AuthService, GoogleStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy],
   exports: [AuthService],
   controllers: [AuthController]
 })

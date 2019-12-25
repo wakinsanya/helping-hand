@@ -27,4 +27,11 @@ export class AuthController {
       );
     }
   }
+
+  @Get('protected')
+  @UseGuards(AuthGuard('jwt'))
+  protectedResource()
+  {
+      return 'JWT is working!';
+  }
 }
