@@ -3,13 +3,23 @@ import { Providers } from './enums';
 export class CreateUserDto {
   readonly firstName: string;
   readonly lastName: string;
-  readonly provider: Providers;
+  readonly profile: string;
   readonly thirdyPartyId: string;
+  readonly provider: Providers;
 }
 
 export class UpdateUserDto {
   readonly firstName: string;
   readonly lastName: string;
+}
+
+export class CreateProfileDto {
+  readonly owner: string;
+  readonly bio: string;
+}
+
+export class UpdateProfileDto {
+  readonly bio: string;
 }
 
 export class CreateFavorDto {
@@ -24,13 +34,4 @@ export class UpdateFavorDto {
   readonly isFufilled: boolean;
   readonly fufilledAt: Date;
   readonly fuffiledBy: string;
-}
-
-export class CreateProfileDto {
-  readonly owner: string;
-  readonly bio: string;
-}
-
-export class UpdateProfileDto {
-  readonly bio: string;
 }

@@ -11,8 +11,7 @@ export const UserSchema = new Schema({
     required: 'user must have a last name'
   },
   profile: {
-    type: Schema.Types.ObjectId,
-    required: 'user must have a profile'
+    type: Schema.Types.ObjectId
   },
   thirdPartyId: {
     type: String

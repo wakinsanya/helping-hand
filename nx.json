@@ -17,7 +17,7 @@
     "api": {
       "tags": []
     },
-    "common": {
+    "api-common": {
       "tags": []
     }
   }

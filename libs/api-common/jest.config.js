@@ -1,9 +1,9 @@
 module.exports = {
-  name: 'common',
+  name: 'api-common',
   preset: '../../jest.config.js',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
-  coverageDirectory: '../../coverage/libs/common'
+  coverageDirectory: '../../coverage/libs/api-common'
 };
