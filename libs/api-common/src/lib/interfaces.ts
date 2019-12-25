@@ -15,6 +15,7 @@ export interface Profile {
 
 export interface Favor {
   readonly owner: string;
+  readonly title: string;
   readonly text: string;
   readonly media: string;
   readonly isFufilled: boolean;

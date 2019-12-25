@@ -12,8 +12,8 @@ export class UsersService {
     @Inject(USER_MODEL) private readonly userModel: Model<UserDocument>
   ) {}
 
-  create(user: CreateUserDto): Observable<User> {
-    return from(this.userModel.create(user)).pipe(
+  create(userDto: CreateUserDto): Observable<User> {
+    return from(this.userModel.create(userDto)).pipe(
       map((userDoc: UserDocument) => userDoc as User)
     );
   }

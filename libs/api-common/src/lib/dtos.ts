@@ -24,11 +24,13 @@ export class UpdateProfileDto {
 
 export class CreateFavorDto {
   readonly owner: string;
+  readonly title: string;
   readonly text: string;
   readonly media: string;
 }
 
 export class UpdateFavorDto {
+  readonly title: string;
   readonly text: string;
   readonly media: string;
   readonly isFufilled: boolean;
