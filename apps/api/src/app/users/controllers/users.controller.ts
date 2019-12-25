@@ -35,7 +35,7 @@ export class UsersController {
     @Param('userId') userId: string,
     @Body() userDto: UpdateUserDto
   ): Observable<User> {
-    return this.usersService.update(userId, userDto);
+    return this.usersService.updateById(userId, userDto);
   }
 
   @Delete(':userId')

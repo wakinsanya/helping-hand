@@ -6,6 +6,8 @@ import { ConfigService } from '../../config/services/config.service';
 import { ConfigKeys } from '../../enums/config-keys.enum';
 import { AuthService } from '../services/auth.service';
 import { Providers } from '@helping-hand/api-common';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
@@ -25,27 +27,25 @@ export class GoogleStrategy extends PassportStrategy(
     });
   }
 
-  async validate(
+  validate(
     _req: any,
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
     done: Function
   ) {
-    try {
-      console.log(profile);
-
-      const jwt = this.authService.validateOAuthLogin(
+    let user: { jwt: string };
+    this.authService
+      .validateOAuthLogin(
         profile.id,
+        profile.name.givenName,
+        profile.name.familyName,
         Providers.GOOGLE
-      );
-      const user = {
-        jwt
-      };
-
-      done(null, user);
-    } catch (e) {
-      done(e, false);
-    }
+      )
+      .pipe(tap((jwt: string) => (user = { jwt })))
+      .subscribe({
+        next: () => done(null, user),
+        error: e => done(e, false)
+      });
   }
 }

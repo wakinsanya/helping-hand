@@ -3,8 +3,7 @@ import { Providers } from './enums';
 export class CreateUserDto {
   readonly firstName: string;
   readonly lastName: string;
-  readonly profile: string;
-  readonly thirdyPartyId: string;
+  readonly thirdPartyId: string;
   readonly provider: Providers;
 }
 

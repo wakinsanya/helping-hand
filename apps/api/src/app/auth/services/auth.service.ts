@@ -3,13 +3,12 @@ import { UsersService } from '../../users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Providers, User } from '@helping-hand/api-common';
 import { ConfigService } from '../../config/services/config.service';
-import { ConfigKeys } from '../../enums/config-keys.enum';
-import { sign } from 'jsonwebtoken';
+import { Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly configService: ConfigService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService
   ) {}
@@ -22,30 +21,33 @@ export class AuthService {
     };
   }
 
-  async loginWithOAuth(profile: any) {
-    console.log(profile);
-  }
-
-  async validateOAuthLogin(
+  validateOAuthLogin(
     thirdPartyId: string,
+    firstName: string,
+    lastName: string,
     provider: Providers
-  ): Promise<string> {
-    try {
-      let user: any = await this.usersService.getByThirdPartyId(thirdPartyId);
-
-      const payload = {
-        thirdPartyId,
-        provider
-      };
-
-      const jwt: string = sign(
-        payload,
-        this.configService.get(ConfigKeys.JWT_SECRET_KEY),
-        { expiresIn: 3600 }
-      );
-      return jwt;
-    } catch (e) {
-      throw e;
-    }
+  ): Observable<string> {
+    return this.usersService.getByThirdPartyId(thirdPartyId)
+      .pipe(
+        mergeMap((user: User) => {
+          if (user) {
+            return of(user);
+          } else {
+            return this.usersService.create({
+              firstName,
+              lastName,
+              thirdPartyId,
+              provider
+            });
+          }
+        }),
+        mergeMap(() => {
+          const jwt: string = this.jwtService.sign({
+            thirdPartyId,
+            provider
+          });
+          return of(jwt);
+        })
+      )
   }
 }

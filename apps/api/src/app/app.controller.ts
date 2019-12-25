@@ -1,20 +1,11 @@
-import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth/services/auth.service';
-
+import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
+  constructor() {}
 
-  @UseGuards(AuthGuard('local'))
-  @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @Get()
+  getWelcomeMessage(@Req() req: Request, @Res() res: Response): string {
+    return 'Helping Hand Api';
   }
 }
