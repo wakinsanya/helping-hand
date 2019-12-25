@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-import { ConfigService } from '../config/config.service';
-import { DATABASE_CONNECTION } from '../constants';
+import { ConfigService } from '../../config/services/config.service';
+import { DATABASE_CONNECTION } from '../../constants';
 
 export const databaseProviders = [
   {

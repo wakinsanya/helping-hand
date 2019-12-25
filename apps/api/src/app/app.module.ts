@@ -8,6 +8,7 @@ import { MediaModule } from './media/media.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
+import { FavorModule } from './favor/favor.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ProfileModule } from './profile/profile.module';
     MediaModule,
     DatabaseModule,
     AuthModule,
-    ProfileModule
+    ProfileModule,
+    FavorModule
   ],
   controllers: [AppController],
   providers: [AppService]

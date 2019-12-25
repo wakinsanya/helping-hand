@@ -7,9 +7,9 @@ import {
   Delete,
   Patch
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from '../services/users.service';
 import { Observable } from 'rxjs';
-import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/common';
+import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/api-common';
 
 @Controller('users')
 export class UsersController {

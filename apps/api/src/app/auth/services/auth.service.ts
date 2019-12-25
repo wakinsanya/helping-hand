@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { Providers, User } from '@helping-hand/common';
-import { ConfigService } from '../../config/config.service';
+import { Providers, User } from '@helping-hand/api-common';
+import { ConfigService } from '../../config/services/config.service';
 import { ConfigKeys } from '../../enums/config-keys.enum';
 import { sign } from 'jsonwebtoken';
 
