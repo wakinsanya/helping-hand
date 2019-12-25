@@ -6,7 +6,7 @@
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { ConfigService } from './app/config/config.service';
+import { ConfigService } from './app/config/services/config.service';
 import * as compression from 'compression';
 
 async function bootstrap() {

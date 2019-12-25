@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@helping-hand/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@helping-hand/api-common": ["libs/api-common/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

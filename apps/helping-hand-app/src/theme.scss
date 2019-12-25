@@ -1,70 +1,72 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$hh-mint: (
-  50: #effff9,
-  100: #d8ffef,
-  200: #beffe5,
-  300: #a3ffdb,
-  400: #90ffd3,
-  500: #7cffcb,
-  600: #74ffc6,
-  700: #69ffbe,
-  800: #5fffb8,
-  900: #4cffac,
-  A100: #ffffff,
-  A200: #ffffff,
-  A400: #f2fff9,
-  A700: #d9ffed,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #000000,
-    700: #000000,
-    800: #000000,
-    900: #000000,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000
-  )
-);
-
-$hh-lime: (
-    50 : #eefdf9,
-    100 : #d5fbf0,
-    200 : #baf9e7,
-    300 : #9ef6dd,
-    400 : #89f4d5,
-    500 : #74f2ce,
-    600 : #6cf0c9,
-    700 : #61eec2,
-    800 : #57ecbc,
-    900 : #44e8b0,
-    A100 : #ffffff,
-    A200 : #ffffff,
-    A400 : #d5fff0,
-    A700 : #bcffe7,
+$hh-green: (
+    50 : #e3f5ea,
+    100 : #b8e6cc,
+    200 : #89d5aa,
+    300 : #5ac487,
+    400 : #36b86e,
+    500 : #13ab54,
+    600 : #11a44d,
+    700 : #0e9a43,
+    800 : #0b913a,
+    900 : #068029,
+    A100 : #aeffc1,
+    A200 : #7bff99,
+    A400 : #48ff72,
+    A700 : #2fff5f,
     contrast: (
         50 : #000000,
         100 : #000000,
         200 : #000000,
         300 : #000000,
         400 : #000000,
-        500 : #000000,
-        600 : #000000,
-        700 : #000000,
-        800 : #000000,
-        900 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
         A100 : #000000,
         A200 : #000000,
         A400 : #000000,
         A700 : #000000,
     )
+);
+
+
+
+$hh-dark: (
+  50: #e4e6e8,
+  100: #bcc0c5,
+  200: #8f969e,
+  300: #626c77,
+  400: #414d5a,
+  500: #1f2d3d,
+  600: #1b2837,
+  700: #17222f,
+  800: #121c27,
+  900: #0a111a,
+  A100: #5b97ff,
+  A200: #2876ff,
+  A400: #0059f4,
+  A700: #004fda,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff
+  )
 );
 
 $hh-orange: (
@@ -100,8 +102,8 @@ $hh-orange: (
   )
 );
 
-$hh-primary: mat-palette($hh-mint);
-$hh-accent: mat-palette($hh-lime);
+$hh-primary: mat-palette($hh-green);
+$hh-accent: mat-palette($hh-dark);
 $hh-warn: mat-palette($hh-orange);
 
 $hh-theme: mat-light-theme($hh-primary, $hh-accent, $hh-warn);

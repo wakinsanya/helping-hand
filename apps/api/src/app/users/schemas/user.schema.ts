@@ -1,35 +1,23 @@
-import * as mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+import { Providers } from '@helping-hand/api-common';
 
-export const UserSchema = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      required: [true, 'email field is required'],
-      lowercase: true,
-      trim: true,
-      unique: true,
-      index: true
-    },
-    username: {
-      type: String,
-      required: [true, 'username field is required'],
-      lowercase: true,
-      trim: true,
-      unique: true,
-      index: true
-    },
-    profile: {
-      type: mongoose.SchemaTypes.ObjectId,
-      required: [true, 'user must have a profile']
-    },
-    description: {
-      type: String,
-      default: ''
-    },
-    firstName: String,
-    lastName: String,
-    salt: String,
-    hash: String
+export const UserSchema = new Schema({
+  firstName: {
+    type: String,
+    required: 'user must have a first name'
   },
-  { timestamps: true }
-);
+  lastName: {
+    type: String,
+    required: 'user must have a last name'
+  },
+  profile: {
+    type: Schema.Types.ObjectId
+  },
+  thirdPartyId: {
+    type: String
+  },
+  provider: {
+    type: String,
+    enum: [Providers.LOCAL, Providers.GOOGLE]
+  }
+});
