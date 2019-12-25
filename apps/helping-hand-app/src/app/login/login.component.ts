@@ -1,32 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'helping-hand-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor() { }
 
   ngOnInit() {
-    this.buildForm();
   }
-
-  private buildForm() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.email],
-      firstName: [''],
-      lastName: [''],
-      username: [''],
-      password: ['']
-    });
-  }
-
-  loginUser() {
-
-  }
-
 }

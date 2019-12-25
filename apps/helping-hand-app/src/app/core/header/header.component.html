@@ -1,3 +1,28 @@
-<mat-toolbar>
-  <span>Helping Hand</span>
-</mat-toolbar>
+<header [mdcTopAppBar]="type">
+  <div mdcTopAppBarRow>
+    <section mdcTopAppBarSection alignStart>
+      <a href="javascript:void(0)" mdcTopAppBarNavIcon class="material-icons"
+        >menu</a
+      >
+      <span mdcTopAppBarTitle>Helping Hand &ensp; <i>beta</i></span>
+    </section>
+    <section mdcTopAppBarSection alignEnd>
+      <a
+        *ngIf="type !== 'short'"
+        href="javascript:void(0)"
+        mdcTopAppBarAction
+        class="material-icons"
+        label="Print this page"
+        >account_circle</a
+      >
+      <a
+        *ngIf="type !== 'short'"
+        href="javascript:void(0)"
+        mdcTopAppBarAction
+        class="material-icons"
+        label="Bookmark this page"
+        >more_vert</a
+      >
+    </section>
+  </div>
+</header>
