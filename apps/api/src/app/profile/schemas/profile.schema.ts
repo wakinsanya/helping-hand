@@ -6,7 +6,7 @@ export const ProfileSchema = new Schema({
     required: 'profile must have an owner'
   },
   bio: {
-    type: String,
+    type: Schema.Types.String,
     default: ''
   }
 });

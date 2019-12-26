@@ -6,6 +6,11 @@ import { ConfigService } from '../../config/services/config.service';
 import { ConfigKeys } from '../../enums/config-keys.enum';
 import { AuthService } from '../services/auth.service';
 import { Providers } from '@helping-hand/api-common';
+import { tap } from 'rxjs/operators';
+
+enum GoogleOAuthScopes {
+  PROFILE = 'profile'
+}
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
@@ -21,31 +26,30 @@ export class GoogleStrategy extends PassportStrategy(
       clientSecret: configService.get(ConfigKeys.GOOGLE_CLIENT_SECRET),
       callbackURL: configService.get(ConfigKeys.GOOGLE_CALLBACK_URL),
       passReqToCallback: true,
-      scope: ['profile']
+      scope: [GoogleOAuthScopes.PROFILE]
     });
   }
 
-  async validate(
+  validate(
     _req: any,
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
     done: Function
   ) {
-    try {
-      console.log(profile);
-
-      const jwt = this.authService.validateOAuthLogin(
+    let user: { jwt: string };
+    this.authService
+      .validateOAuthLogin(
         profile.id,
-        Providers.GOOGLE
-      );
-      const user = {
-        jwt
-      };
-
-      done(null, user);
-    } catch (e) {
-      done(e, false);
-    }
+        profile.name.givenName,
+        profile.name.familyName,
+        Providers.GOOGLE,
+        profile.photos.length ? profile.photos[0].value : undefined
+      )
+      .pipe(tap((jwt: string) => (user = { jwt })))
+      .subscribe({
+        next: () => done(null, user),
+        error: e => done(e, false)
+      });
   }
 }

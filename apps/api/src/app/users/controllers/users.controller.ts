@@ -7,9 +7,9 @@ import {
   Delete,
   Patch
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
 import { Observable } from 'rxjs';
 import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/api-common';
+import { UsersService } from '@api/users/services/users.service';
 
 @Controller('users')
 export class UsersController {
@@ -35,7 +35,7 @@ export class UsersController {
     @Param('userId') userId: string,
     @Body() userDto: UpdateUserDto
   ): Observable<User> {
-    return this.usersService.update(userId, userDto);
+    return this.usersService.updateById(userId, userDto);
   }
 
   @Delete(':userId')

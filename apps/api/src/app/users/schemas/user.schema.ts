@@ -3,21 +3,24 @@ import { Providers } from '@helping-hand/api-common';
 
 export const UserSchema = new Schema({
   firstName: {
-    type: String,
+    type: Schema.Types.String,
     required: 'user must have a first name'
   },
   lastName: {
-    type: String,
+    type: Schema.Types.String,
     required: 'user must have a last name'
   },
   profile: {
     type: Schema.Types.ObjectId
   },
   thirdPartyId: {
-    type: String
+    type: Schema.Types.String
   },
   provider: {
-    type: String,
+    type: Schema.Types.String,
     enum: [Providers.LOCAL, Providers.GOOGLE]
+  },
+  pictureUrl: {
+    type: Schema.Types.String
   }
 });

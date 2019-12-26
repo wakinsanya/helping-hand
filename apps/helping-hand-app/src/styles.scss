@@ -1,12 +1,18 @@
-@import 'theme.scss';
+// customize some theme variables, e.g.:
+$mdc-theme-primary: #fff;
+$mdc-theme-secondary: #13aa52;
+$mdc-theme-background: #3c4859;
+
+// import theming for all mdc components:
+@import "material-components-web/material-components-web";
 
 html,
 body {
   background-color: white;
-  color: #1F2D3D;
+  color: #3c4859;
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: 'Rubik', sans-serif;
 }

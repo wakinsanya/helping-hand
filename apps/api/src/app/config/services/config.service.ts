@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
 import { API_ROOT_PATH } from '../../constants';
+import { ConfigKeys } from '../../enums/config-keys.enum';
 
 export interface EnvConfig {
   [key: string]: string;
@@ -22,7 +23,7 @@ export class ConfigService {
    * @param key environment variable key.
    * @returns matching environment variable.
    */
-  get(key: string): string {
+  get(key: ConfigKeys): string {
     return this.envConfig[key];
   }
 

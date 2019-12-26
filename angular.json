@@ -26,9 +26,13 @@
               "apps/helping-hand-app/src/assets"
             ],
             "styles": [
-              "apps/helping-hand-app/src/theme.scss",
               "apps/helping-hand-app/src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                  "node_modules"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
