@@ -25,7 +25,8 @@ export class AuthService {
     thirdPartyId: string,
     firstName: string,
     lastName: string,
-    provider: Providers
+    provider: Providers,
+    pictureUrl?: string
   ): Observable<string> {
     return this.usersService.getByThirdPartyId(thirdPartyId)
       .pipe(
@@ -37,8 +38,9 @@ export class AuthService {
               firstName,
               lastName,
               thirdPartyId,
-              provider
-            });
+              provider,
+              pictureUrl
+            })
           }
         }),
         mergeMap(() => {

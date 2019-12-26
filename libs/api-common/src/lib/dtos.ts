@@ -5,11 +5,13 @@ export class CreateUserDto {
   readonly lastName: string;
   readonly thirdPartyId: string;
   readonly provider: Providers;
+  readonly pictureUrl: string;
 }
 
 export class UpdateUserDto {
   readonly firstName: string;
   readonly lastName: string;
+  readonly pictureUrl: string;
 }
 
 export class CreateProfileDto {

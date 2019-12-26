@@ -6,11 +6,11 @@ export const FavorSchema = new Schema({
     required: 'favor must have an owner'
   },
   title: {
-    type: String,
+    type: Schema.Types.String,
     required: 'favor must have a title'
   },
   text: {
-    type: String,
+    type: Schema.Types.String,
     default: ''
   },
   media: {

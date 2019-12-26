@@ -40,7 +40,8 @@ export class GoogleStrategy extends PassportStrategy(
         profile.id,
         profile.name.givenName,
         profile.name.familyName,
-        Providers.GOOGLE
+        Providers.GOOGLE,
+        profile.photos.length ? profile.photos[0].value : undefined
       )
       .pipe(tap((jwt: string) => (user = { jwt })))
       .subscribe({
