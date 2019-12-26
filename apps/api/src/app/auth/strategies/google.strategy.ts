@@ -6,8 +6,11 @@ import { ConfigService } from '../../config/services/config.service';
 import { ConfigKeys } from '../../enums/config-keys.enum';
 import { AuthService } from '../services/auth.service';
 import { Providers } from '@helping-hand/api-common';
-import { merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+enum GoogleOAuthScopes {
+  PROFILE = 'profile'
+}
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
@@ -23,7 +26,7 @@ export class GoogleStrategy extends PassportStrategy(
       clientSecret: configService.get(ConfigKeys.GOOGLE_CLIENT_SECRET),
       callbackURL: configService.get(ConfigKeys.GOOGLE_CALLBACK_URL),
       passReqToCallback: true,
-      scope: ['profile']
+      scope: [GoogleOAuthScopes.PROFILE]
     });
   }
 
