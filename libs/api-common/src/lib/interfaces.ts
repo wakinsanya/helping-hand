@@ -7,6 +7,7 @@ export interface User {
   readonly profile: string;
   readonly provider: Providers;
   readonly thirdPartyId: string;
+  readonly access_token?: string;
 }
 
 export interface Profile {

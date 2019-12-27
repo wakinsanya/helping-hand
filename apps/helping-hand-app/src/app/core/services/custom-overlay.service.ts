@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CoreModule } from '@helping-hand/core/core.module';
 
-@Injectable({
-  providedIn: CoreModule
-})
+@Injectable()
 export class CustomOverlayService {
   constructor() {}
 }

@@ -5,10 +5,13 @@ import { HeaderComponent } from './header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@blox/material';
+import { AuthService } from './services/auth.service';
+import { CustomOverlayService } from './services/custom-overlay.service';
 
 @NgModule({
   declarations: [HeaderComponent],
   imports: [CommonModule, MatToolbarModule, FormsModule, MaterialModule],
+  providers: [AuthService, CustomOverlayService],
   exports: [HeaderComponent]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
