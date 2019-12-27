@@ -1,6 +1,7 @@
 import { Providers } from './enums';
 
 export interface User {
+  readonly _id: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly profile: string;
@@ -9,11 +10,13 @@ export interface User {
 }
 
 export interface Profile {
+  readonly _id: string;
   readonly owner: string;
   readonly bio: string;
 }
 
 export interface Favor {
+  readonly _id: string;
   readonly owner: string;
   readonly title: string;
   readonly text: string;

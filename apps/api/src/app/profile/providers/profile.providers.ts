@@ -1,12 +1,13 @@
 import { Connection } from 'mongoose';
-import { DATABASE_CONNECTION, PROFILE_MODEL } from '../../constants';
-import { ProfileSchema } from '../schemas/profile.schema';
+import { DATABASE_CONNECTION, PROFILE_MODEL } from '@api/constants';
+import { ProfileSchema } from '@api/profile/schemas/profile.schema';
+import { ProfileDocument } from '@api/profile/interfaces/profile-document.interface';
 
 export const profileProviders = [
   {
     provide: PROFILE_MODEL,
     useFactory: (connection: Connection) => {
-      return connection.model('Profile', ProfileSchema);
+      return connection.model<ProfileDocument>('Profile', ProfileSchema);
     },
     inject: [DATABASE_CONNECTION]
   }
