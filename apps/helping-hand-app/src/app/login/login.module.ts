@@ -8,11 +8,13 @@ import {
   MatButtonModule,
   MatCardModule
 } from '@angular/material';
+import { LoginRoutingModule } from './login-routing.module';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
     CommonModule,
+    LoginRoutingModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
