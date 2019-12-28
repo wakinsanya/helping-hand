@@ -32,6 +32,10 @@ import { AuthModule } from './auth/auth.module';
       strategies: [
         NbOAuth2AuthStrategy.setup({
           name: UserProvider.GOOGLE,
+          redirect: {
+            success: '/dashboard',
+            failure: null,
+          },
           clientId:
             '',
           clientSecret: '',

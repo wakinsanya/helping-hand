@@ -6,10 +6,10 @@ import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { NbAuthModule } from '@nebular/auth';
 import {
-  NbAlertModule,
   NbButtonModule,
-  NbCheckboxModule,
-  NbInputModule
+  NbCardModule,
+  NbSpinnerModule,
+  NbIconModule
 } from '@nebular/theme';
 import { LoginComponent } from './login.component';
 
@@ -18,16 +18,13 @@ import { LoginComponent } from './login.component';
     CommonModule,
     FormsModule,
     RouterModule,
-    NbAlertModule,
-    NbInputModule,
     NbButtonModule,
-    NbCheckboxModule,
     AuthRoutingModule,
     NbAuthModule,
+    NbCardModule,
+    NbSpinnerModule,
+    NbIconModule
   ],
-  declarations: [
-    LoginComponent
-  ],
+  declarations: [LoginComponent]
 })
-export class AuthModule {
-}
+export class AuthModule {}
