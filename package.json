@@ -39,6 +39,7 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "@hapi/joi": "^16.1.7",
+    "@nebular/auth": "^4.6.0",
     "@nebular/eva-icons": "^4.6.0",
     "@nebular/theme": "^4.6.0",
     "@nestjs/common": "^6.2.4",

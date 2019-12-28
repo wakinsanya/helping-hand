@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { UserProvider } from '@helping-hand/api-common';
 import { tap } from 'rxjs/operators';
 
-enum GoogleOAuthScopes {
+enum GoogleOAuthScope {
   PROFILE = 'profile'
 }
 
@@ -26,7 +26,7 @@ export class GoogleStrategy extends PassportStrategy(
       clientSecret: configService.get(ConfigKeys.GOOGLE_CLIENT_SECRET),
       callbackURL: configService.get(ConfigKeys.GOOGLE_CALLBACK_URL),
       passReqToCallback: true,
-      scope: [GoogleOAuthScopes.PROFILE]
+      scope: [GoogleOAuthScope.PROFILE]
     });
   }
 
@@ -37,6 +37,7 @@ export class GoogleStrategy extends PassportStrategy(
     profile: Profile,
     done: Function
   ) {
+    console.log('GOOGLE STRAT');
     let user: { jwt: string };
     this.authService
       .validateOAuthLogin(

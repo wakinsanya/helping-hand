@@ -1,7 +1,5 @@
-.logo__wrap {
-  margin-left: 10px;
-  margin-top: 10px;
-  & > img {
-    width: 200px;
+.header__heading {
+  &:hover {
+    cursor: pointer;
   }
 }

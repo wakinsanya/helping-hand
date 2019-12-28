@@ -23,4 +23,8 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigate(['/']);
   }
+
+  goHome() {
+    this.router.navigate(['/dashboard'])
+  }
 }

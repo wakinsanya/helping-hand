@@ -2,14 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '/login', loadChildren: 'app/login/login.module#LoginModule' },
   {
-    path: '/dashboard',
-    loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+    path: 'auth',
+    loadChildren: './auth/auth.module#AuthModule',
   },
   {
-    path: '/settings',
-    loadChildren: 'app/settings/settings.module#SettingsModule'
+    path: 'dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+  {
+    path: 'settings',
+    loadChildren: './settings/settings.module#SettingsModule'
   }
 ];
 

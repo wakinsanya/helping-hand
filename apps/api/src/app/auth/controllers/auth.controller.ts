@@ -32,6 +32,6 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   protectedResource()
   {
-      return 'JWT is working!';
+      return '';
   }
 }

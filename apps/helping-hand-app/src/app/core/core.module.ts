@@ -6,12 +6,19 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CustomOverlayService } from './services/custom-overlay.service';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { NbActionsModule } from '@nebular/theme';
+import { NbActionsModule, NbUserModule } from '@nebular/theme';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [HeaderComponent],
-  imports: [CommonModule, FormsModule, NbEvaIconsModule, NbActionsModule],
-  providers: [AuthService, CustomOverlayService],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NbEvaIconsModule,
+    NbActionsModule,
+    NbUserModule
+  ],
+  providers: [AuthService, CustomOverlayService, UserService],
   exports: [HeaderComponent]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
