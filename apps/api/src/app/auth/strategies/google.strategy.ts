@@ -5,7 +5,7 @@ import { AuthStrategies } from '../../enums/auth-strategies.enum';
 import { ConfigService } from '../../config/services/config.service';
 import { ConfigKeys } from '../../enums/config-keys.enum';
 import { AuthService } from '../services/auth.service';
-import { Providers } from '@helping-hand/api-common';
+import { UserProvider } from '@helping-hand/api-common';
 import { tap } from 'rxjs/operators';
 
 enum GoogleOAuthScopes {
@@ -43,7 +43,7 @@ export class GoogleStrategy extends PassportStrategy(
         profile.id,
         profile.name.givenName,
         profile.name.familyName,
-        Providers.GOOGLE,
+        UserProvider.GOOGLE,
         profile.photos.length ? profile.photos[0].value : undefined
       )
       .pipe(tap((jwt: string) => (user = { jwt })))

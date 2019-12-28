@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
-import { ConfigService } from '../../config/services/config.service';
-import { DATABASE_CONNECTION } from '../../constants';
-import { ConfigKeys } from '../../enums/config-keys.enum';
+import { ConfigService } from '@api/config/services/config.service';
+import { DATABASE_CONNECTION } from '@api/constants';
+import { ConfigKeys } from '@api/enums/config-keys.enum';
 
 export const databaseProviders = [
   {

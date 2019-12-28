@@ -5,9 +5,10 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from './core/core.module';
 import { LoginModule } from './login/login.module';
+import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,8 +18,10 @@ import { LoginModule } from './login/login.module';
     HttpClientModule,
     BrowserAnimationsModule,
     CoreModule,
-    MatIconModule,
-    LoginModule
+    LoginModule,
+    NbThemeModule.forRoot({ name: 'helping-hand' }),
+    NbLayoutModule,
+    NbEvaIconsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

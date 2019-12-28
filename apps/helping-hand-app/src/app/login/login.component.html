@@ -1,7 +1,18 @@
 <div class="login__container">
-  <div class="login__content">
-    <div mdcElevation="4" animateTransition=true class="login__pane">
-      <button>Login with Google</button>
-    </div>
-  </div>
+  <nb-card accent="success" size="small">
+    <nb-card-header><h4>Log in to Helping Hand</h4></nb-card-header>
+    <nb-card-body>
+      <div class="login__buttons__container">
+        <button nbButton>
+          Log In with Google <nb-icon icon="google-outline"></nb-icon>
+        </button>
+        <button nbButton disabled>
+          Log In with Facebook <nb-icon icon="facebook-outline"></nb-icon>
+        </button>
+        <button nbButton disabled>
+          Log In with Twitter<nb-icon icon="twitter-outline"></nb-icon>
+        </button>
+      </div>
+    </nb-card-body>
+  </nb-card>
 </div>

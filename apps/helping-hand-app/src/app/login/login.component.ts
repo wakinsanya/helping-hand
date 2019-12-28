@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Providers } from '@helping-hand/api-common';
+import { UserProvider } from '@helping-hand/api-common';
 import { AuthService } from '@helping-hand/core/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
       this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
-  login(provider: Providers) {
+  login(provider: UserProvider) {
     this.authService
       .login(provider)
       .pipe(first())

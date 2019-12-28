@@ -1,28 +1,9 @@
-<header [mdcTopAppBar]="type">
-  <div mdcTopAppBarRow>
-    <section mdcTopAppBarSection alignStart>
-      <a href="javascript:void(0)" mdcTopAppBarNavIcon class="material-icons"
-        >menu</a
-      >
-      <span mdcTopAppBarTitle>Helping Hand &ensp; <i>beta</i></span>
-    </section>
-    <section mdcTopAppBarSection alignEnd>
-      <a
-        *ngIf="loggedInUser"
-        href="javascript:void(0)"
-        mdcTopAppBarAction
-        class="material-icons"
-        label="Print this page"
-        >account_circle</a
-      >
-      <a
-        *ngIf="loggedInUser"
-        href="javascript:void(0)"
-        mdcTopAppBarAction
-        class="material-icons"
-        label="Bookmark this page"
-        >more_vert</a
-      >
-    </section>
-  </div>
-</header>
+<nb-actions size="medium">
+  <nb-action>
+    Helping Hand
+  </nb-action>
+  <nb-action icon="search-outline"></nb-action>
+  <nb-action icon="power-outline"></nb-action>
+  <nb-action icon="person-outline"></nb-action>
+  <nb-action icon="home-outline"></nb-action>
+</nb-actions>

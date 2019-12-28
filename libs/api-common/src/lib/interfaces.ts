@@ -1,12 +1,13 @@
-import { Providers } from './enums';
+import { UserProvider, UserRole } from './enums';
 
 export interface User {
   readonly _id: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly profile: string;
-  readonly provider: Providers;
+  readonly provider: UserProvider;
   readonly thirdPartyId: string;
+  readonly role: UserRole;
   readonly access_token?: string;
 }
 

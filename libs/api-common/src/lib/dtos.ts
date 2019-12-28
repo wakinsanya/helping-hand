@@ -1,11 +1,12 @@
-import { Providers } from './enums';
+import { UserProvider, UserRole } from './enums';
 
 export class CreateUserDto {
   readonly firstName: string;
   readonly lastName: string;
   readonly thirdPartyId: string;
-  readonly provider: Providers;
+  readonly provider: UserProvider;
   readonly pictureUrl: string;
+  readonly role?: UserRole;
 }
 
 export class UpdateUserDto {

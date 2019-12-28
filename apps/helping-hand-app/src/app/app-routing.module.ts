@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', loadChildren: 'app/login/login.module#LoginModule' },
+  { path: '/login', loadChildren: 'app/login/login.module#LoginModule' },
   {
     path: '/dashboard',
     loadChildren: 'app/dashboard/dashboard.module#DashboardModule'

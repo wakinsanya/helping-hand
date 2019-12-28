@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Providers, User } from '@helping-hand/api-common';
+import { UserProvider, User } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
-import { CoreModule } from '@helping-hand/core/core.module';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -21,8 +20,8 @@ export class AuthService {
     this.loggedInUser$ = this._loggedInUser$.asObservable();
   }
 
-  login(provider: Providers) {
-    return this.getUserAuthReuest(provider).pipe(
+  login(provider: UserProvider) {
+    return this.getUserAuthRequest(provider).pipe(
       tap((user: User) => {
         localStorage.setItem('loggedInUser', JSON.stringify(user));
         this._loggedInUser$.next(user);
@@ -39,9 +38,9 @@ export class AuthService {
     return '';
   }
 
-  private getUserAuthReuest(provider: Providers): Observable<User> {
+  private getUserAuthRequest(provider: UserProvider): Observable<User> {
     switch (provider) {
-      case Providers.GOOGLE:
+      case UserProvider.GOOGLE:
         return this.httpClient.get<User>('/api/auth/google');
       default:
         return throwError(new Error('Unknown provider'));

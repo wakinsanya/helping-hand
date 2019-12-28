@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Providers } from '@helping-hand/api-common';
+import { UserProvider, UserRole } from '@helping-hand/api-common';
 
 export const UserSchema = new Schema({
   firstName: {
@@ -18,9 +18,14 @@ export const UserSchema = new Schema({
   },
   provider: {
     type: Schema.Types.String,
-    enum: [Providers.LOCAL, Providers.GOOGLE]
+    enum: [UserProvider.LOCAL, UserProvider.GOOGLE]
   },
   pictureUrl: {
     type: Schema.Types.String
+  },
+  role: {
+    type: Schema.Types.String,
+    enum: [UserRole.SUPERADMIN, UserRole.ADMIN, UserRole.USER],
+    default: UserRole.USER
   }
 });

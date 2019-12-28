@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UsersService } from '../../users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { Providers, User } from '@helping-hand/api-common';
+import { UserProvider, User } from '@helping-hand/api-common';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class AuthService {
     thirdPartyId: string,
     firstName: string,
     lastName: string,
-    provider: Providers,
+    provider: UserProvider,
     pictureUrl?: string
   ): Observable<string> {
     return this.usersService.getByThirdPartyId(thirdPartyId).pipe(
