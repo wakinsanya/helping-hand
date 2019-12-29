@@ -4,7 +4,7 @@
       Helping Hand
     </h4>
   </nb-action>
-  <nb-action *ngIf="loggedInUser"
+  <!-- <nb-action *ngIf="loggedInUser"
     ><nb-user
       size="medium"
       [name]="
@@ -14,8 +14,8 @@
       onlyPicture
     >
     </nb-user
-  ></nb-action>
-  <nb-action *ngIf="loggedInUser" icon="power-outline"></nb-action>
+  ></nb-action> -->
+  <nb-action *ngIf="isUserLoggedIn" icon="power-outline"></nb-action>
   <nb-action *ngIf="loggedInUser" icon="person-outline"></nb-action>
   <nb-action *ngIf="loggedInUser" icon="home-outline"></nb-action>
 </nb-actions>

@@ -9,9 +9,11 @@ import {
   NbButtonModule,
   NbCardModule,
   NbSpinnerModule,
-  NbIconModule
+  NbIconModule,
+  NbLayoutModule
 } from '@nebular/theme';
 import { LoginComponent } from './login.component';
+import { OAuth2CallbackComponent } from './oauth-callback.component';
 
 @NgModule({
   imports: [
@@ -23,8 +25,9 @@ import { LoginComponent } from './login.component';
     NbAuthModule,
     NbCardModule,
     NbSpinnerModule,
-    NbIconModule
+    NbIconModule,
+    NbLayoutModule
   ],
-  declarations: [LoginComponent]
+  declarations: [LoginComponent, OAuth2CallbackComponent]
 })
 export class AuthModule {}

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CoreModule } from './core/core.module';
+import { CoreModule } from '@helping-hand/core/core.module';
 import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +14,8 @@ import {
   NbOAuth2ResponseType
 } from '@nebular/auth';
 import { UserProvider } from '@helping-hand/api-common';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from '@helping-hand/auth/auth.module';
+import { AuthGuard } from '@helping-hand/core/helpers/auth.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,22 +43,14 @@ import { AuthModule } from './auth/auth.module';
           authorize: {
             endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
             responseType: NbOAuth2ResponseType.TOKEN,
-            scope: 'https://www.googleapis.com/auth/userinfo.profile'
+            scope: 'profile',
+            redirectUri: 'http://localhost:4200/auth/oauth2/callback',
           }
         })
-      ],
-      forms: {
-        login: {
-          strategy: UserProvider.GOOGLE,  // strategy id key.
-          socialLinks: [{
-            title: 'google',
-           icon: 'google-outline'
-          }],
-        }
-      }
+      ]
     })
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

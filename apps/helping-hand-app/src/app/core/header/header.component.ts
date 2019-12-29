@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { User } from '@helping-hand/api-common';
 import { Router } from '@angular/router';
+import { NbAuthService } from '@nebular/auth';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'helping-hand-header',
@@ -10,17 +11,19 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   type = 'default';
-  loggedInUser: User;
+  isUserLoggedIn: boolean;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.authService.loggedInUser$.subscribe({
-      next: (user: User) => (this.loggedInUser = user),
-      error: e => console.error(e)
-    });
+  constructor(private router: Router, private authService: NbAuthService) {
+    this.authService.logout('google');
+    this.authService.isAuthenticated()
+      .subscribe({
+        next: isAuthenticated => (this.isUserLoggedIn = isAuthenticated),
+        error: e => console.error(e)
+      })
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logout('google');
     this.router.navigate(['/']);
   }
 
