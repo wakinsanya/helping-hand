@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { USER_MODEL } from '../../constants';
+import { USER_MODEL } from '@api/constants';
 import { CreateUserDto, UpdateUserDto, User } from '@helping-hand/api-common';
-import { Observable, from } from 'rxjs';
-import { UserDocument } from '../interfaces/user-document.interface';
-import { map } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { UserDocument } from '@api/users/interfaces/user-document.interface';
+import { map, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +13,16 @@ export class UsersService {
   ) {}
 
   create(userDto: CreateUserDto): Observable<User> {
-    return from(this.userModel.create(userDto)).pipe(
+    return from(
+      this.userModel.findOne({ thirdPartyId: userDto.thirdPartyId })
+    ).pipe(
+      mergeMap((userDoc: UserDocument) => {
+        if (userDoc) {
+          return of(userDoc);
+        } else {
+          return from(this.userModel.create(userDto));
+        }
+      }),
       map((userDoc: UserDocument) => userDoc as User)
     );
   }

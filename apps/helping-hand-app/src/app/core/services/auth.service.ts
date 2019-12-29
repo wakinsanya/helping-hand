@@ -3,11 +3,13 @@ import { UserProvider, User } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { NbAuthService } from '@nebular/auth';
 
 @Injectable()
 export class AuthService {
   private _loggedInUser$: BehaviorSubject<User>;
   public loggedInUser$: Observable<User>;
+  public userProvider: UserProvider;
 
   public get loggedInUser(): User {
     return this._loggedInUser$.value;
@@ -21,6 +23,7 @@ export class AuthService {
   }
 
   login(provider: UserProvider) {
+    this.userProvider = provider;
     return this.getUserAuthRequest(provider).pipe(
       tap((user: User) => {
         localStorage.setItem('loggedInUser', JSON.stringify(user));
@@ -30,12 +33,9 @@ export class AuthService {
   }
 
   logout() {
+    this.userProvider = undefined;
     localStorage.removeItem('loggedInUser');
     this._loggedInUser$.next(null);
-  }
-
-  getUserAccessToken(): string {
-    return '';
   }
 
   private getUserAuthRequest(provider: UserProvider): Observable<User> {

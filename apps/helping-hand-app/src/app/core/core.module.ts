@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CustomOverlayService } from './services/custom-overlay.service';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { NbActionsModule, NbUserModule } from '@nebular/theme';
+import { NbActionsModule, NbUserModule, NbToastrModule } from '@nebular/theme';
 import { UserService } from './services/user.service';
 
 @NgModule({
@@ -16,7 +16,8 @@ import { UserService } from './services/user.service';
     FormsModule,
     NbEvaIconsModule,
     NbActionsModule,
-    NbUserModule
+    NbUserModule,
+    NbToastrModule
   ],
   providers: [AuthService, CustomOverlayService, UserService],
   exports: [HeaderComponent]

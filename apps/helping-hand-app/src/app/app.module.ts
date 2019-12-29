@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@helping-hand/core/core.module';
-import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbToastrModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from './app-routing.module';
 import {
@@ -29,21 +29,22 @@ import { AuthGuard } from '@helping-hand/core/helpers/auth.guard';
     NbThemeModule.forRoot({ name: 'helping-hand' }),
     NbLayoutModule,
     NbEvaIconsModule,
+    NbToastrModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
         NbOAuth2AuthStrategy.setup({
           name: UserProvider.GOOGLE,
           redirect: {
             success: '/dashboard',
-            failure: null,
+            failure: '/auth/login',
           },
           clientId:
-            '',
+            '692013025286-5jmca61f1mngnf4q64cr9r9k72pjdr5d.apps.googleusercontent.com',
           clientSecret: '',
           authorize: {
             endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
             responseType: NbOAuth2ResponseType.TOKEN,
-            scope: 'profile',
+            scope: 'email profile',
             redirectUri: 'http://localhost:4200/auth/oauth2/callback',
           }
         })

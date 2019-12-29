@@ -16,7 +16,8 @@ const routes: Routes = [
     path: 'settings',
     canActivate: [AuthGuard],
     loadChildren: './settings/settings.module#SettingsModule'
-  }
+  },
+  { path: '**', pathMatch: 'full', redirectTo: 'dashboard' }
 ];
 
 @NgModule({

@@ -2,10 +2,10 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { UserProvider } from '@helping-hand/api-common';
 import { AuthService } from '@helping-hand/core/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first, tap, catchError, takeWhile } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { first, tap, catchError, takeWhile, takeUntil } from 'rxjs/operators';
+import { throwError, Subject, of } from 'rxjs';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { NbAuthService, NbAuthResult } from '@nebular/auth';
+import { NbAuthService, NbAuthResult, NbAuthOAuth2Token } from '@nebular/auth';
 
 @Component({
   selector: 'helping-hand-login',
@@ -14,46 +14,44 @@ import { NbAuthService, NbAuthResult } from '@nebular/auth';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnDestroy {
-  private returnUrl: string;
-  isLoggingIn: boolean;
-  alive = true;
+  token: NbAuthOAuth2Token;
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
+    private userService: UserService,
     private authService: NbAuthService
   ) {
-    if (this.authService.isAuthenticated) {
-      this.router.navigate(['/dashboard']);
-    }
+    this.authService
+      .onTokenChange()
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((token: NbAuthOAuth2Token) => {
+          this.token = null;
+          if (token && token.isValid()) {
+            this.token = token;
+          }
+        })
+      )
+      .subscribe({
+        error: e => {
+          console.error(e);
+        }
+      });
   }
 
   login(provider: UserProvider) {
-    this.isLoggingIn = true;
-    this.authService.authenticate(provider)
-    .pipe(takeWhile(() => this.alive))
-    .subscribe((authResult: NbAuthResult) => {
-      if (authResult.isSuccess()) {
-        this.router.navigateByUrl('/dashboard');
-      }
-    });
-    // this.authService
-    //   .login(provider)
-    //   .pipe(
-    //     first(),
-    //     tap(() => (this.isLoggingIn = false)),
-    //     catchError(e => {
-    //       this.isLoggingIn = false;
-    //       return throwError(e);
-    //     })
-    //   )
-    //   .subscribe({
-    //     next: () => this.router.navigate([this.returnUrl]),
-    //     error: e => console.error(e)
-    //   });
+    this.authService
+      .authenticate(provider)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: e => {
+          console.error(e);
+        }
+      });
   }
 
   ngOnDestroy() {
-    this.alive = false;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

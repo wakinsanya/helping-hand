@@ -26,27 +26,28 @@ export class AuthService {
     provider: UserProvider,
     pictureUrl?: string
   ): Observable<string> {
-    return this.usersService.getByThirdPartyId(thirdPartyId).pipe(
-      mergeMap((user: User) => {
-        if (user) {
-          return of(user);
-        } else {
-          return this.usersService.create({
-            firstName,
-            lastName,
-            thirdPartyId,
-            provider,
-            pictureUrl
-          });
-        }
-      }),
-      mergeMap(() => {
-        const jwt: string = this.jwtService.sign({
-          thirdPartyId,
-          provider
-        });
-        return of(jwt);
-      })
-    );
+    // return this.usersService.getByThirdPartyId(thirdPartyId).pipe(
+    //   mergeMap((user: User) => {
+    //     if (user) {
+    //       return of(user);
+    //     } else {
+    //       return this.usersService.create({
+    //         firstName,
+    //         lastName,
+    //         thirdPartyId,
+    //         provider,
+    //         pictureUrl
+    //       });
+    //     }
+    //   }),
+    //   mergeMap(() => {
+    //     const jwt: string = this.jwtService.sign({
+    //       thirdPartyId,
+    //       provider
+    //     });
+    //     return of(jwt);
+    //   })
+    // );
+    return of('');
   }
 }

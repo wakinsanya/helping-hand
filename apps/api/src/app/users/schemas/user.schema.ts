@@ -2,6 +2,10 @@ import { Schema } from 'mongoose';
 import { UserProvider, UserRole } from '@helping-hand/api-common';
 
 export const UserSchema = new Schema({
+  email: {
+    type: Schema.Types.String,
+    required: 'user must have an email'
+  },
   firstName: {
     type: Schema.Types.String,
     required: 'user must have a first name'
