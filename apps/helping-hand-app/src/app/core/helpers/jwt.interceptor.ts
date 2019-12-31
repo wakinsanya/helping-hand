@@ -6,23 +6,21 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '@helping-hand/core/services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UserService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (
-      this.authService.loggedInUser &&
-      this.authService.loggedInUser.access_token
-    ) {
+    const loggedInUser = this.userService.loggedInUser;
+    if (loggedInUser && loggedInUser.access_token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.authService.loggedInUser.access_token}`
+          Authorization: `Bearer ${loggedInUser.access_token}`
         }
       });
     }

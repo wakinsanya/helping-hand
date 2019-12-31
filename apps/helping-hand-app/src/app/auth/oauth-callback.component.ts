@@ -1,14 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
-import { takeUntil, mergeMap, tap } from 'rxjs/operators';
 import { NbAuthService, NbAuthResult } from '@nebular/auth';
 import { Router } from '@angular/router';
-import { Subject, EMPTY, throwError, of } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
+import { takeUntil, mergeMap, tap } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { UserProvider, User } from '@helping-hand/api-common';
 
 @Component({
   selector: 'helping-hand-oauth2-callback',
-  templateUrl: './oauth-callback.component.html'
+  templateUrl: './oauth-callback.component.html',
+  styleUrls: ['./oauth-callback.component.scss'],
 })
 export class OAuth2CallbackComponent implements OnDestroy {
   private redirectUrl: string;
@@ -41,7 +42,9 @@ export class OAuth2CallbackComponent implements OnDestroy {
                     payload
                   );
                 }),
-                tap((user: User) => (this.userService.loggedInUser = user))
+                tap((user: User) => {
+                  this.userService.setLoggedInUser(user);
+                })
               );
           } else {
             return throwError(new Error('authentication failed'));

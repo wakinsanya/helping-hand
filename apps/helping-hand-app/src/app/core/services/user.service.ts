@@ -1,34 +1,43 @@
 import { Injectable } from '@angular/core';
 import { UserProvider, User, CreateUserDto } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
-import { Observable, EMPTY, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 @Injectable()
 export class UserService {
-  private _loggedInUserProvider: UserProvider;
-  private _loggedInUser: User;
+  private _loggedInUser$: BehaviorSubject<User>;
+  public loggedInUser$: Observable<User>;
+  public userProvider: UserProvider;
 
   public get loggedInUser(): User {
-    return this._loggedInUser;
+    return this._loggedInUser$.value;
   }
 
-  public set loggedInUser(user: User) {
-    this._loggedInUser = user;
+  constructor(private httpClient: HttpClient) {
+    this._loggedInUser$ = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('loggedInUser'))
+    );
+    this.loggedInUser$ = this._loggedInUser$.asObservable();
   }
 
-  public get loggedInUserProvider(): UserProvider {
-    return this._loggedInUserProvider;
+  setLoggedInUser(user: User) {
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    this._loggedInUser$.next(user);
   }
 
-  public set loggedInUserProvider(provider: UserProvider) {
-    this._loggedInUserProvider = provider;
+  removeLoggedInUser() {
+    localStorage.removeItem('loggedInUser');
+    this._loggedInUser$.next(null);
   }
-
-  constructor(private httpClient: HttpClient) {}
 
   createUser(provider: UserProvider, payload: any): Observable<User> {
     const userDto = this.getCreateUserDto(provider, payload);
     return this.httpClient.post<User>('/api/users', userDto);
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.httpClient.get<User[]>('/api/users');
   }
 
   private getCreateUserDto(
@@ -57,18 +66,10 @@ export class UserService {
     switch (provider) {
       case UserProvider.GOOGLE:
         return this.httpClient.get<any>(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`
+          `${environment.googlePayloadBaseUrl}?access_token=${access_token}`
         );
       default:
         throw new Error('unknown provider');
     }
-  }
-
-  setUserProvider(provider: UserProvider): Observable<any> {
-    return of({}).pipe(tap(() => (this.loggedInUserProvider = provider)));
-  }
-
-  getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>('/api/users');
   }
 }

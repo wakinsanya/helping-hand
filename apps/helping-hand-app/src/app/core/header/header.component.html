@@ -4,16 +4,19 @@
       Helping Hand
     </h4>
   </nb-action>
-  <nb-action *ngIf="userService.loggedInUser"
+  <nb-action *ngIf="loggedInUser"
     ><nb-user
       size="medium"
-      [name]="
-        loggedInUser ? loggedInUser.firstName + ' ' + loggedInUser.lastName : ''
-      "
+      [name]="loggedInUser.firstName"
       title="You"
-      picture="userService.loggedInUser?.pictureUrl"
+      picture="loggedInUser.pictureUrl"
       onlyPicture
     >
     </nb-user
   ></nb-action>
+  <nb-action *ngIf="loggedInUser">
+    <h4 (click)="logout()">
+      Log Out
+    </h4>
+  </nb-action>
 </nb-actions>

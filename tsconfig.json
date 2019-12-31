@@ -18,7 +18,8 @@
     "paths": {
       "@helping-hand/api-common": ["libs/api-common/src/index.ts"],
       "@helping-hand/*": ["apps/helping-hand-app/src/app/*"],
-      "@api/*": ["apps/api/src/app/*"]
+      "@api/*": ["apps/api/src/app/*"],
+      "@environments/*": ["apps/helping-hand-app/src/environments/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

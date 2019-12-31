@@ -10,8 +10,7 @@ import { NbAuthService, NbAuthResult, NbAuthOAuth2Token } from '@nebular/auth';
 @Component({
   selector: 'helping-hand-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnDestroy {
   token: NbAuthOAuth2Token;
@@ -28,6 +27,7 @@ export class LoginComponent implements OnDestroy {
         tap((token: NbAuthOAuth2Token) => {
           this.token = null;
           if (token && token.isValid()) {
+            console.log('Token resolved', token);
             this.token = token;
           }
         })

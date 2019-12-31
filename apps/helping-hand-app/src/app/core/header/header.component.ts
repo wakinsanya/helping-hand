@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { User } from '@helping-hand/api-common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { User, UserProvider } from '@helping-hand/api-common';
 import { Router } from '@angular/router';
-import { NbAuthService, NbAuthOAuth2Token } from '@nebular/auth';
+import { NbAuthService } from '@nebular/auth';
 import { NbToastrService } from '@nebular/theme';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '../services/user.service';
 
@@ -12,9 +12,8 @@ import { UserService } from '../services/user.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  type = 'default';
   isUserLoggedIn: boolean;
   loggedInUser: User;
 
@@ -22,22 +21,40 @@ export class HeaderComponent implements OnDestroy {
     private router: Router,
     private userService: UserService,
     private authService: NbAuthService,
-    private toasterService: NbToastrService
-  ) {
+    private toastrService: NbToastrService
+  ) {}
 
+  ngOnInit() {
+    this.userService.loggedInUser$.pipe(
+      takeUntil(this.destroy$),
+      tap((user: User) => {
+        this.loggedInUser = user;
+      })
+    ).subscribe({
+      error: e => console.error(e)
+    });
   }
 
   logout() {
     this.authService
-      .logout('google')
-      .pipe(tap(() => this.toasterService.info('Logged out')))
+      .logout(UserProvider.GOOGLE)
+      .pipe(
+        tap(() => {
+          this.userService.removeLoggedInUser();
+          this.toastrService.info('Logged out');
+        })
+      )
       .subscribe({
-        next: () => (this.userService.loggedInUser = undefined),
+        next: () => {
+          this.router.navigate(['/auth/login']);
+        },
         error: e => {
           console.error(e);
+          this.toastrService.warning(
+            'Something went wrong, please refresh the page'
+          );
         }
       });
-    this.router.navigate(['/']);
   }
 
   goHome() {
