@@ -5,6 +5,7 @@ export interface User {
   readonly firstName: string;
   readonly lastName: string;
   readonly profile: string;
+  readonly pictureUrl: string;
   readonly provider: UserProvider;
   readonly thirdPartyId: string;
   readonly role: UserRole;

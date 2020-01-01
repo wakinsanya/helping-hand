@@ -3,7 +3,7 @@ import { User, UserProvider } from '@helping-hand/api-common';
 import { Router } from '@angular/router';
 import { NbAuthService } from '@nebular/auth';
 import { NbToastrService } from '@nebular/theme';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '../services/user.service';
 
@@ -25,36 +25,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userService.loggedInUser$.pipe(
-      takeUntil(this.destroy$),
-      tap((user: User) => {
-        this.loggedInUser = user;
-      })
-    ).subscribe({
-      error: e => console.error(e)
-    });
-  }
-
-  logout() {
-    this.authService
-      .logout(UserProvider.GOOGLE)
+    this.userService.loggedInUser$
       .pipe(
-        tap(() => {
-          this.userService.removeLoggedInUser();
-          this.toastrService.info('Logged out');
+        takeUntil(this.destroy$),
+        tap((user: User) => {
+          this.loggedInUser = user;
         })
       )
       .subscribe({
-        next: () => {
-          this.router.navigate(['/auth/login']);
-        },
-        error: e => {
-          console.error(e);
-          this.toastrService.warning(
-            'Something went wrong, please refresh the page'
-          );
-        }
+        error: e => console.error(e)
       });
+  }
+
+  logout() {
+    this.userService.removeLoggedInUser();
+    this.authService.logout(UserProvider.GOOGLE).subscribe({
+      next: () => {
+        this.router.navigate(['/auth/login']);
+      },
+      error: e => {
+        console.error(e);
+        this.toastrService.warning(
+          'Something went wrong, please refresh the page'
+        );
+      }
+    });
   }
 
   goHome() {

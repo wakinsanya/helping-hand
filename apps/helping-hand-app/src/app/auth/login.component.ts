@@ -17,26 +17,9 @@ export class LoginComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private userService: UserService,
     private authService: NbAuthService
   ) {
-    this.authService
-      .onTokenChange()
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((token: NbAuthOAuth2Token) => {
-          this.token = null;
-          if (token && token.isValid()) {
-            console.log('Token resolved', token);
-            this.token = token;
-          }
-        })
-      )
-      .subscribe({
-        error: e => {
-          console.error(e);
-        }
-      });
+
   }
 
   login(provider: UserProvider) {

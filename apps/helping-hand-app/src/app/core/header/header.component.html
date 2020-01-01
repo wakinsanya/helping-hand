@@ -7,16 +7,14 @@
   <nb-action *ngIf="loggedInUser"
     ><nb-user
       size="medium"
-      [name]="loggedInUser.firstName"
-      title="You"
-      picture="loggedInUser.pictureUrl"
-      onlyPicture
+      [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
+      [picture]="loggedInUser.pictureUrl"
     >
     </nb-user
   ></nb-action>
   <nb-action *ngIf="loggedInUser">
-    <h4 (click)="logout()">
+    <span (click)="logout()" class="header__logout">
       Log Out
-    </h4>
+    </span>
   </nb-action>
 </nb-actions>

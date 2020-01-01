@@ -4,7 +4,7 @@ import { AppComponent } from '@helping-hand/app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@helping-hand/core/core.module';
-import { NbThemeModule, NbLayoutModule, NbToastrModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbToastrModule, NbDialogModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from '@helping-hand/app-routing.module';
 import {
@@ -32,6 +32,7 @@ import { environment } from '@environments/environment';
     NbLayoutModule,
     NbEvaIconsModule,
     NbToastrModule.forRoot(),
+    NbDialogModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
         NbOAuth2AuthStrategy.setup({

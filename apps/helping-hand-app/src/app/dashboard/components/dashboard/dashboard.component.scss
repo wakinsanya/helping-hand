@@ -2,3 +2,10 @@
   padding: 0;
   background-color: white;
 }
+
+.dashboard__profile-stepper__opts {
+  margin-top: 20px;
+  & > button {
+    margin-right: 20px;
+  }
+}

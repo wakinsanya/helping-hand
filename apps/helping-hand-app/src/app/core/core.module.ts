@@ -8,6 +8,7 @@ import { CustomOverlayService } from './services/custom-overlay.service';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbActionsModule, NbUserModule, NbToastrModule } from '@nebular/theme';
 import { UserService } from './services/user.service';
+import { ProfileService } from './services/profile.service';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -19,7 +20,7 @@ import { UserService } from './services/user.service';
     NbUserModule,
     NbToastrModule
   ],
-  providers: [AuthService, CustomOverlayService, UserService],
+  providers: [AuthService, CustomOverlayService, UserService, ProfileService],
   exports: [HeaderComponent]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
