@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserProvider, User, CreateUserDto } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { environment } from '@environments/environment';
+import { environment } from '@helping-hand-environments/environment';
 @Injectable()
 export class UserService {
   private _loggedInUser$: BehaviorSubject<User>;
