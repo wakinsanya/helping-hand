@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
-import { API_ROOT_PATH } from '../../constants';
-import { ConfigKeys } from '../../enums/config-keys.enum';
+import { API_ROOT_PATH } from '@api/constants';
+import { ConfigKeys } from '@api/enums/config-keys.enum';
+import * as path from 'path';
 
 export interface EnvConfig {
   [key: string]: string;
@@ -14,7 +15,9 @@ export class ConfigService {
   private readonly envConfig: { [key: string]: string };
 
   constructor(readonly filePath: string) {
-    const config = dotenv.parse(fs.readFileSync(`${API_ROOT_PATH}${filePath}`));
+    const config = dotenv.parse(
+      fs.readFileSync(`${path.resolve()}/apps/api/${filePath}`)
+    );
     this.envConfig = this.validateEnv(config);
   }
 
