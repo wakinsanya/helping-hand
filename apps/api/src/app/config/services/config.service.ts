@@ -2,10 +2,8 @@ import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
-import { API_ROOT_PATH } from '@api/constants';
 import { ConfigKeys } from '@api/enums/config-keys.enum';
 import * as path from 'path';
-
 export interface EnvConfig {
   [key: string]: string;
 }

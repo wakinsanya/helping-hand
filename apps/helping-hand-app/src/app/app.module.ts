@@ -17,7 +17,7 @@ import { AuthModule } from '@helping-hand/auth/auth.module';
 import { AuthGuard } from '@helping-hand/core/helpers/auth.guard';
 import { JwtInterceptor } from '@helping-hand/core/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
-import { environment } from '@environments/environment';
+import { environment } from '@helping-hand-environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
