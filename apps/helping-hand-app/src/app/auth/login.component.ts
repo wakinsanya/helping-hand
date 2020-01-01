@@ -22,9 +22,9 @@ export class LoginComponent implements OnDestroy {
 
   }
 
-  login(provider: UserProvider) {
+  login(provider: string) {
     this.authService
-      .authenticate(provider)
+      .authenticate(provider as UserProvider)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         error: e => {
