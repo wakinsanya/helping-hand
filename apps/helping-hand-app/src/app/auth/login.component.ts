@@ -1,11 +1,8 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UserProvider } from '@helping-hand/api-common';
-import { AuthService } from '@helping-hand/core/services/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { first, tap, catchError, takeWhile, takeUntil } from 'rxjs/operators';
-import { throwError, Subject, of } from 'rxjs';
-import { UserService } from '@helping-hand/core/services/user.service';
-import { NbAuthService, NbAuthResult, NbAuthOAuth2Token } from '@nebular/auth';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { NbAuthService, NbAuthOAuth2Token } from '@nebular/auth';
 
 @Component({
   selector: 'helping-hand-login',
@@ -16,11 +13,7 @@ export class LoginComponent implements OnDestroy {
   token: NbAuthOAuth2Token;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private authService: NbAuthService
-  ) {
-
-  }
+  constructor(private authService: NbAuthService) {}
 
   login(provider: string) {
     this.authService
