@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { PROFILE_MODEL } from '../../constants';
+import { PROFILE_MODEL } from '@api/constants';
 import {
   Profile,
   CreateProfileDto,
@@ -8,7 +8,7 @@ import {
 } from '@helping-hand/api-common';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ProfileDocument } from '../interfaces/profile-document.interface';
+import { ProfileDocument } from '@api/profile/interfaces/profile-document.interface';
 
 @Injectable()
 export class ProfileService {

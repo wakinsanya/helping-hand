@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import { DATABASE_CONNECTION, FAVOR_MODEL } from '../../constants';
+import { DATABASE_CONNECTION, FAVOR_MODEL } from '@api/constants';
 import { FavorSchema } from '@api/favor/schemas/favor.schema';
 import { FavorDocument } from '@api/favor/interfaces/favor-document.interface';
 

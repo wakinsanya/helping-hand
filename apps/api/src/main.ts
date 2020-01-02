@@ -12,9 +12,9 @@ async function bootstrap() {
   app.use(compression());
 
   const configService = app.get(ConfigService);
-  const port = configService.get(ConfigKeys.PORT);
-  await app.listen((process.env.PORT || port), () => {
-    console.log(`Helping Hand API started.`);
+  const port = (configService.get(ConfigKeys.PORT) || process.env.PORT) ;
+  await app.listen(port, () => {
+    console.log(`Helping Hand API listening on port: ${port}`);
   });
 }
 

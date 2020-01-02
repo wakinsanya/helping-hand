@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '@api/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './controllers/auth.controller';
-import { GoogleStrategy } from './strategies/google.strategy';
-import { ConfigModule } from '../config/config.module';
-import { ConfigService } from '../config/services/config.service';
-import { ConfigKeys } from '../enums/config-keys.enum';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { AuthController } from '@api/auth/controllers/auth.controller';
+import { GoogleStrategy } from '@api/auth/strategies/google.strategy';
+import { ConfigModule } from '@api/config/config.module';
+import { ConfigService } from '@api/config/services/config.service';
+import { ConfigKeys } from '@api/enums/config-keys.enum';
+import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
 
 @Module({
   imports: [

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
-import { FavorController } from './controllers/favor.controller';
-import { FavorService } from './services/favor.service';
-import { favorProviders } from './providers/favor.providers';
+import { DatabaseModule } from '@api/database/database.module';
+import { FavorController } from '@api/favor/controllers/favor.controller';
+import { FavorService } from '@api/favor/services/favor.service';
+import { favorProviders } from '@api/favor/providers/favor.providers';
 
 @Module({
   imports: [DatabaseModule],

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ProfileController } from './controllers/profile.controller';
-import { DatabaseModule } from '../database/database.module';
-import { ProfileService } from './services/profile.service';
-import { profileProviders } from './providers/profile.providers';
+import { ProfileController } from '@api/profile/controllers/profile.controller';
+import { DatabaseModule } from '@api/database/database.module';
+import { ProfileService } from '@api/profile/services/profile.service';
+import { profileProviders } from '@api/profile/providers/profile.providers';
 
 @Module({
   imports: [DatabaseModule],

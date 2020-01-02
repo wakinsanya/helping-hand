@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UsersService } from '../../users/services/users.service';
+import { UsersService } from '@api/users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserProvider, User } from '@helping-hand/api-common';
 import { Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
