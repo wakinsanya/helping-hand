@@ -20,6 +20,7 @@ export class UsersService {
         if (userDoc) {
           return of(userDoc);
         } else {
+          console.log('UserDto', userDto);
           return from(this.userModel.create(userDto));
         }
       }),
