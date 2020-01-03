@@ -14,14 +14,14 @@ import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
   imports: [
     UsersModule,
     ConfigModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get(ConfigKeys.JWT_SECRET_KEY)
-      }),
-      inject: [ConfigService]
-    })
+    // PassportModule.register({ defaultStrategy: 'jwt' }),
+    // JwtModule.registerAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     secret: configService.get(ConfigKeys.JWT_SECRET_KEY)
+    //   }),
+    //   inject: [ConfigService]
+    // })
   ],
   providers: [AuthService, JwtStrategy, GoogleStrategy],
   exports: [AuthService],
