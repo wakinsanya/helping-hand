@@ -34,7 +34,7 @@ export class UsersService {
   }
 
   updateById(_id: string, userDto: UpdateUserDto): Observable<User> {
-    return from(this.userModel.updateOne({ _id }, userDto, { new: true })).pipe(
+    return from(this.userModel.updateOne({ _id }, { $set: userDto })).pipe(
       map((userDoc: UserDocument) => userDoc as User)
     );
   }

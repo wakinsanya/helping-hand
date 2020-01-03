@@ -2,11 +2,12 @@
   <nb-layout-column class="dashboard__container">
     <h1>Your Dashboard</h1>
     <nb-tabset>
-      <nb-tab tabTitle="Favor Requests" tabIcon="globe-outline" responsive>
+      <nb-tab tabTitle="Make Favor Request" tabIcon="radio-outline" responsive>
+
       </nb-tab>
       <nb-tab
-        tabTitle="Make Favor Requests"
-        tabIcon="message-square-outline"
+        tabTitle="Favor Requests"
+        tabIcon="message-circle-outline"
         responsive
       >
       </nb-tab>
@@ -15,44 +16,19 @@
       <nb-tab tabTitle="Profile" tabIcon="person-outline" responsive> </nb-tab>
     </nb-tabset>
 
-    <ng-template #profileStepForm let-ref="dialogRef">
-      <nb-card>
+    <ng-template #welcomeCard let-ref="dialogRef">
+      <nb-card class="profile-setup-form__card" [nbSpinner]="isLoading">
+        <nb-card-header><h4>Welcome to Helping Hand</h4></nb-card-header>
         <nb-card-body>
-          <nb-stepper orientation="horizontal">
-            <nb-step label="Welcome">
-              <h4>Welcome to Helping Hand!</h4>
-              <p>
-                We just need some information, to help us better help you.
-              </p>
-              <div class="dashboard__profile-stepper__opts">
-                <button nbButton disabled nbStepperNext>prev</button>
-                <button nbButton nbStepperNext>next</button>
-              </div>
-            </nb-step>
-            <nb-step label="Profile">
-              <h4>Tell us a bit about yourself</h4>
-              <textarea
-                [(ngModel)]="bio"
-                nbInput
-                fullWidth
-                placeholder="studying at Columbia University..."
-                name="bio"
-              ></textarea>
-              <div class="dashboard__profile-stepper__opts">
-                <button nbButton nbStepperPrevious>prev</button>
-                <button nbButton nbStepperNext>next</button>
-              </div>
-            </nb-step>
-            <nb-step label="Done">
-              <h4>You're all set!</h4>
-              <p>Thanks for taking the time to say more about yourself.</p>
-              <div class="dashboard__profile-stepper__opts">
-                <button nbButton nbStepperPrevious>prev</button>
-                <button nbButton nbStepperNext (click)="createUserProfile(ref)">save</button>
-              </div>
-            </nb-step>
-          </nb-stepper>
+          <p>
+            Helping Hand helps you to get that little bit of
+            help when you need it and gives you a chance to help others out as
+            well.
+          </p>
         </nb-card-body>
+        <nb-card-footer>
+          <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
       </nb-card>
     </ng-template>
   </nb-layout-column>

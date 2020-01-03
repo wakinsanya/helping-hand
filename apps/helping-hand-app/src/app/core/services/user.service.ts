@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { UserProvider, User, CreateUserDto } from '@helping-hand/api-common';
+import { UserProvider, User, CreateUserDto, UpdateUserDto } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
@@ -51,8 +51,16 @@ export class UserService {
   }
 
   createUser(provider: UserProvider, payload: any): Observable<User> {
-    const userDto = this.getCreateUserDto(provider, payload);
+    const userDto: CreateUserDto = this.getCreateUserDto(provider, payload);
     return this.httpClient.post<User>('/api/users', userDto);
+  }
+
+  updateUser(userId: string, userDto: UpdateUserDto): Observable<User> {
+    return this.httpClient.patch<User>(`api/users/${userId}`, userDto);
+  }
+
+  getUserById(userId: string): Observable<User> {
+    return this.httpClient.get<User>(`api/users/${userId}`);
   }
 
   getUsers(): Observable<User[]> {

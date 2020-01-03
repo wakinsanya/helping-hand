@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UserProvider } from '@helping-hand/api-common';
-import { takeUntil, map, concatMap, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, mergeMap } from 'rxjs/operators';
 import { Subject, Subscription, of } from 'rxjs';
 import { NbAuthService, NbAuthOAuth2Token } from '@nebular/auth';
 import { UserService } from '@helping-hand/core/services/user.service';
@@ -23,15 +23,14 @@ export class LoginComponent implements OnDestroy {
   login(provider: string) {
     of(provider)
       .pipe(
+        takeUntil(this.destroy$),
         map(userProvider => userProvider as UserProvider),
-        concatMap(userProvider => {
+        mergeMap(userProvider => {
           this.userService.setUserProvider(userProvider);
           return of(userProvider);
         }),
-        concatMap(userProvider => {
-          return this.authService
-            .authenticate(this.userService.userProvider)
-            .pipe(takeUntil(this.destroy$));
+        mergeMap(() => {
+          return this.authService.authenticate(this.userService.userProvider);
         })
       )
       .subscribe({ error: e => console.error(e) });

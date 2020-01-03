@@ -9,7 +9,8 @@ import {
   NbTabsetModule,
   NbStepperModule,
   NbButtonModule,
-  NbInputModule
+  NbInputModule,
+  NbSpinnerModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     NbTabsetModule,
     NbStepperModule,
     NbButtonModule,
-    NbInputModule
+    NbInputModule,
+    NbSpinnerModule
   ]
 })
 export class DashboardModule {}

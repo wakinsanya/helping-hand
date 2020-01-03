@@ -30,7 +30,7 @@ export class ProfileService {
 
   updateById(_id: string, profileDto: UpdateProfileDto): Observable<Profile> {
     return from(
-      this.profileModel.updateOne({ _id }, profileDto, { new: true })
+      this.profileModel.updateOne({ _id }, { $set: profileDto }, { new: true })
     ).pipe(map((profileDoc: ProfileDocument) => profileDoc as Profile));
   }
 

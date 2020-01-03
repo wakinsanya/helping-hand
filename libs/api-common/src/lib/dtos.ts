@@ -13,6 +13,7 @@ export class CreateUserDto {
 export class UpdateUserDto {
   readonly firstName: string;
   readonly lastName: string;
+  readonly profile: string;
   readonly pictureUrl: string;
 }
 

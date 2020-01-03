@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User, UserProvider } from '@helping-hand/api-common';
 import { Router } from '@angular/router';
-import { NbAuthService } from '@nebular/auth';
+import { NbAuthService, NbAuthResult } from '@nebular/auth';
 import { NbToastrService } from '@nebular/theme';
-import { tap, takeUntil, delay } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { tap, takeUntil, delay, first } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -13,21 +13,19 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private loggedInUserSub$: Subscription;
   isUserLoggedIn: boolean;
   loggedInUser: User;
 
   constructor(
     private router: Router,
     private userService: UserService,
-    private authService: NbAuthService,
-    private toastrService: NbToastrService
+    private authService: NbAuthService
   ) {}
 
   ngOnInit() {
-    this.userService.loggedInUser$
+    this.loggedInUserSub$ = this.userService.loggedInUser$
       .pipe(
-        takeUntil(this.destroy$),
         tap((user: User) => {
           this.loggedInUser = user;
         })
@@ -38,18 +36,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.userService.removeLoggedInUser();
-    this.authService.logout(UserProvider.Google).subscribe({
-      next: () => {
-        this.router.navigate(['/auth/login']);
-      },
-      error: e => {
-        console.error(e);
-        this.toastrService.warning(
-          'Something went wrong, please refresh the page'
-        );
-      }
-    });
+    this.authService.logout(this.userService.userProvider)
+      .pipe(
+        first(),
+        tap(() => {
+          this.userService.removeLoggedInUser();
+          this.userService.removeUserProvider();
+        })
+      ).subscribe({
+        next: () =>  this.router.navigate(['/auth/login']),
+        error: e => console.error(e)
+      });
   }
 
   goHome() {
@@ -57,7 +54,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    if (this.loggedInUserSub$) {
+      this.loggedInUserSub$.unsubscribe();
+    }
   }
 }

@@ -4,10 +4,16 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Profile, User, CreateProfileDto } from '@helping-hand/api-common';
+import {
+  Profile,
+  User,
+  CreateProfileDto,
+  UpdateUserDto
+} from '@helping-hand/api-common';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { NbDialogService } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
+import { mergeMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'helping-hand-dashboard',
@@ -15,46 +21,47 @@ import { ProfileService } from '@helping-hand/core/services/profile.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements AfterViewInit {
-  bio: string;
-  @ViewChild('profileStepForm', { static: true }) profileStepForm: TemplateRef<
-    any
-  >;
+  isLoading = false;
+  @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
     private profileService: ProfileService,
-    private dialogService: NbDialogService,
-    private toastrService: NbToastrService
+    private dialogService: NbDialogService
   ) {}
 
   ngAfterViewInit() {
-    if (
-      this.userService.loggedInUser &&
-      !this.userService.loggedInUser.profile
-    ) {
-      this.startProfileCreation();
+    const loggedInUser = this.userService.loggedInUser;
+    console.log(loggedInUser);
+    if (loggedInUser && !loggedInUser.profile) {
+      this.isLoading = true;
+      this.dialogService.open(this.welcomeCard);
+      const profileDto: CreateProfileDto = {
+        owner: this.userService.loggedInUser._id,
+        bio: ''
+      };
+      this.profileService
+        .createProfile(profileDto)
+        .pipe(
+          mergeMap((profile: Profile) => {
+            return this.userService.updateUser(loggedInUser._id, {
+              profile: profile._id
+            } as UpdateUserDto);
+          }),
+          mergeMap(() => {
+            return this.userService.getUserById(loggedInUser._id);
+          }),
+          tap((user: User) => {
+            this.userService.setLoggedInUser(user);
+            this.isLoading = false;
+          })
+        )
+        .subscribe({
+          error: e => {
+            this.isLoading = false;
+            console.error(e);
+          }
+        });
     }
-  }
-
-  startProfileCreation() {
-    this.dialogService.open(this.profileStepForm);
-  }
-
-  createUserProfile() {
-    const profileDto: CreateProfileDto = {
-      owner: this.userService.loggedInUser._id,
-      bio: this.bio
-    };
-    this.profileService.createProfile(profileDto).subscribe({
-      next: () => {
-        this.toastrService.success('Profile saved');
-      },
-      error: e => {
-        console.error(e);
-        this.toastrService.info(
-          'We were unable to save your profile at this time'
-        );
-      }
-    });
   }
 }

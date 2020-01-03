@@ -20,9 +20,9 @@ export class UsersController {
     return this.usersService.create(userDto);
   }
 
-  @Get(':id')
-  get(@Param('id') id: string): Observable<User> {
-    return this.usersService.getById(id);
+  @Get(':userId')
+  get(@Param('userId') userId: string): Observable<User> {
+    return this.usersService.getById(userId);
   }
 
   @Get()
@@ -30,7 +30,7 @@ export class UsersController {
     return this.usersService.list();
   }
 
-  @Patch()
+  @Patch(':userId')
   update(
     @Param('userId') userId: string,
     @Body() userDto: UpdateUserDto
