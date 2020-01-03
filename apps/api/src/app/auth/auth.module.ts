@@ -23,7 +23,7 @@ import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
     //   inject: [ConfigService]
     // })
   ],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService],
   exports: [AuthService],
   controllers: [AuthController]
 })

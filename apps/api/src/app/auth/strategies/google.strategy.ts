@@ -17,39 +17,5 @@ export class GoogleStrategy extends PassportStrategy(
   Strategy,
   AuthStrategies.Google
 ) {
-  constructor(
-    protected readonly configService: ConfigService,
-    private readonly authService: AuthService
-  ) {
-    super({
-      clientID: configService.get(ConfigKeys.GOOGLE_CLIENT_ID),
-      clientSecret: configService.get(ConfigKeys.GOOGLE_CLIENT_SECRET),
-      callbackURL: configService.get(ConfigKeys.GOOGLE_CALLBACK_URL),
-      passReqToCallback: true,
-      scope: [GoogleOAuthScope.Profile]
-    });
-  }
 
-  validate(
-    _req: any,
-    _accessToken: string,
-    _refreshToken: string,
-    profile: Profile,
-    done: Function
-  ) {
-    let user: { jwt: string };
-    this.authService
-      .validateOAuthLogin(
-        profile.id,
-        profile.name.givenName,
-        profile.name.familyName,
-        UserProvider.Google,
-        profile.photos.length ? profile.photos[0].value : undefined
-      )
-      .pipe(tap((jwt: string) => (user = { jwt })))
-      .subscribe({
-        next: () => done(null, user),
-        error: e => done(e, false)
-      });
-  }
 }
