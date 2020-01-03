@@ -1,44 +1,44 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbAuthService, NbAuthResult } from '@nebular/auth';
 import { Router } from '@angular/router';
 import { Subject, throwError } from 'rxjs';
-import { takeUntil, mergeMap, tap } from 'rxjs/operators';
+import { takeUntil, tap, concatMap } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { UserProvider, User } from '@helping-hand/api-common';
+import { User } from '@helping-hand/api-common';
 
 @Component({
   selector: 'helping-hand-oauth2-callback',
   templateUrl: './oauth-callback.component.html',
-  styleUrls: ['./oauth-callback.component.scss'],
+  styleUrls: ['./oauth-callback.component.scss']
 })
-export class OAuth2CallbackComponent implements OnDestroy {
+export class OAuth2CallbackComponent implements OnInit, OnDestroy {
   private redirectUrl: string;
   private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
     private authService: NbAuthService,
-    private readonly userService: UserService
+    private userService: UserService
   ) {
     this.authService
-      .authenticate(UserProvider.GOOGLE)
+      .authenticate(this.userService.userProvider)
       .pipe(
         takeUntil(this.destroy$),
         tap((authResult: NbAuthResult) => {
           this.redirectUrl = authResult.getRedirect();
         }),
-        mergeMap((authResult: NbAuthResult) => {
+        concatMap((authResult: NbAuthResult) => {
           if (authResult.isSuccess() && this.redirectUrl) {
             const token = authResult.getToken();
             return this.userService
               .getUserPayload(
-                UserProvider.GOOGLE,
+                this.userService.userProvider,
                 token.getPayload().access_token
               )
               .pipe(
-                mergeMap((payload: any) => {
+                concatMap((payload: any) => {
                   return this.userService.createUser(
-                    UserProvider.GOOGLE,
+                    this.userService.userProvider,
                     payload
                   );
                 }),
@@ -58,6 +58,8 @@ export class OAuth2CallbackComponent implements OnDestroy {
         error: e => console.error(e)
       });
   }
+
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.destroy$.next();

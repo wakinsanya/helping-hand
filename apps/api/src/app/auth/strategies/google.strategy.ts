@@ -9,13 +9,13 @@ import { UserProvider } from '@helping-hand/api-common';
 import { tap } from 'rxjs/operators';
 
 enum GoogleOAuthScope {
-  PROFILE = 'profile'
+  Profile = 'profile'
 }
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
   Strategy,
-  AuthStrategies.GOOGLE
+  AuthStrategies.Google
 ) {
   constructor(
     protected readonly configService: ConfigService,
@@ -26,7 +26,7 @@ export class GoogleStrategy extends PassportStrategy(
       clientSecret: configService.get(ConfigKeys.GOOGLE_CLIENT_SECRET),
       callbackURL: configService.get(ConfigKeys.GOOGLE_CALLBACK_URL),
       passReqToCallback: true,
-      scope: [GoogleOAuthScope.PROFILE]
+      scope: [GoogleOAuthScope.Profile]
     });
   }
 
@@ -37,14 +37,13 @@ export class GoogleStrategy extends PassportStrategy(
     profile: Profile,
     done: Function
   ) {
-    console.log('GOOGLE STRAT');
     let user: { jwt: string };
     this.authService
       .validateOAuthLogin(
         profile.id,
         profile.name.givenName,
         profile.name.familyName,
-        UserProvider.GOOGLE,
+        UserProvider.Google,
         profile.photos.length ? profile.photos[0].value : undefined
       )
       .pipe(tap((jwt: string) => (user = { jwt })))

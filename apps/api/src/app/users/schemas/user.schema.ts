@@ -22,14 +22,14 @@ export const UserSchema = new Schema({
   },
   provider: {
     type: Schema.Types.String,
-    enum: [UserProvider.LOCAL, UserProvider.GOOGLE]
+    enum: [UserProvider.Local, UserProvider.Google]
   },
   pictureUrl: {
     type: Schema.Types.String
   },
   role: {
     type: Schema.Types.String,
-    enum: [UserRole.SUPERADMIN, UserRole.ADMIN, UserRole.USER],
-    default: UserRole.USER
+    enum: [UserRole.Superadmin, UserRole.Admin, UserRole.User],
+    default: UserRole.User
   }
 });

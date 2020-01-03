@@ -36,7 +36,7 @@ import { environment } from '@helping-hand-environments/environment';
     NbAuthModule.forRoot({
       strategies: [
         NbOAuth2AuthStrategy.setup({
-          name: UserProvider.GOOGLE,
+          name: UserProvider.Google,
           redirect: {
             success: '/dashboard',
             failure: '/auth/login'

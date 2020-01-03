@@ -1,10 +1,10 @@
 export enum UserProvider {
-  LOCAL = 'local',
-  GOOGLE = 'google'
+  Local = 'local',
+  Google = 'google'
 }
 
 export enum UserRole {
-  SUPERADMIN = 'superadmin',
-  ADMIN = 'admin',
-  USER = 'user'
+  Superadmin = 'superadmin',
+  Admin = 'admin',
+  User= 'user'
 }

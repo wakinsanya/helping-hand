@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.userService.removeLoggedInUser();
-    this.authService.logout(UserProvider.GOOGLE).subscribe({
+    this.authService.logout(UserProvider.Google).subscribe({
       next: () => {
         this.router.navigate(['/auth/login']);
       },

@@ -14,6 +14,10 @@ export class ProfileService {
     return this.httpClient.post<Profile>('api/profiles', profileDto);
   }
 
+  getProfile(profileId: string): Observable<Profile> {
+    return this.httpClient.get<Profile>(`api/profiles/${profileId}`);
+  }
+
   updateProfile(
     profileDto: UpdateProfileDto,
     profileId: string
@@ -22,5 +26,9 @@ export class ProfileService {
       `api/profiles/${profileId}`,
       profileDto
     );
+  }
+
+  deleteProfile(profileId: string): Observable<any> {
+    return this.httpClient.delete(`/api/profiles/${profileId}`);
   }
 }
