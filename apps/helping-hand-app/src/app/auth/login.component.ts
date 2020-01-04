@@ -12,7 +12,7 @@ import { UserService } from '@helping-hand/core/services/user.service';
 })
 export class LoginComponent implements OnDestroy {
   token: NbAuthOAuth2Token;
-  private destroy$ = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
   userProviderSub$: Subscription;
 
   constructor(
@@ -29,8 +29,8 @@ export class LoginComponent implements OnDestroy {
           this.userService.setUserProvider(userProvider);
           return of(userProvider);
         }),
-        mergeMap(() => {
-          return this.authService.authenticate(this.userService.userProvider);
+        mergeMap(userProvider => {
+          return this.authService.authenticate(userProvider);
         })
       )
       .subscribe({ error: e => console.error(e) });

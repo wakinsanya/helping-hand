@@ -13,9 +13,8 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private loggedInUserSub$: Subscription;
-  isUserLoggedIn: boolean;
   loggedInUser: User;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -24,27 +23,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loggedInUserSub$ = this.userService.loggedInUser$
+    this.userService.loggedInUser$
       .pipe(
+        takeUntil(this.destroy$),
         tap((user: User) => {
           this.loggedInUser = user;
         })
       )
-      .subscribe({
-        error: e => console.error(e)
-      });
+      .subscribe({ error: e => console.error(e) });
   }
 
   logout() {
-    this.authService.logout(this.userService.userProvider)
+    this.authService
+      .logout(this.userService.userProvider)
       .pipe(
-        first(),
         tap(() => {
           this.userService.removeLoggedInUser();
           this.userService.removeUserProvider();
         })
-      ).subscribe({
-        next: () =>  this.router.navigate(['/auth/login']),
+      )
+      .subscribe({
+        next: () => this.router.navigate(['/auth/login']),
         error: e => console.error(e)
       });
   }
@@ -54,8 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loggedInUserSub$) {
-      this.loggedInUserSub$.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

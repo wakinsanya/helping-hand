@@ -14,15 +14,15 @@ export class ProfileService {
     return this.httpClient.post<Profile>('api/profiles', profileDto);
   }
 
-  getProfile(profileId: string): Observable<Profile> {
+  getProfileById(profileId: string): Observable<Profile> {
     return this.httpClient.get<Profile>(`api/profiles/${profileId}`);
   }
 
   updateProfile(
-    profileDto: UpdateProfileDto,
-    profileId: string
-  ): Observable<Profile> {
-    return this.httpClient.patch<Profile>(
+    profileId: string,
+    profileDto: UpdateProfileDto
+  ): Observable<any> {
+    return this.httpClient.patch<any>(
       `api/profiles/${profileId}`,
       profileDto
     );

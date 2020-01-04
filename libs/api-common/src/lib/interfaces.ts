@@ -28,3 +28,22 @@ export interface Favor {
   readonly fufilledAt: Date;
   readonly fuffiledBy: string;
 }
+
+export interface PaginationQuery {
+  skip?: number;
+  limit?: number;
+}
+
+export interface FavorQuery extends PaginationQuery {
+ sort: boolean;
+ owners: string[];
+}
+
+export interface UserQuery extends PaginationQuery {
+  userIds?: string[];
+  sort: boolean;
+}
+
+export interface ProfileQuery extends PaginationQuery {
+  owners: string[];
+}

@@ -15,7 +15,7 @@ import {
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
 
-@Controller('favor')
+@Controller('favors')
 export class FavorController {
   constructor(private readonly favorService: FavorService) {}
 
@@ -24,9 +24,9 @@ export class FavorController {
     return this.favorService.create(favorDto);
   }
 
-  @Get(':id')
-  get(@Param('id') id: string): Observable<Favor> {
-    return this.favorService.getById(id);
+  @Get(':favorId')
+  get(@Param('favorId') favorId: string): Observable<Favor> {
+    return this.favorService.getById(favorId);
   }
 
   @Get()
@@ -43,7 +43,7 @@ export class FavorController {
   }
 
   @Delete(':favorId')
-  delete(@Param('favorId') userId: string): Observable<any> {
-    return this.favorService.delete(userId);
+  delete(@Param('favorId') favorId: string): Observable<any> {
+    return this.favorService.delete(favorId);
   }
 }

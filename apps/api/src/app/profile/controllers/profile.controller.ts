@@ -24,9 +24,9 @@ export class ProfileController {
     return this.profileService.create(profileDto);
   }
 
-  @Get(':id')
-  get(@Param('id') id: string): Observable<Profile> {
-    return this.profileService.getById(id);
+  @Get(':profileId')
+  get(@Param('profileId') profileId: string): Observable<Profile> {
+    return this.profileService.getById(profileId);
   }
 
   @Get()
@@ -34,7 +34,7 @@ export class ProfileController {
     return this.profileService.list();
   }
 
-  @Patch()
+  @Patch(':profileId')
   update(
     @Param('profileId') profileId: string,
     @Body() profileDto: UpdateProfileDto
@@ -43,7 +43,7 @@ export class ProfileController {
   }
 
   @Delete(':profileId')
-  delete(@Param('profileId') userId: string): Observable<any> {
-    return this.profileService.delete(userId);
+  delete(@Param('profileId') profileId: string): Observable<any> {
+    return this.profileService.delete(profileId);
   }
 }

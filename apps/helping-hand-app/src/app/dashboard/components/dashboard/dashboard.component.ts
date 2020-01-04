@@ -32,7 +32,6 @@ export class DashboardComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const loggedInUser = this.userService.loggedInUser;
-    console.log(loggedInUser);
     if (loggedInUser && !loggedInUser.profile) {
       this.isLoading = true;
       this.dialogService.open(this.welcomeCard);

@@ -1,19 +1,23 @@
 <nb-layout>
   <nb-layout-column class="dashboard__container">
     <h1>Your Dashboard</h1>
-    <nb-tabset>
+    <nb-tabset fullWidth>
       <nb-tab tabTitle="Make Favor Request" tabIcon="radio-outline" responsive>
-
+        <helping-hand-favor-list></helping-hand-favor-list>
       </nb-tab>
       <nb-tab
         tabTitle="Favor Requests"
         tabIcon="message-circle-outline"
         responsive
       >
+      <helping-hand-favor-request-list></helping-hand-favor-request-list>
       </nb-tab>
       <nb-tab tabTitle="Community" tabIcon="people-outline" responsive>
+        <helping-hand-community></helping-hand-community>
       </nb-tab>
-      <nb-tab tabTitle="Profile" tabIcon="person-outline" responsive> </nb-tab>
+      <nb-tab tabTitle="Profile" tabIcon="person-outline" responsive>
+        <helping-hand-profile></helping-hand-profile>
+      </nb-tab>
     </nb-tabset>
 
     <ng-template #welcomeCard let-ref="dialogRef">

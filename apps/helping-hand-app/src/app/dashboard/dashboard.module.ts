@@ -10,12 +10,25 @@ import {
   NbStepperModule,
   NbButtonModule,
   NbInputModule,
-  NbSpinnerModule
+  NbSpinnerModule,
+  NbUserModule,
+  NbToastrModule,
+  NbListModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
+import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
+import { FavorListComponent } from './components/favor-list/favor-list.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { CommunityComponent } from './components/community/community.component';
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [
+    DashboardComponent,
+    FavorRequestListComponent,
+    FavorListComponent,
+    ProfileComponent,
+    CommunityComponent
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -27,7 +40,10 @@ import { FormsModule } from '@angular/forms';
     NbStepperModule,
     NbButtonModule,
     NbInputModule,
-    NbSpinnerModule
+    NbSpinnerModule,
+    NbUserModule,
+    NbToastrModule,
+    NbListModule
   ]
 })
 export class DashboardModule {}

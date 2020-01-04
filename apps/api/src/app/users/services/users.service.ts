@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { USER_MODEL } from '@api/constants';
-import { CreateUserDto, UpdateUserDto, User } from '@helping-hand/api-common';
+import { CreateUserDto, UpdateUserDto, User, UserQuery } from '@helping-hand/api-common';
 import { Observable, from, of } from 'rxjs';
 import { UserDocument } from '@api/users/interfaces/user-document.interface';
 import { map, mergeMap } from 'rxjs/operators';
@@ -20,7 +20,6 @@ export class UsersService {
         if (userDoc) {
           return of(userDoc);
         } else {
-          console.log('UserDto', userDto);
           return from(this.userModel.create(userDto));
         }
       }),

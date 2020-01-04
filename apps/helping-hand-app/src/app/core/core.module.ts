@@ -10,6 +10,7 @@ import { NbActionsModule, NbUserModule, NbToastrModule } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
 import { EventBusService } from './services/event-bus.service';
+import { FavorService } from './services/favor.service';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -26,6 +27,7 @@ import { EventBusService } from './services/event-bus.service';
     CustomOverlayService,
     UserService,
     ProfileService,
+    FavorService,
     EventBusService
   ],
   exports: [HeaderComponent]
