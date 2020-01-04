@@ -1,10 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FavorQuery, User, Favor, Profile } from '@helping-hand/api-common';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
+} from '@angular/core';
+import { FavorQuery, User, Favor } from '@helping-hand/api-common';
 import { Subject } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { takeUntil, tap, map, mergeMap } from 'rxjs/operators';
-import { NbAuthService } from '@nebular/auth';
+import { NbSidebarService } from '@nebular/theme';
 
 @Component({
   selector: 'helping-hand-favor-list',
@@ -17,8 +24,9 @@ export class FavorListComponent implements OnInit, OnDestroy {
   favorList: Favor[] = [];
   private destroy$: Subject<void> = new Subject<void>();
 
+
   constructor(
-    private authService: NbAuthService,
+    private sidebarService: NbSidebarService,
     private favorService: FavorService,
     private userService: UserService
   ) {}
@@ -34,7 +42,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
             sort: true,
             skip: 0,
             limit: 10
-          }
+          };
         }),
         mergeMap(() => this.favorService.getFavors(this.favorQuery)),
         tap((favors: Favor[]) => {

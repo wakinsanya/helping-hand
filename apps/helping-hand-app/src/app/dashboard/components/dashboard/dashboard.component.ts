@@ -7,8 +7,7 @@ import {
 import {
   Profile,
   User,
-  CreateProfileDto,
-  UpdateUserDto
+  CreateProfileDto
 } from '@helping-hand/api-common';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbDialogService } from '@nebular/theme';
@@ -45,7 +44,7 @@ export class DashboardComponent implements AfterViewInit {
           mergeMap((profile: Profile) => {
             return this.userService.updateUser(loggedInUser._id, {
               profile: profile._id
-            } as UpdateUserDto);
+            });
           }),
           mergeMap(() => {
             return this.userService.getUserById(loggedInUser._id);

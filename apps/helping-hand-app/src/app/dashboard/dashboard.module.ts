@@ -43,7 +43,8 @@ import { CommunityComponent } from './components/community/community.component';
     NbSpinnerModule,
     NbUserModule,
     NbToastrModule,
-    NbListModule
+    NbListModule,
+    NbSidebarModule
   ]
 })
 export class DashboardModule {}
