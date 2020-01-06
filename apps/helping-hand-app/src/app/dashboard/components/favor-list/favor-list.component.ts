@@ -6,10 +6,10 @@ import {
   CreateFavorDto,
   UpdateFavorDto
 } from '@helping-hand/api-common';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { takeUntil, tap, mergeMap } from 'rxjs/operators';
+import { takeUntil, tap, mergeMap, catchError } from 'rxjs/operators';
 import {
   NbWindowService,
   NbDateService,
@@ -86,9 +86,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
           tap(() => {
             this.favorFormWindowRef$.close();
             this.resetNewFavorBody();
-            this.toastrService.success(
-              'Your favour request has been created.'
-            );
+            this.toastrService.success('Your favour request has been created.');
           }),
           mergeMap(() => {
             return this.favorService.getFavors(this.favorQuery);
@@ -104,6 +102,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
   }
 
   openFavorEditWindow(favorForm: TemplateRef<any>, favorIndex: number) {
+    this.resetNewFavorBody();
     this.favorBody = {
       title: this.favorList[favorIndex].title,
       text: this.favorList[favorIndex].text,
@@ -113,18 +112,38 @@ export class FavorListComponent implements OnInit, OnDestroy {
   }
 
   deleteFavor(favorIndex: number) {
-    this.favorService.deleteFavor(this.favorList[favorIndex]._id)
+    this.favorService
+      .deleteFavor(this.favorList[favorIndex]._id)
       .pipe(
         tap(() => {
-          this.toastrService.success('Your favour request has been deleted.')
+          this.toastrService.success('Your favour request has been deleted.');
+        }),
+        catchError(e => {
+          this.toastrService.danger(
+            'Something went wrong when deleting your favour request, please try again!'
+          );
+          return throwError(e);
         })
       )
+      .subscribe({ error: e => console.error(e) });
   }
 
-  updateFavor() {
-    const favorDto: UpdateFavorDto = {
-
-    }
+  updateFavor(favorIndex: number) {
+    this.favorService
+      .updateFavor(this.favorList[favorIndex]._id, this
+        .favorBody as UpdateFavorDto)
+      .pipe(
+        tap((updatedFavor: Favor) => {
+          this.toastrService.success('Your favour request has been updated.');
+          this.favorList[favorIndex] = updatedFavor;
+        }),
+        catchError(e => {
+          this.toastrService.danger(
+            'Something went wrong when updating your favour request, please try again!'
+          );
+          return throwError(e);
+        })
+      ).subscribe({ error: e => console.error(e) });
   }
 
   getMoreFavors() {
