@@ -7,7 +7,7 @@
         openFavorFormWindow(favorForm, 'What kind of help are you looking for?')
       "
     >
-      <nb-icon icon="plus-outline"></nb-icon>Ask for help
+      <nb-icon icon="plus-outline"></nb-icon>Ask for a Favour
     </button>
   </div>
   <ng-container
@@ -16,11 +16,11 @@
     "
   ></ng-container>
   <ng-template #noFavorListTemplate>
-    <h4 class="favor_list__no-favors-placeholder">No Favors Asked Yet</h4>
+    <h4 class="favor_list__no-favors-placeholder">No Favours Asked Yet</h4>
   </ng-template>
   <ng-template #favorListTemplate>
-    <h4>Help Requests by You</h4>
-    <nb-accordion multi="true">
+    <h4>Favour Requests by You</h4>
+    <nb-accordion multi="true" status="primary">
       <nb-accordion-item *ngFor="let favor of favorList; let i = index">
         <nb-accordion-item-header>
           {{ favor.title }}
@@ -65,7 +65,7 @@
         fullWidth
         placeholder="Add some more information here if you wish"
       ></textarea>
-      <label for="helpDate">Help Deadline:</label>
+      <label for="helpDate">Favour Request Expiry Date</label>
       <input
         [(ngModel)]="favorBody.deadline"
         name="helpDate"
@@ -83,7 +83,7 @@
         >
       </div>
       <button nbButton fullWidth (click)="createFavor()">
-        Create Help Request
+        Make Favor Request
       </button>
     </div>
   </ng-template>

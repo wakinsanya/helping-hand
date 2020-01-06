@@ -98,7 +98,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         .subscribe({ error: e => console.error(e) });
     } else {
       this.toastrService.warning(
-        'Please enter at minimum a title and deadline for your help request.'
+        'Please enter at minimum a title and deadline for your favour request.'
       );
     }
   }
@@ -109,7 +109,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
       text: this.favorList[favorIndex].text,
       deadline: this.favorList[favorIndex].deadline
     };
-    this.openFavorFormWindow(favorForm, 'Edit your help request');
+    this.openFavorFormWindow(favorForm, 'Edit your favor request');
   }
 
   deleteFavor() {}
