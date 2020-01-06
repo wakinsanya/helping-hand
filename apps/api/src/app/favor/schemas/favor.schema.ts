@@ -20,6 +20,9 @@ export const FavorSchema = new Schema({
     type: Schema.Types.Boolean,
     default: false
   },
+  deadline: {
+    type: Schema.Types.Date
+  },
   fufilledAt: {
     type: Schema.Types.Date
   },

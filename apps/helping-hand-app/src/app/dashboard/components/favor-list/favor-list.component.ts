@@ -1,17 +1,26 @@
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  AfterViewInit
-} from '@angular/core';
-import { FavorQuery, User, Favor } from '@helping-hand/api-common';
+  FavorQuery,
+  User,
+  Favor,
+  CreateFavorDto
+} from '@helping-hand/api-common';
 import { Subject } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { takeUntil, tap, map, mergeMap } from 'rxjs/operators';
-import { NbSidebarService } from '@nebular/theme';
+import { takeUntil, tap, mergeMap } from 'rxjs/operators';
+import {
+  NbWindowService,
+  NbDateService,
+  NbWindowRef,
+  NbToastrService
+} from '@nebular/theme';
+
+interface FavorBody {
+  title: string;
+  text: string;
+  deadline?: Date;
+}
 
 @Component({
   selector: 'helping-hand-favor-list',
@@ -19,16 +28,23 @@ import { NbSidebarService } from '@nebular/theme';
   styleUrls: ['./favor-list.component.scss']
 })
 export class FavorListComponent implements OnInit, OnDestroy {
+  newFavorBody: FavorBody = {
+    title: '',
+    text: ''
+  };
+  createFavorWindowRef$: NbWindowRef;
+  today: Date;
   favorQuery: FavorQuery;
   loggedInUser: User;
   favorList: Favor[] = [];
   private destroy$: Subject<void> = new Subject<void>();
 
-
   constructor(
-    private sidebarService: NbSidebarService,
     private favorService: FavorService,
-    private userService: UserService
+    private userService: UserService,
+    private windowService: NbWindowService,
+    private dateService: NbDateService<Date>,
+    private toastrService: NbToastrService
   ) {}
 
   ngOnInit() {
@@ -50,9 +66,42 @@ export class FavorListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({ error: e => console.error(e) });
+    this.today = this.dateService.addMonth(this.dateService.today(), 0);
   }
 
-  createFaor() {}
+  openFavorCreationWindow(favorCreationForm: TemplateRef<any>) {
+    this.createFavorWindowRef$ = this.windowService.open(favorCreationForm);
+  }
+
+  createFavor() {
+    if (this.newFavorBody.title && this.newFavorBody.deadline) {
+      const favorDto: CreateFavorDto = {
+        owner: this.loggedInUser._id,
+        title: this.newFavorBody.title,
+        text: this.newFavorBody.text,
+        deadline: this.newFavorBody.deadline
+      };
+      this.favorService
+        .createFavor(favorDto)
+        .pipe(
+          tap(() => {
+            this.createFavorWindowRef$.close();
+            this.toastrService.success(
+              'Your request for help has been created.'
+            );
+          }),
+          mergeMap(() => {
+            return this.favorService.getFavors(this.favorQuery);
+          }),
+          tap((favorList: Favor[]) => (this.favorList = favorList))
+        )
+        .subscribe({ error: e => console.error(e) });
+    } else {
+      this.toastrService.warning(
+        'Please enter at minimum a title and deadline for your help request.'
+      );
+    }
+  }
 
   deleteFavor() {}
 

@@ -13,7 +13,11 @@ import {
   NbSpinnerModule,
   NbUserModule,
   NbToastrModule,
-  NbListModule
+  NbListModule,
+  NbAccordionModule,
+  NbIconModule,
+  NbWindowModule,
+  NbDatepickerModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -44,7 +48,11 @@ import { CommunityComponent } from './components/community/community.component';
     NbUserModule,
     NbToastrModule,
     NbListModule,
-    NbSidebarModule
+    NbSidebarModule,
+    NbAccordionModule,
+    NbIconModule,
+    NbDatepickerModule,
+    NbWindowModule.forChild()
   ]
 })
 export class DashboardModule {}

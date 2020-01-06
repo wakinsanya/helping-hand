@@ -1,5 +1,71 @@
-<!-- <nb-layout>
-  <nb-sidebar>Sidebar Content</nb-sidebar>
+<div class="favor-list__container">
+  <div class="favor-list__new-favor__wrap">
+    <button
+      nbButton
+      fullWidth
+      (click)="openFavorCreationWindow(createFavorForm)"
+    >
+      <nb-icon icon="plus-outline"></nb-icon>Ask for help
+    </button>
+  </div>
+  <ng-container
+    *ngTemplateOutlet="favorList.length ? favorList : noFavorListTemplate"
+  ></ng-container>
+  <ng-template #noFavorListTemplate>
+    <h4 class="favor_list__no-favors-placeholder">No Favors Asked Yet</h4>
+  </ng-template>
+  <ng-template #favorListTemplate>
+    <nb-accordion>
+      <nb-accordion-item *ngFor="let favor of favorList">
+        <nb-accordion-item-header>
+          {{ favor.title }}
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          {{ favor.text }}
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  </ng-template>
 
-  <nb-layout-column class="colored-column-success">Layout Content</nb-layout-column>
-</nb-layout> -->
+  <ng-template #createFavorForm>
+    <div class="create-favor-form__container">
+      <h4>What kind of help are you looking for?</h4>
+      <label for="favorTitle">Title:</label>
+      <input
+        [(ngModel)]="newFavorBody.title"
+        name="favorTitle"
+        type="text"
+        nbInput
+        fullWidth
+        placeholder="Short title describing what you need e.g Bike Pump Needed at UCD!"
+      />
+      <label for="description">Description:</label>
+      <textarea
+        [(ngModel)]="newFavorBody.text"
+        name="description"
+        nbInput
+        fullWidth
+        placeholder="Add some more information here if you wish"
+      ></textarea>
+      <label for="helpDate">Help Deadline:</label>
+      <input
+        name="helpDate"
+        nbInput
+        fullWidth
+        placeholder="When do you need help by?"
+        [nbDatepicker]="picker"
+      />
+      <nb-datepicker #picker [min]="today"></nb-datepicker>
+      <button nbButton outline fullWidth>Add A Picture</button>
+      <div class="create-favor-form__tip__wrap">
+        <span
+          >Tip: adding a picture can help people know exactly what you're
+          looking for!</span
+        >
+      </div>
+      <button nbButton fullWidth (click)="createFavor()">
+        Create Help Request
+      </button>
+    </div>
+  </ng-template>
+</div>

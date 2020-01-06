@@ -1,4 +1,29 @@
-.favor-list__map {
-  height: 600px;
-  width: 100%;
+.favor-list__new-favor__wrap {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-favor-form__container {
+  & > input, textarea, button {
+    margin-bottom: 20px;
+  }
+
+  & > label {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+}
+
+.create-favor-form__tip__wrap {
+  & > span {
+    opacity: .6;
+    font-style: italic;
+  }
+  margin-bottom: 20px;
+}
+
+.favor_list__no-favors-placeholder {
+  opacity: .6;
 }

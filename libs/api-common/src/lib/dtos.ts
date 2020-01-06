@@ -29,6 +29,7 @@ export class UpdateProfileDto {
 export class CreateFavorDto {
   readonly owner: string;
   readonly title: string;
+  readonly deadline: Date;
   readonly text?: string;
   readonly media?: string;
 }
