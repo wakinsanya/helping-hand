@@ -87,7 +87,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
             this.favorFormWindowRef$.close();
             this.resetNewFavorBody();
             this.toastrService.success(
-              'Your request for help has been created.'
+              'Your favour request has been created.'
             );
           }),
           mergeMap(() => {
@@ -112,7 +112,14 @@ export class FavorListComponent implements OnInit, OnDestroy {
     this.openFavorFormWindow(favorForm, 'Edit your favor request');
   }
 
-  deleteFavor() {}
+  deleteFavor(favorIndex: number) {
+    this.favorService.deleteFavor(this.favorList[favorIndex]._id)
+      .pipe(
+        tap(() => {
+          this.toastrService.success('Your favour request has been deleted.')
+        })
+      )
+  }
 
   updateFavor() {
     const favorDto: UpdateFavorDto = {
