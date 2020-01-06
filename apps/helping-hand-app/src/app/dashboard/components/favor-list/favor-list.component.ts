@@ -3,7 +3,8 @@ import {
   FavorQuery,
   User,
   Favor,
-  CreateFavorDto
+  CreateFavorDto,
+  UpdateFavorDto
 } from '@helping-hand/api-common';
 import { Subject } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
@@ -28,11 +29,12 @@ interface FavorBody {
   styleUrls: ['./favor-list.component.scss']
 })
 export class FavorListComponent implements OnInit, OnDestroy {
-  newFavorBody: FavorBody = {
+  favorBody: FavorBody = {
     title: '',
-    text: ''
+    text: '',
+    deadline: new Date()
   };
-  createFavorWindowRef$: NbWindowRef;
+  favorFormWindowRef$: NbWindowRef;
   today: Date;
   favorQuery: FavorQuery;
   loggedInUser: User;
@@ -62,6 +64,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         }),
         mergeMap(() => this.favorService.getFavors(this.favorQuery)),
         tap((favors: Favor[]) => {
+          console.log(favors);
           this.favorList = favors;
         })
       )
@@ -69,23 +72,20 @@ export class FavorListComponent implements OnInit, OnDestroy {
     this.today = this.dateService.addMonth(this.dateService.today(), 0);
   }
 
-  openFavorCreationWindow(favorCreationForm: TemplateRef<any>) {
-    this.createFavorWindowRef$ = this.windowService.open(favorCreationForm);
-  }
-
   createFavor() {
-    if (this.newFavorBody.title && this.newFavorBody.deadline) {
+    if (this.favorBody.title && this.favorBody.deadline) {
       const favorDto: CreateFavorDto = {
         owner: this.loggedInUser._id,
-        title: this.newFavorBody.title,
-        text: this.newFavorBody.text,
-        deadline: this.newFavorBody.deadline
+        title: this.favorBody.title,
+        text: this.favorBody.text,
+        deadline: this.favorBody.deadline
       };
       this.favorService
         .createFavor(favorDto)
         .pipe(
           tap(() => {
-            this.createFavorWindowRef$.close();
+            this.favorFormWindowRef$.close();
+            this.resetNewFavorBody();
             this.toastrService.success(
               'Your request for help has been created.'
             );
@@ -103,12 +103,39 @@ export class FavorListComponent implements OnInit, OnDestroy {
     }
   }
 
+  openFavorEditWindow(favorForm: TemplateRef<any>, favorIndex: number) {
+    this.favorBody = {
+      title: this.favorList[favorIndex].title,
+      text: this.favorList[favorIndex].text,
+      deadline: this.favorList[favorIndex].deadline
+    };
+    this.openFavorFormWindow(favorForm, 'Edit your help request');
+  }
+
   deleteFavor() {}
 
-  updateFavor() {}
+  updateFavor() {
+    const favorDto: UpdateFavorDto = {
+
+    }
+  }
 
   getMoreFavors() {
     //infinite list trigger query
+  }
+
+  resetNewFavorBody() {
+    this.favorBody = {
+      title: '',
+      text: '',
+      deadline: new Date()
+    };
+  }
+
+  openFavorFormWindow(favorForm: TemplateRef<any>, title: string) {
+    this.favorFormWindowRef$ = this.windowService.open(favorForm, {
+      title
+    });
   }
 
   ngOnDestroy() {

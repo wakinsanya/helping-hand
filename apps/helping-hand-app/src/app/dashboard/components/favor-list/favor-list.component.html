@@ -3,36 +3,54 @@
     <button
       nbButton
       fullWidth
-      (click)="openFavorCreationWindow(createFavorForm)"
+      (click)="
+        openFavorFormWindow(favorForm, 'What kind of help are you looking for?')
+      "
     >
       <nb-icon icon="plus-outline"></nb-icon>Ask for help
     </button>
   </div>
   <ng-container
-    *ngTemplateOutlet="favorList.length ? favorList : noFavorListTemplate"
+    *ngTemplateOutlet="
+      favorList.length ? favorListTemplate : noFavorListTemplate
+    "
   ></ng-container>
   <ng-template #noFavorListTemplate>
     <h4 class="favor_list__no-favors-placeholder">No Favors Asked Yet</h4>
   </ng-template>
   <ng-template #favorListTemplate>
-    <nb-accordion>
-      <nb-accordion-item *ngFor="let favor of favorList">
+    <h4>Help Requests by You</h4>
+    <nb-accordion multi="true">
+      <nb-accordion-item *ngFor="let favor of favorList; let i = index">
         <nb-accordion-item-header>
           {{ favor.title }}
         </nb-accordion-item-header>
         <nb-accordion-item-body>
-          {{ favor.text }}
+          <p>Description: {{ favor.text ? favor.text : 'None' }}</p>
+          <p>Fufilled: {{ favor.isFufilled ? 'Yes' : 'No' }}</p>
+          <p>Deadline: {{ favor.deadline }}</p>
+          <div class="favor-list__favor-opts">
+            <button
+              nbButton
+              outline
+              (click)="openFavorEditWindow(favorForm, i)"
+            >
+              <nb-icon icon="edit-outline"></nb-icon>Edit
+            </button>
+            <button nbButton outline status="danger">
+              <nb-icon icon="trash-2-outline"></nb-icon>Delete
+            </button>
+          </div>
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>
   </ng-template>
 
-  <ng-template #createFavorForm>
+  <ng-template #favorForm let-heading="heading">
     <div class="create-favor-form__container">
-      <h4>What kind of help are you looking for?</h4>
       <label for="favorTitle">Title:</label>
       <input
-        [(ngModel)]="newFavorBody.title"
+        [(ngModel)]="favorBody.title"
         name="favorTitle"
         type="text"
         nbInput
@@ -41,7 +59,7 @@
       />
       <label for="description">Description:</label>
       <textarea
-        [(ngModel)]="newFavorBody.text"
+        [(ngModel)]="favorBody.text"
         name="description"
         nbInput
         fullWidth
@@ -49,13 +67,14 @@
       ></textarea>
       <label for="helpDate">Help Deadline:</label>
       <input
+        [(ngModel)]="favorBody.deadline"
         name="helpDate"
         nbInput
         fullWidth
         placeholder="When do you need help by?"
-        [nbDatepicker]="picker"
+        [nbDatepicker]="datePicker"
       />
-      <nb-datepicker #picker [min]="today"></nb-datepicker>
+      <nb-datepicker #datePicker [min]="today"></nb-datepicker>
       <button nbButton outline fullWidth>Add A Picture</button>
       <div class="create-favor-form__tip__wrap">
         <span

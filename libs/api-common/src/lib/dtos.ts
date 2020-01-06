@@ -37,6 +37,7 @@ export class CreateFavorDto {
 export class UpdateFavorDto {
   readonly title?: string;
   readonly text?: string;
+  readonly deadline?: Date;
   readonly media?: string;
   readonly isFufilled?: boolean;
   readonly fufilledAt?: Date;

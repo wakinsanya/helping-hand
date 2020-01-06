@@ -23,6 +23,7 @@ export interface Favor {
   readonly owner: string;
   readonly title: string;
   readonly text: string;
+  readonly deadline: Date;
   readonly media: string;
   readonly isFufilled: boolean;
   readonly fufilledAt: Date;
