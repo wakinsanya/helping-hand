@@ -5,15 +5,18 @@ import {
   Get,
   Param,
   Patch,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common';
 import { FavorService } from '@api/favor/services/favor.service';
 import {
   CreateFavorDto,
   Favor,
-  UpdateFavorDto
+  UpdateFavorDto,
+  FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
+import { StringSchema } from '@hapi/joi';
 
 @Controller('favors')
 export class FavorController {
@@ -24,17 +27,27 @@ export class FavorController {
     return this.favorService.create(favorDto);
   }
 
+  @Get()
+  list(
+    @Query('owners') owners: string,
+    @Query('sort') sort: string,
+    @Query('skip') skip: string,
+    @Query('limit') limit: string
+  ): Observable<FavorQueryResult> {
+    return this.favorService.list(
+      owners.split(','),
+      sort === 'true',
+      parseInt(skip, 2),
+      parseInt(limit,2 )
+    );
+  }
+
   @Get(':favorId')
   get(@Param('favorId') favorId: string): Observable<Favor> {
     return this.favorService.getById(favorId);
   }
 
-  @Get()
-  list(): Observable<Favor[]> {
-    return this.favorService.list();
-  }
-
-  @Patch()
+  @Patch(':favorId')
   update(
     @Param('favorId') favorId: string,
     @Body() favorDto: UpdateFavorDto

@@ -4,7 +4,8 @@ import {
   User,
   Favor,
   CreateFavorDto,
-  UpdateFavorDto
+  UpdateFavorDto,
+  FavorQueryResult
 } from '@helping-hand/api-common';
 import { Subject, throwError } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
@@ -63,9 +64,8 @@ export class FavorListComponent implements OnInit, OnDestroy {
           };
         }),
         mergeMap(() => this.favorService.getFavors(this.favorQuery)),
-        tap((favors: Favor[]) => {
-          console.log(favors);
-          this.favorList = favors;
+        tap((data: FavorQueryResult) => {
+          this.favorList = data.favors;
         })
       )
       .subscribe({ error: e => console.error(e) });

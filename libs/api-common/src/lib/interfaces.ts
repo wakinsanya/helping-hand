@@ -48,3 +48,15 @@ export interface UserQuery extends PaginationQuery {
 export interface ProfileQuery extends PaginationQuery {
   owners: string[];
 }
+
+export interface QueryResult {
+  totalCount: number;
+}
+
+export interface FavorQueryResult extends QueryResult {
+  favors: Favor[];
+}
+
+export interface UserQueryResult extends QueryResult {
+  users: User[];
+}

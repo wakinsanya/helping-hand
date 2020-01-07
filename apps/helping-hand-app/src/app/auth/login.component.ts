@@ -12,8 +12,8 @@ import { UserService } from '@helping-hand/core/services/user.service';
 })
 export class LoginComponent implements OnDestroy {
   token: NbAuthOAuth2Token;
-  private destroy$: Subject<void> = new Subject<void>();
   userProviderSub$: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private userService: UserService,

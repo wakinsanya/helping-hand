@@ -4,7 +4,8 @@ import {
   CreateFavorDto,
   Favor,
   FavorQuery,
-  UpdateFavorDto
+  UpdateFavorDto,
+  FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
 import { queryString } from '@helping-hand/core/helpers/query-string';
@@ -17,8 +18,8 @@ export class FavorService {
     return this.httpClient.post<Favor>('api/favors', favorDto);
   }
 
-  getFavors(query: FavorQuery): Observable<Favor[]> {
-    return this.httpClient.get<Favor[]>(`api/favors${queryString(query)}`);
+  getFavors(query: FavorQuery): Observable<FavorQueryResult> {
+    return this.httpClient.get<FavorQueryResult>(`api/favors${queryString(query)}`);
   }
 
   updateFavor(favorId: string, favorDto: UpdateFavorDto): Observable<any> {
