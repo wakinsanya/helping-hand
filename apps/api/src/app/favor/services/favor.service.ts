@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model, Schema, Mongoose } from 'mongoose';
+import { Model, Schema, Types } from 'mongoose';
 import { FAVOR_MODEL } from '../../constants';
 import {
   Favor,
@@ -7,7 +7,7 @@ import {
   CreateFavorDto,
   FavorQueryResult
 } from '@helping-hand/api-common';
-import { Observable, from, of, ObjectUnsubscribedError } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { FavorDocument } from '../interfaces/favor-document.interface';
 
@@ -42,50 +42,12 @@ export class FavorService {
     limit: number
   ): Observable<FavorQueryResult> {
     const pipeline = this.constructQueryPipeline(
-      owners.map(v => new Mongoose().Types.ObjectId(v)),
+      owners.map(v => Types.ObjectId(v)),
       sort,
       skip,
       limit
     );
-    return from(
-      this.favorModel.aggregate([
-        {
-          $match: {
-            owner: { $in: owners.map(v => new Mongoose().Types.ObjectId(v)) }
-          }
-        },
-        {
-          $facet: {
-            favors: [
-              {
-                $skip: skip
-              },
-              {
-                $limit: limit
-              },
-              {
-                $sort: {
-                  deadline: -1
-                }
-              }
-            ],
-            totalFavorCount: [
-              {
-                $count: 'count'
-              }
-            ]
-          }
-        },
-        {
-          $project: {
-            favors: 1,
-            totalFavorCount: {
-              $arrayElemAt: ['$totalFavorCount.count', 0]
-            }
-          }
-        }
-      ])
-    ).pipe(
+    return from(this.favorModel.aggregate(pipeline)).pipe(
       map(data => data[0]),
       mergeMap(data => {
         return of({
@@ -101,11 +63,64 @@ export class FavorService {
   }
 
   private constructQueryPipeline(
-    owners: Array<Schema.Types.ObjectId>,
+    owners: Array<Types.ObjectId>,
     sort: boolean,
     skip: number,
     limit: number
-  ) {
+  ): any[] {
+    const pipeline = [];
+    if (owners && skip && limit) {
+      const matchStage = {
+        $match: {
+          owner: {
+            $in: owners
+          }
+        }
+      };
+      const facetStage = {
+        $facet: {
+          favors: [
+            {
+              $skip: skip
+            },
+            {
+              $limit: limit
+            }
+          ],
+          totalFavorCount: [
+            {
+              $count: 'count'
+            }
+          ]
+        }
+      };
 
+      if (sort) {
+        (facetStage as any).favors.push({
+          $sort: {
+            deadline: -1
+          }
+        });
+      } else {
+        (facetStage as any).favors.push({
+          $sort: {
+            deadline: 1
+          }
+        });
+      }
+
+      const projectStagge = {
+        $project: {
+          favors: 1,
+          totalFavorCount: {
+            $arrayElemAt: ['$totalFavorCount.count', 0]
+          }
+        }
+      };
+      pipeline.push(matchStage, facetStage, projectStagge);
+      return pipeline;
+    } else {
+      throw new Error('Incomplete query.');
+    }
   }
 }
