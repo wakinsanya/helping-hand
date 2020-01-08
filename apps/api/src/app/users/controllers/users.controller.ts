@@ -5,7 +5,8 @@ import {
   Body,
   Param,
   Delete,
-  Patch
+  Patch,
+  Query
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/api-common';
@@ -26,7 +27,12 @@ export class UsersController {
   }
 
   @Get()
-  list(): Observable<User[]> {
+  list(
+    @Query('users') users: string,
+    @Query('sort') sort: string,
+    @Query('skip') skip: string,
+    @Query('limit') limit: string
+  ): Observable<User[]> {
     return this.usersService.list();
   }
 

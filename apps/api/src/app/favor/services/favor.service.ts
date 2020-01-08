@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model, Schema, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FAVOR_MODEL } from '../../constants';
 import {
   Favor,
@@ -10,6 +10,7 @@ import {
 import { Observable, from, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { FavorDocument } from '../interfaces/favor-document.interface';
+import { FavorQueryAggregationResult } from '../interfaces/favor-query-aggregation-result.interface';
 
 @Injectable()
 export class FavorService {
@@ -41,18 +42,27 @@ export class FavorService {
     skip: number,
     limit: number
   ): Observable<FavorQueryResult> {
-    const pipeline = this.constructQueryPipeline(
+    const pipeline = this.buildQueryPipeline(
       owners.map(v => Types.ObjectId(v)),
       sort,
       skip,
       limit
     );
     return from(this.favorModel.aggregate(pipeline)).pipe(
-      map(data => data[0]),
-      mergeMap(data => {
+      map(data => {
+        if (data && data.length) {
+          return data[0];
+        } else {
+          return {
+            favors: [],
+            totalFavorCount: 0
+          };
+        }
+      }),
+      mergeMap((data: FavorQueryAggregationResult) => {
         return of({
-          favors: (data as any).favors.map(v => v as Favor),
-          totalCount: (data as any).totalFavorCount
+          favors: data.favors as Favor[],
+          totalFavorCount: data.totalFavorCount
         });
       })
     );
@@ -62,7 +72,7 @@ export class FavorService {
     return from(this.favorModel.deleteOne({ _id }));
   }
 
-  private constructQueryPipeline(
+  private buildQueryPipeline(
     owners: Array<Types.ObjectId>,
     sort: boolean,
     skip: number,

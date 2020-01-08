@@ -41,22 +41,21 @@ export interface FavorQuery extends PaginationQuery {
 }
 
 export interface UserQuery extends PaginationQuery {
-  userIds?: string[];
   sort: boolean;
+  users: string[];
 }
 
 export interface ProfileQuery extends PaginationQuery {
   owners: string[];
 }
 
-export interface QueryResult {
-  totalCount: number;
-}
 
-export interface FavorQueryResult extends QueryResult {
+export interface FavorQueryResult  {
   favors: Favor[];
+  totalFavorCount: number;
 }
 
-export interface UserQueryResult extends QueryResult {
+export interface UserQueryResult {
   users: User[];
+  totalUserCount: number;
 }
