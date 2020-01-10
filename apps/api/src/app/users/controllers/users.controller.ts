@@ -9,7 +9,7 @@ import {
   Query
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { User, CreateUserDto, UpdateUserDto } from '@helping-hand/api-common';
+import { User, CreateUserDto, UpdateUserDto, UserQueryResult } from '@helping-hand/api-common';
 import { UsersService } from '@api/users/services/users.service';
 
 @Controller('users')
@@ -32,8 +32,13 @@ export class UsersController {
     @Query('sort') sort: string,
     @Query('skip') skip: string,
     @Query('limit') limit: string
-  ): Observable<User[]> {
-    return this.usersService.list();
+  ): Observable<UserQueryResult> {
+    return this.usersService.list(
+      users.split(','),
+      sort === 'true',
+      parseInt(skip, 2),
+      parseInt(limit, 2)
+    );
   }
 
   @Patch(':userId')

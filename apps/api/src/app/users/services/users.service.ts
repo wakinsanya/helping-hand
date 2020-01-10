@@ -1,7 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { USER_MODEL } from '@api/constants';
-import { CreateUserDto, UpdateUserDto, User, UserQuery } from '@helping-hand/api-common';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  User,
+  UserQuery,
+  UserQueryResult
+} from '@helping-hand/api-common';
 import { Observable, from, of } from 'rxjs';
 import { UserDocument } from '@api/users/interfaces/user-document.interface';
 import { map, mergeMap } from 'rxjs/operators';
@@ -39,7 +45,12 @@ export class UsersService {
     );
   }
 
-  list(): Observable<User[]> {
+  list(
+    users: string[],
+    sort: boolean,
+    skip: number,
+    limit: number
+  ): Observable<UserQueryResult> {
     return from(this.userModel.find({})).pipe(
       map((userDocs: UserDocument[]) => userDocs.map(doc => doc as User))
     );

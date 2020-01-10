@@ -9,8 +9,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
-import { EventBusService, EmitEvent, AppEvent } from './event-bus.service';
-import { queryString } from '../helpers/query-string';
+
 @Injectable()
 export class UserService {
   private _loggedInUser$: BehaviorSubject<User>;
