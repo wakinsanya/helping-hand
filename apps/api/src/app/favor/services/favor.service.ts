@@ -42,6 +42,7 @@ export class FavorService {
     skip: number,
     limit: number
   ): Observable<FavorQueryResult> {
+    console.log(owners, sort, skip, limit);
     const pipeline = this.buildQueryPipeline(
       owners.map(v => Types.ObjectId(v)),
       sort,
@@ -79,7 +80,7 @@ export class FavorService {
     limit: number
   ): any[] {
     const pipeline = [];
-    if (owners && skip && limit) {
+    if (owners) {
       const matchStage = {
         $match: {
           owner: {
@@ -87,7 +88,7 @@ export class FavorService {
           }
         }
       };
-      const facetStage = {
+      const facetStage: any = {
         $facet: {
           favors: [
             {
@@ -105,14 +106,16 @@ export class FavorService {
         }
       };
 
+      console.log(facetStage.$facet.favors);
+
       if (sort) {
-        (facetStage as any).favors.push({
+        facetStage.$facet.favors.push({
           $sort: {
             deadline: -1
           }
         });
       } else {
-        (facetStage as any).favors.push({
+        facetStage.$facet.favors.push({
           $sort: {
             deadline: 1
           }

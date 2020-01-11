@@ -42,7 +42,7 @@ export interface FavorQuery extends PaginationQuery {
 
 export interface UserQuery extends PaginationQuery {
   sort: boolean;
-  users: string[];
+  users?: string[];
 }
 
 export interface ProfileQuery extends PaginationQuery {

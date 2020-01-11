@@ -40,6 +40,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
   favorQuery: FavorQuery;
   loggedInUser: User;
   favorList: Favor[] = [];
+  totalFavorCount: number;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -91,7 +92,10 @@ export class FavorListComponent implements OnInit, OnDestroy {
           mergeMap(() => {
             return this.favorService.getFavors(this.favorQuery);
           }),
-          tap((favorList: Favor[]) => (this.favorList = favorList))
+          tap(({ favors, totalFavorCount }) => {
+            this.favorList = favors;
+            this.totalFavorCount = totalFavorCount;
+          })
         )
         .subscribe({ error: e => console.error(e) });
     } else {

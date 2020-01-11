@@ -19,6 +19,7 @@ export class FavorService {
   }
 
   getFavors(query: FavorQuery): Observable<FavorQueryResult> {
+    console.log('Derived query', query);
     return this.httpClient.get<FavorQueryResult>(`api/favors${queryString(query)}`);
   }
 
