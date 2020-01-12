@@ -42,7 +42,6 @@ export class FavorService {
     skip: number,
     limit: number
   ): Observable<FavorQueryResult> {
-    console.log(owners, sort, skip, limit);
     const pipeline = this.buildQueryPipeline(
       owners.map(v => Types.ObjectId(v)),
       sort,
@@ -81,7 +80,7 @@ export class FavorService {
   ): any[] {
     const pipeline = [];
     if (owners) {
-      const matchStage = {
+      const matchStage: any = {
         $match: {
           owner: {
             $in: owners
@@ -106,8 +105,6 @@ export class FavorService {
         }
       };
 
-      console.log(facetStage.$facet.favors);
-
       if (sort) {
         facetStage.$facet.favors.push({
           $sort: {
@@ -122,7 +119,7 @@ export class FavorService {
         });
       }
 
-      const projectStagge = {
+      const projectStage = {
         $project: {
           favors: 1,
           totalFavorCount: {
@@ -130,7 +127,7 @@ export class FavorService {
           }
         }
       };
-      pipeline.push(matchStage, facetStage, projectStagge);
+      pipeline.push(matchStage, facetStage, projectStage);
       return pipeline;
     } else {
       throw new Error('Incomplete query.');

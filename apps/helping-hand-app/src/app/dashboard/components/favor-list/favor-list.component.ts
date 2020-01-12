@@ -4,7 +4,6 @@ import {
   User,
   Favor,
   CreateFavorDto,
-  UpdateFavorDto,
   FavorQueryResult
 } from '@helping-hand/api-common';
 import { Subject, throwError } from 'rxjs';
@@ -30,17 +29,18 @@ interface FavorBody {
   styleUrls: ['./favor-list.component.scss']
 })
 export class FavorListComponent implements OnInit, OnDestroy {
+  today: Date;
+  loggedInUser: User;
+  favorQuery: FavorQuery;
+  favorList: Favor[] = [];
   favorBody: FavorBody = {
     title: '',
     text: '',
     deadline: new Date()
   };
-  favorFormWindowRef$: NbWindowRef;
-  today: Date;
-  favorQuery: FavorQuery;
-  loggedInUser: User;
-  favorList: Favor[] = [];
   totalFavorCount: number;
+  currentFavorIndex: number;
+  favorWindowRef$: NbWindowRef;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -85,7 +85,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         .createFavor(favorDto)
         .pipe(
           tap(() => {
-            this.favorFormWindowRef$.close();
+            this.favorWindowRef$.close();
             this.resetNewFavorBody();
             this.toastrService.success('Your favour request has been created.');
           }),
@@ -112,7 +112,8 @@ export class FavorListComponent implements OnInit, OnDestroy {
       text: this.favorList[favorIndex].text,
       deadline: this.favorList[favorIndex].deadline
     };
-    this.openFavorFormWindow(favorForm, 'Edit your favor request');
+    this.currentFavorIndex = favorIndex;
+    this.openFavorFormWindow(favorForm, 'Edit your favor request', { isEditing: true });
   }
 
   deleteFavor(favorIndex: number) {
@@ -124,7 +125,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         }),
         catchError(e => {
           this.toastrService.danger(
-            'Something went wrong when deleting your favour request, please try again!'
+            'Something went wrong when deleting your favour request, please try again.'
           );
           return throwError(e);
         })
@@ -134,20 +135,22 @@ export class FavorListComponent implements OnInit, OnDestroy {
 
   updateFavor(favorIndex: number) {
     this.favorService
-      .updateFavor(this.favorList[favorIndex]._id, this
-        .favorBody as UpdateFavorDto)
+      .updateFavor(this.favorList[this.currentFavorIndex]._id, this.favorBody)
       .pipe(
         tap((updatedFavor: Favor) => {
+          this.favorWindowRef$.close();
+          this.resetNewFavorBody();
           this.toastrService.success('Your favour request has been updated.');
           this.favorList[favorIndex] = updatedFavor;
         }),
         catchError(e => {
           this.toastrService.danger(
-            'Something went wrong when updating your favour request, please try again!'
+            'Something went wrong when updating your favour request, please try again.'
           );
           return throwError(e);
         })
-      ).subscribe({ error: e => console.error(e) });
+      )
+      .subscribe({ error: e => console.error(e) });
   }
 
   getMoreFavors() {
@@ -162,9 +165,10 @@ export class FavorListComponent implements OnInit, OnDestroy {
     };
   }
 
-  openFavorFormWindow(favorForm: TemplateRef<any>, title: string) {
-    this.favorFormWindowRef$ = this.windowService.open(favorForm, {
-      title
+  openFavorFormWindow(favorForm: TemplateRef<any>, title: string, context = {}) {
+    this.favorWindowRef$ = this.windowService.open(favorForm, {
+      title,
+      context
     });
   }
 

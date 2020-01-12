@@ -46,7 +46,7 @@
     </nb-accordion>
   </ng-template>
 
-  <ng-template #favorForm let-heading="heading">
+  <ng-template #favorForm let-heading="heading" let-context="$implicit">
     <div class="create-favor-form__container">
       <label for="favorTitle">Title:</label>
       <input
@@ -82,8 +82,8 @@
           looking for!</span
         >
       </div>
-      <button nbButton fullWidth (click)="createFavor()">
-        Make Favor Request
+      <button nbButton fullWidth (click)="context.isEditing ? updateFavor() : createFavor()">
+        {{ context.isEditing ? 'Save Changes' : 'Make Favour Request' }}
       </button>
     </div>
   </ng-template>

@@ -41,7 +41,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
-    console.log('foo')
     this.profileService
       .updateProfile(this.profile._id, { bio: this.newBio  })
       .pipe(
@@ -49,7 +48,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
           return this.profileService.getProfileById(this.profile._id);
         }),
         tap((profile: Profile) => {
-          console.log(profile)
           this.profile = profile;
           this.toastrService.success('Your profile has been updated');
         })
