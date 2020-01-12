@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User, UserProvider } from '@helping-hand/api-common';
+import { User } from '@helping-hand/api-common';
 import { Router } from '@angular/router';
-import { NbAuthService, NbAuthResult } from '@nebular/auth';
-import { NbToastrService } from '@nebular/theme';
-import { tap, takeUntil, delay, first } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
+import { NbAuthService } from '@nebular/auth';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -31,6 +30,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({ error: e => console.error(e) });
+    this.authService.onAuthenticationChange().pipe(
+      takeUntil(this.destroy$),
+      tap((isAuthenticated: boolean) => {
+        if (
+          !isAuthenticated &&
+          !JSON.parse(localStorage.getItem('isLogginIn'))
+        ) {
+          this.userService.removeLoggedInUser();
+          this.userService.removeUserProvider();
+        }
+      })
+    );
   }
 
   logout() {

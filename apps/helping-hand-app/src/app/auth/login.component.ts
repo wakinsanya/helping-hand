@@ -26,6 +26,7 @@ export class LoginComponent implements OnDestroy {
         takeUntil(this.destroy$),
         map(userProvider => userProvider as UserProvider),
         mergeMap(userProvider => {
+          localStorage.setItem('isLoggingIn', JSON.stringify(true));
           this.userService.setUserProvider(userProvider);
           return of(userProvider);
         }),

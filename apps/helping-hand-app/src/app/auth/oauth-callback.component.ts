@@ -25,6 +25,7 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((authResult: NbAuthResult) => {
+          localStorage.removeItem('isLogginIn');
           this.redirectUrl = authResult.getRedirect();
         }),
         mergeMap((authResult: NbAuthResult) => {
