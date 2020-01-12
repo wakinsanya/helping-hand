@@ -36,8 +36,8 @@ export class UsersController {
     return this.usersService.list(
       users ? users.split(',') : [],
       sort === 'true',
-      parseInt(skip, 2),
-      parseInt(limit, 2)
+      parseInt(skip, 10),
+      parseInt(limit, 10)
     );
   }
 

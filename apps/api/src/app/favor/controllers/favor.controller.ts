@@ -37,8 +37,8 @@ export class FavorController {
     return this.favorService.list(
       (owners && owners.length)? owners.split(',') : [],
       sort === 'true',
-      parseInt(skip, 2),
-      parseInt(limit, 2)
+      parseInt(skip, 10),
+      parseInt(limit, 10)
     );
   }
 

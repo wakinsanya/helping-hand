@@ -1,1 +1,2 @@
-export * from './lib/functions/pagination-query';
+export * from './lib/interfaces';
+export * from './lib/functions';

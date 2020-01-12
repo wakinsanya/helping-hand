@@ -10,6 +10,7 @@ import {
 import { Observable, from, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { FavorDocument } from '../interfaces/favor-document.interface';
+import { paginationQuery } from '@helping-hand/api-core';
 import { FavorQueryAggregationResult } from '../interfaces/favor-query-aggregation-result.interface';
 
 @Injectable()
@@ -42,12 +43,24 @@ export class FavorService {
     skip: number,
     limit: number
   ): Observable<FavorQueryResult> {
-    const pipeline = this.buildQueryPipeline(
-      owners.map(v => Types.ObjectId(v)),
-      sort,
-      skip,
-      limit
-    );
+    const matchStage: any = {
+      $match: {
+        owner: {
+          $in: owners.map(v => Types.ObjectId(v))
+        }
+      }
+    };
+    const pipeline = [
+      matchStage,
+      ...paginationQuery({
+        skip,
+        limit,
+        sort,
+        sortOrder: 'ascending',
+        sortField: 'deadline',
+        entity: 'favors'
+      })
+    ];
     return from(this.favorModel.aggregate(pipeline)).pipe(
       map(data => {
         if (data && data.length) {
@@ -62,7 +75,7 @@ export class FavorService {
       mergeMap((data: FavorQueryAggregationResult) => {
         return of({
           favors: data.favors as Favor[],
-          totalFavorCount: data.totalFavorCount
+          totalFavorCount: data.totalFavorsCount
         });
       })
     );

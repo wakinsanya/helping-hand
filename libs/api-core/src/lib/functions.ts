@@ -1,6 +1,6 @@
-import { PaginationOptions } from '../interfaces/pagination-options.interface';
+import { PaginationOptions } from './interfaces';
 
-export function paginationQuery(opts: PaginationOptions) {
+export function paginationQuery(opts: PaginationOptions): any[] {
   const facetStage: any = {
     $facet: {
       [`${opts.entity}`]: [
