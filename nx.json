@@ -19,6 +19,9 @@
     },
     "api-common": {
       "tags": []
+    },
+    "api-core": {
+      "tags": []
     }
   }
 }
