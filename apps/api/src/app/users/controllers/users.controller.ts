@@ -34,7 +34,7 @@ export class UsersController {
     @Query('limit') limit: string
   ): Observable<UserQueryResult> {
     return this.usersService.list(
-      users ? users.split(',') : [],
+      (users && users.length) ? users.split(',') : [],
       sort === 'true',
       parseInt(skip, 10),
       parseInt(limit, 10)

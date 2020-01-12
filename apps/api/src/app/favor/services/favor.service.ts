@@ -68,14 +68,14 @@ export class FavorService {
         } else {
           return {
             favors: [],
-            totalFavorCount: 0
+            totalFavorsCount: 0
           };
         }
       }),
       mergeMap((data: FavorQueryAggregationResult) => {
         return of({
           favors: data.favors as Favor[],
-          totalFavorCount: data.totalFavorsCount
+          totalFavorsCount: data.totalFavorsCount
         });
       })
     );

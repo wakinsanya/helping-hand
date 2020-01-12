@@ -52,10 +52,10 @@ export interface ProfileQuery extends PaginationQuery {
 
 export interface FavorQueryResult  {
   favors: Favor[];
-  totalFavorCount: number;
+  totalFavorsCount: number;
 }
 
 export interface UserQueryResult {
   users: User[];
-  totalUserCount: number;
+  totalUsersCount: number;
 }

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { USER_MODEL } from '@api/constants';
 import {
   CreateUserDto,
@@ -11,6 +11,8 @@ import {
 import { Observable, from, of } from 'rxjs';
 import { UserDocument } from '@api/users/interfaces/user-document.interface';
 import { map, mergeMap } from 'rxjs/operators';
+import { paginationQuery } from '@helping-hand/api-core';
+import { UserQueryAggregationResult } from '../interfaces/user-query-aggregation-result.interface';
 
 @Injectable()
 export class UsersService {
@@ -51,11 +53,44 @@ export class UsersService {
     skip: number,
     limit: number
   ): Observable<UserQueryResult> {
-    return from(this.userModel.find({})).pipe(
-      map((userDocs: UserDocument[]) => userDocs.map(doc => doc as User))
+    const matchStage: any = {
+      $match: {
+        owner: {
+          $in: users.map(v => Types.ObjectId(v))
+        }
+      }
+    };
+
+    const pipeline = [
+      matchStage,
+      ...paginationQuery({
+        skip,
+        limit,
+        sort,
+        sortOrder: 'ascending',
+        sortField: 'createdAt',
+        entity: 'users'
+      })
+    ];
+    return from(this.userModel.aggregate(pipeline)).pipe(
+      map(data => {
+        if (data && data.length) {
+          return data[0];
+        } else {
+          return {
+            users: [],
+            totalUsersCount: 0
+          };
+        }
+      }),
+      mergeMap((data: UserQueryAggregationResult) => {
+        return of({
+          users: data.users as User[],
+          totalUsersCount: data.totalUsersCount
+        });
+      })
     );
   }
-
   delete(_id: string) {
     return from(this.userModel.deleteOne({ _id }));
   }
