@@ -8,7 +8,7 @@ import {
   FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable, from, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FavorDocument } from '../interfaces/favor-document.interface';
 import { paginationQuery } from '@helping-hand/api-core';
 import { FavorQueryAggregationResult } from '../interfaces/favor-query-aggregation-result.interface';
@@ -39,17 +39,25 @@ export class FavorService {
 
   list(
     owners: string[],
+    notOwners: string[],
     sort: boolean,
     skip: number,
     limit: number
   ): Observable<FavorQueryResult> {
     const matchStage: any = {
       $match: {
-        owner: {
-          $in: owners.map(v => Types.ObjectId(v))
-        }
+        owner: {}
       }
     };
+
+    if (owners && owners.length) {
+      matchStage.$match.owner.$in = owners.map(v => Types.ObjectId(v));
+    }
+
+    if (notOwners && notOwners.length) {
+      matchStage.$match.owner.$nin = notOwners.map(v => Types.ObjectId(v));
+    }
+
     const pipeline = [
       matchStage,
       ...paginationQuery({
@@ -63,81 +71,17 @@ export class FavorService {
     ];
     return from(this.favorModel.aggregate(pipeline)).pipe(
       map((data: FavorQueryAggregationResult[]) => {
-        if (data && data.length) {
-          return data[0];
-        } else {
-          return {
-            favors: [],
-            favorsTotalCount: 0
-          };
-        }
+        return data && data.length
+          ? data[0]
+          : {
+              favors: [],
+              favorsTotalCount: 0
+            };
       })
     );
   }
 
   delete(_id: string): Observable<any> {
     return from(this.favorModel.deleteOne({ _id }));
-  }
-
-  private buildQueryPipeline(
-    owners: Array<Types.ObjectId>,
-    sort: boolean,
-    skip: number,
-    limit: number
-  ): any[] {
-    const pipeline = [];
-    if (owners) {
-      const matchStage: any = {
-        $match: {
-          owner: {
-            $in: owners
-          }
-        }
-      };
-      const facetStage: any = {
-        $facet: {
-          favors: [
-            {
-              $skip: skip
-            },
-            {
-              $limit: limit
-            }
-          ],
-          totalFavorCount: [
-            {
-              $count: 'count'
-            }
-          ]
-        }
-      };
-
-      if (sort) {
-        facetStage.$facet.favors.push({
-          $sort: {
-            deadline: -1
-          }
-        });
-      } else {
-        facetStage.$facet.favors.push({
-          $sort: {
-            deadline: 1
-          }
-        });
-      }
-
-      const projectStage = {
-        $project: {
-          favors: 1,
-          totalFavorCount: {
-            $arrayElemAt: ['$totalFavorCount.count', 0]
-          }
-        }
-      };
-      pipeline.push(matchStage, facetStage, projectStage);
-      return pipeline;
-    } else {
-      throw new Error('Incomplete query.');
-    }
   }
 }

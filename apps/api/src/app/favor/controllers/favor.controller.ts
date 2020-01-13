@@ -29,12 +29,14 @@ export class FavorController {
   @Get()
   list(
     @Query('owners') owners: string,
+    @Query('notOwners') notOwners: string,
     @Query('sort') sort: string,
     @Query('skip') skip: string,
     @Query('limit') limit: string
   ): Observable<FavorQueryResult> {
     return this.favorService.list(
-      (owners && owners.length)? owners.split(',') : [],
+      (owners && owners.length) ? owners.split(',') : [],
+      (notOwners && notOwners) ? notOwners.split(',') : [],
       sort === 'true',
       parseInt(skip, 10),
       parseInt(limit, 10)

@@ -5,7 +5,6 @@ import {
   CreateUserDto,
   UpdateUserDto,
   User,
-  UserQuery,
   UserQueryResult
 } from '@helping-hand/api-common';
 import { Observable, from, of } from 'rxjs';
@@ -69,19 +68,17 @@ export class UsersService {
         $match: {
           $in: users.map(v => Types.ObjectId(v))
         }
-      })
+      });
     }
 
     return from(this.userModel.aggregate(pipeline)).pipe(
       map((data: UserQueryAggregationResult[]) => {
-        if (data && data.length) {
-          return data[0];
-        } else {
-          return {
-            users: [],
-            usersTotalCount: 0
-          };
-        }
+        return data && data.length
+          ? data[0]
+          : {
+              users: [],
+              usersTotalCount: 0
+            };
       })
     );
   }
