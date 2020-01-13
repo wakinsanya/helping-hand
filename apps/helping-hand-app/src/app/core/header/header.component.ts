@@ -30,18 +30,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({ error: e => console.error(e) });
-    this.authService.onAuthenticationChange().pipe(
-      takeUntil(this.destroy$),
-      tap((isAuthenticated: boolean) => {
-        if (
-          !isAuthenticated &&
-          !JSON.parse(localStorage.getItem('isLogginIn'))
-        ) {
-          this.userService.removeLoggedInUser();
-          this.userService.removeUserProvider();
-        }
-      })
-    );
   }
 
   logout() {

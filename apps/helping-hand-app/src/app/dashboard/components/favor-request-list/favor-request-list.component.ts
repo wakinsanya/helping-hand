@@ -43,7 +43,6 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
   updateFavorList(): Observable<{}> {
     return this.favorService.getFavors(this.favorQuery).pipe(
       tap(({ favors, favorsTotalCount }) => {
-        console.log('favor req', favors);
         this.favorList = favors;
         this.favorsTotalCount = favorsTotalCount;
       }),

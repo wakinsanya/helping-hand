@@ -12,7 +12,6 @@ import { UserService } from '@helping-hand/core/services/user.service';
 })
 export class LoginComponent implements OnDestroy {
   token: NbAuthOAuth2Token;
-  userProviderSub$: Subscription;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -26,7 +25,6 @@ export class LoginComponent implements OnDestroy {
         takeUntil(this.destroy$),
         map(userProvider => userProvider as UserProvider),
         mergeMap(userProvider => {
-          localStorage.setItem('isLoggingIn', JSON.stringify(true));
           this.userService.setUserProvider(userProvider);
           return of(userProvider);
         }),

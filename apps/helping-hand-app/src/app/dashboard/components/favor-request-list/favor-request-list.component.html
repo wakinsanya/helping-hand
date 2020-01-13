@@ -1,3 +1,8 @@
 <div class="favor-request-list__container">
-
+  <h4>Favour Requests by Others</h4>
+  <nb-list>
+    <nb-list-item *ngFor="let favor of favorList">
+      {{ favor.title }}
+    </nb-list-item>
+  </nb-list>
 </div>
