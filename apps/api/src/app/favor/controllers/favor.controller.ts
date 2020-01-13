@@ -16,7 +16,6 @@ import {
   FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
-import { StringSchema } from '@hapi/joi';
 
 @Controller('favors')
 export class FavorController {

@@ -27,6 +27,6 @@ export class FavorService {
   }
 
   deleteFavor(favorId: string): Observable<any> {
-    return this.httpClient.delete(`api/favors${favorId}`);
+    return this.httpClient.delete(`api/favors/${favorId}`);
   }
 }

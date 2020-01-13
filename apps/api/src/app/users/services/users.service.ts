@@ -53,16 +53,7 @@ export class UsersService {
     skip: number,
     limit: number
   ): Observable<UserQueryResult> {
-    const matchStage: any = {
-      $match: {
-        owner: {
-          $in: users.map(v => Types.ObjectId(v))
-        }
-      }
-    };
-
     const pipeline = [
-      matchStage,
       ...paginationQuery({
         skip,
         limit,
@@ -72,22 +63,25 @@ export class UsersService {
         entity: 'users'
       })
     ];
+
+    if (users && users.length) {
+      pipeline.unshift({
+        $match: {
+          $in: users.map(v => Types.ObjectId(v))
+        }
+      })
+    }
+
     return from(this.userModel.aggregate(pipeline)).pipe(
-      map(data => {
+      map((data: UserQueryAggregationResult[]) => {
         if (data && data.length) {
           return data[0];
         } else {
           return {
             users: [],
-            totalUsersCount: 0
+            usersTotalCount: 0
           };
         }
-      }),
-      mergeMap((data: UserQueryAggregationResult) => {
-        return of({
-          users: data.users as User[],
-          totalUsersCount: data.totalUsersCount
-        });
       })
     );
   }

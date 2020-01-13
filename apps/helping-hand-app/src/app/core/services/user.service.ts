@@ -4,11 +4,13 @@ import {
   User,
   CreateUserDto,
   UpdateUserDto,
-  UserQuery
+  UserQuery,
+  UserQueryResult
 } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
+import { queryString } from '../helpers/query-string';
 
 @Injectable()
 export class UserService {
@@ -69,8 +71,8 @@ export class UserService {
     return this.httpClient.get<User>(`api/users/${userId}`);
   }
 
-  getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`/api/users`);
+  getUsers(query: UserQuery): Observable<UserQueryResult> {
+    return this.httpClient.get<UserQueryResult>(`/api/users${queryString(query)}`);
   }
 
   private getCreateUserDto(

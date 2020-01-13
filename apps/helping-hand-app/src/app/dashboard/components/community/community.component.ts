@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { UserQuery, User } from '@helping-hand/api-common';
-import { tap } from 'rxjs/operators';
+import { tap, mergeMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'helping-hand-community',
@@ -9,21 +10,27 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./community.component.scss']
 })
 export class CommunityComponent implements OnInit {
-  userLimit = 10;
-
   private userQuery: UserQuery = {
-    sort: true,
     skip: 0,
-    limit: 10
-  }
-  users: User[] = [];
-  constructor(private userService: UserService) { }
+    limit: 10,
+    sort: true
+  };
+  userList: User[] = [];
+  usersTotalCount: number;
+
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getUsers()
-      .pipe(
-        tap((users: User[]) => (this.users = users))
-      ).subscribe({ error: e => console.error(e) })
+    this.updateUserList().subscribe({ error: e => console.error(e) })
   }
 
+  updateUserList(): Observable<{}> {
+    return this.userService.getUsers(this.userQuery).pipe(
+      tap(({ users, usersTotalCount }) => {
+        this.userList = users;
+        this.usersTotalCount = usersTotalCount;
+      }),
+      mergeMap(() => of({}))
+    );
+  }
 }

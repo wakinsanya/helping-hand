@@ -3,10 +3,9 @@ import {
   FavorQuery,
   User,
   Favor,
-  CreateFavorDto,
-  FavorQueryResult
+  CreateFavorDto
 } from '@helping-hand/api-common';
-import { Subject, throwError } from 'rxjs';
+import { Subject, throwError, of, Observable } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { takeUntil, tap, mergeMap, catchError } from 'rxjs/operators';
@@ -38,7 +37,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
     text: '',
     deadline: new Date()
   };
-  totalFavorCount: number;
+  favorsTotalCount: number;
   currentFavorIndex: number;
   favorWindowRef$: NbWindowRef;
   private destroy$: Subject<void> = new Subject<void>();
@@ -64,10 +63,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
             limit: 10
           };
         }),
-        mergeMap(() => this.favorService.getFavors(this.favorQuery)),
-        tap((data: FavorQueryResult) => {
-          this.favorList = data.favors;
-        })
+        mergeMap(() => this.updateFavorList())
       )
       .subscribe({ error: e => console.error(e) });
     this.today = this.dateService.addMonth(this.dateService.today(), 0);
@@ -89,17 +85,11 @@ export class FavorListComponent implements OnInit, OnDestroy {
             this.resetNewFavorBody();
             this.toastrService.success('Your favour request has been created.');
           }),
-          mergeMap(() => {
-            return this.favorService.getFavors(this.favorQuery);
-          }),
-          tap(({ favors, totalFavorCount }) => {
-            this.favorList = favors;
-            this.totalFavorCount = totalFavorCount;
-          })
+          mergeMap(() => this.updateFavorList())
         )
         .subscribe({ error: e => console.error(e) });
     } else {
-      this.toastrService.warning(
+      this.toastrService.info(
         'Please enter at minimum a title and deadline for your favour request.'
       );
     }
@@ -113,7 +103,9 @@ export class FavorListComponent implements OnInit, OnDestroy {
       deadline: this.favorList[favorIndex].deadline
     };
     this.currentFavorIndex = favorIndex;
-    this.openFavorFormWindow(favorForm, 'Edit your favor request', { isEditing: true });
+    this.openFavorFormWindow(favorForm, 'Edit your favor request', {
+      isEditing: true
+    });
   }
 
   deleteFavor(favorIndex: number) {
@@ -123,6 +115,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         tap(() => {
           this.toastrService.success('Your favour request has been deleted.');
         }),
+        mergeMap(() => this.updateFavorList()),
         catchError(e => {
           this.toastrService.danger(
             'Something went wrong when deleting your favour request, please try again.'
@@ -137,12 +130,12 @@ export class FavorListComponent implements OnInit, OnDestroy {
     this.favorService
       .updateFavor(this.favorList[this.currentFavorIndex]._id, this.favorBody)
       .pipe(
-        tap((updatedFavor: Favor) => {
+        tap(() => {
           this.favorWindowRef$.close();
           this.resetNewFavorBody();
           this.toastrService.success('Your favour request has been updated.');
-          this.favorList[favorIndex] = updatedFavor;
         }),
+        mergeMap(() => this.updateFavorList()),
         catchError(e => {
           this.toastrService.danger(
             'Something went wrong when updating your favour request, please try again.'
@@ -165,11 +158,25 @@ export class FavorListComponent implements OnInit, OnDestroy {
     };
   }
 
-  openFavorFormWindow(favorForm: TemplateRef<any>, title: string, context = {}) {
+  openFavorFormWindow(
+    favorForm: TemplateRef<any>,
+    title: string,
+    context = {}
+  ) {
     this.favorWindowRef$ = this.windowService.open(favorForm, {
       title,
       context
     });
+  }
+
+  updateFavorList(): Observable<{}> {
+    return this.favorService.getFavors(this.favorQuery).pipe(
+      tap(({ favors, favorsTotalCount }) => {
+        this.favorList = favors;
+        this.favorsTotalCount = favorsTotalCount;
+      }),
+      mergeMap(() => of({}))
+    );
   }
 
   ngOnDestroy() {

@@ -62,21 +62,15 @@ export class FavorService {
       })
     ];
     return from(this.favorModel.aggregate(pipeline)).pipe(
-      map(data => {
+      map((data: FavorQueryAggregationResult[]) => {
         if (data && data.length) {
           return data[0];
         } else {
           return {
             favors: [],
-            totalFavorsCount: 0
+            favorsTotalCount: 0
           };
         }
-      }),
-      mergeMap((data: FavorQueryAggregationResult) => {
-        return of({
-          favors: data.favors as Favor[],
-          totalFavorsCount: data.totalFavorsCount
-        });
       })
     );
   }

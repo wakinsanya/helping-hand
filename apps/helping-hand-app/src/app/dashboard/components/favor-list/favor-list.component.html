@@ -27,7 +27,7 @@
         </nb-accordion-item-header>
         <nb-accordion-item-body>
           <p>Description: {{ favor.text ? favor.text : 'None' }}</p>
-          <p>Fufilled: {{ favor.isFufilled ? 'Yes' : 'No' }}</p>
+          <p>Fufilled: {{ favor.isFufilled ? 'Yes!' : 'Not yet!' }}</p>
           <p>Deadline: {{ favor.deadline }}</p>
           <div class="favor-list__favor-opts">
             <button
@@ -37,7 +37,7 @@
             >
               <nb-icon icon="edit-outline"></nb-icon>Edit
             </button>
-            <button nbButton outline status="danger">
+            <button nbButton outline status="danger" (click)="deleteFavor(i)">
               <nb-icon icon="trash-2-outline"></nb-icon>Delete
             </button>
           </div>
