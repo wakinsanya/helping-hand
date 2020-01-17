@@ -18,6 +18,7 @@ import { AuthGuard } from '@helping-hand/core/helpers/auth.guard';
 import { JwtInterceptor } from '@helping-hand/core/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +54,8 @@ import { environment } from '@helping-hand-environments/environment';
           }
         })
       ]
-    })
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AuthGuard,
