@@ -1,4 +1,5 @@
-import { UserProvider, UserRole } from './enums';
+import { UserProvider, UserRole, SubscriptionLabel } from './enums';
+import { isMaster } from 'cluster';
 
 export interface User {
   readonly _id: string;
@@ -16,6 +17,19 @@ export interface Profile {
   readonly _id: string;
   readonly owner: string;
   readonly bio: string;
+  readonly subscriptions: Subscription[];
+}
+
+export interface Subscription {
+  subscription: {
+    endpoint: string;
+    expirationTime: Date;
+    keys: {
+      p256dh: string;
+      auth: string;
+    };
+  };
+  label: SubscriptionLabel;
 }
 
 export interface Favor {
@@ -36,9 +50,9 @@ export interface PaginationQuery {
 }
 
 export interface FavorQuery extends PaginationQuery {
- sort: boolean;
- owners?: string[];
- notOwners?: string[];
+  sort: boolean;
+  owners?: string[];
+  notOwners?: string[];
 }
 
 export interface UserQuery extends PaginationQuery {
@@ -50,8 +64,7 @@ export interface ProfileQuery extends PaginationQuery {
   owners: string[];
 }
 
-
-export interface FavorQueryResult  {
+export interface FavorQueryResult {
   favors: Favor[];
   favorsTotalCount: number;
 }

@@ -6,5 +6,9 @@ export enum UserProvider {
 export enum UserRole {
   Superadmin = 'superadmin',
   Admin = 'admin',
-  User= 'user'
+  User = 'user'
+}
+
+export enum SubscriptionLabel {
+  Favor = 'favor'
 }

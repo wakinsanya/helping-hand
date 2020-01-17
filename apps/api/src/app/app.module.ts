@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { FavorModule } from './favor/favor.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { FavorModule } from './favor/favor.module';
     DatabaseModule,
     AuthModule,
     ProfileModule,
-    FavorModule
+    FavorModule,
+    SubscriptionModule
   ],
   controllers: [AppController],
   providers: [AppService]

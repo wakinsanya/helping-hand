@@ -8,5 +8,9 @@ export const ProfileSchema = new Schema({
   bio: {
     type: Schema.Types.String,
     default: ''
-  }
+  },
+  subscriptions: [{
+    type: Schema.Types.ObjectId,
+    default: []
+  }]
 });

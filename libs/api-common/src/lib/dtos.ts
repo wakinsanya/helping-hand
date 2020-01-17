@@ -1,4 +1,5 @@
 import { UserProvider, UserRole } from './enums';
+import { Subscription } from './interfaces';
 
 export class CreateUserDto {
   readonly email: string;
