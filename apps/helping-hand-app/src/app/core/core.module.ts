@@ -11,6 +11,7 @@ import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
 import { EventBusService } from './services/event-bus.service';
 import { FavorService } from './services/favor.service';
+import { SubscriptionService } from './services/subscription.service';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -28,7 +29,8 @@ import { FavorService } from './services/favor.service';
     UserService,
     ProfileService,
     FavorService,
-    EventBusService
+    EventBusService,
+    SubscriptionService
   ],
   exports: [HeaderComponent]
 })
