@@ -23,13 +23,14 @@ export interface Profile {
 export interface Subscription {
   subscription: {
     endpoint: string;
-    expirationTime: Date;
+    expirationTime: number;
     keys: {
       p256dh: string;
       auth: string;
     };
   };
   label: SubscriptionLabel;
+  owner: string;
 }
 
 export interface Favor {

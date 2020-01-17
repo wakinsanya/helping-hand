@@ -8,7 +8,7 @@ export const SubscriptionSchema = new Schema({
       required: 'subscription endpoint is required'
     },
     expirationTime: {
-      type: Schema.Types.Date,
+      type: Schema.Types.Number,
       default: null
     },
     keys: {
@@ -26,5 +26,9 @@ export const SubscriptionSchema = new Schema({
     type: Schema.Types.String,
     enum: [SubscriptionLabel.Favor],
     required: 'subscription label is required'
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    required: 'subscription owner is required'
   }
 });
