@@ -45,7 +45,10 @@ export class ConfigService {
       GOOGLE_CLIENT_SECRET: Joi.string(),
       GOOGLE_CALLBACK_URL: Joi.string().uri(),
       GOOGLE_REDIRECT_URL_SUCCESS: Joi.string().uri(),
-      GOOGLE_REDIRECT_URL_FAILURE: Joi.string().uri()
+      GOOGLE_REDIRECT_URL_FAILURE: Joi.string().uri(),
+      VAPID_PUBLIC_KEY: Joi.string(),
+      VAPID_PRIVATE_KEY: Joi.string(),
+      APP_EMAIL: Joi.string()
     });
 
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(

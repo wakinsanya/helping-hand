@@ -27,7 +27,7 @@
         </nb-accordion-item-header>
         <nb-accordion-item-body>
           <p>Description: {{ favor.text ? favor.text : 'None' }}</p>
-          <p>Fufilled: {{ favor.isFufilled ? 'Yes!' : 'Not yet!' }}</p>
+          <p>Fufilled: {{ favor.isFufilled ? 'Yes' : 'Not yet' }}</p>
           <p>Deadline: {{ favor.deadline | date: 'fullDate'}}</p>
           <div class="favor-list__favor-opts">
             <button
