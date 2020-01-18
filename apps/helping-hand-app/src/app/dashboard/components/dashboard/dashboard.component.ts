@@ -21,6 +21,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 })
 export class DashboardComponent implements AfterViewInit {
   isLoading = false;
+  favorRequestCount: number;
   @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
 
   constructor(
@@ -61,5 +62,10 @@ export class DashboardComponent implements AfterViewInit {
           }
         });
     }
+  }
+
+  updateFavorRequestCount(count: any) {
+    console.log(count);
+    this.favorRequestCount = count;
   }
 }

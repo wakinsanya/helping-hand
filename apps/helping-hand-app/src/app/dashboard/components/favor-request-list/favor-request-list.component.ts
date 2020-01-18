@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import {
   User,
@@ -28,6 +28,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
   favorList: Favor[] = [];
   favorsTotalCount: number;
   private destroy$: Subject<void> = new Subject<void>();
+  @Output() favorRequestCount: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
     private userService: UserService,
@@ -54,7 +55,10 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
 
   updateFavorsAndOwners() {
     return this.favorService.getFavors(this.favorQuery).pipe(
-      tap(({ favorsTotalCount }) => (this.favorsTotalCount = favorsTotalCount)),
+      tap(({ favorsTotalCount }) => {
+        this.favorsTotalCount = favorsTotalCount;
+        this.favorRequestCount.emit(favorsTotalCount);
+      }),
       switchMap(({ favors }) => from(favors)),
       mergeMap((favor: Favor) => {
         return this.userService.getUserById(favor.owner).pipe(

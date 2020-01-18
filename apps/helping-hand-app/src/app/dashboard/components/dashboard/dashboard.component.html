@@ -6,11 +6,14 @@
         <helping-hand-favor-list></helping-hand-favor-list>
       </nb-tab>
       <nb-tab
+        badgeStatus="success"
+        [badgeText]="favorRequestCount"
+        badgePosition="top right"
         tabTitle="Help Others"
         tabIcon="message-circle-outline"
         responsive
       >
-      <helping-hand-favor-request-list></helping-hand-favor-request-list>
+      <helping-hand-favor-request-list (favorRequestCount)="updateFavorRequestCount($event)"></helping-hand-favor-request-list>
       </nb-tab>
       <nb-tab tabTitle="Community" tabIcon="people-outline" responsive>
         <helping-hand-community></helping-hand-community>

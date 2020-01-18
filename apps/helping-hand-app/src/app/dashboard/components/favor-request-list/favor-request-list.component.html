@@ -3,16 +3,15 @@
   <nb-list>
     <nb-list-item *ngFor="let favor of favorList">
       <nb-user
-        badgeStatus="success"
+        badgeStatus="warning"
         badgePosition="bottom right"
-        [badgeText]="favor.date | customShortDate"
+        [badgeText]="'expires ' + (favor.date | customShortDate)"
         [title]="favor.title"
         [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
         size="giant"
         [picture]="favor.user?.pictureUrl"
       >
       </nb-user>
-      <div class="favor-request-list__favor-opts"></div>
     </nb-list-item>
   </nb-list>
 </div>

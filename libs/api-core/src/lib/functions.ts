@@ -35,7 +35,7 @@ export function paginationQuery(opts: PaginationOptions): any[] {
     $project: {
       [`${opts.entity}`]: 1,
       [`${opts.entity}TotalCount`]: {
-        $arrayElemAt: [`$${opts.entity}TotalCount`, 0]
+        $arrayElemAt: [`$${opts.entity}TotalCount.count`, 0]
       }
     }
   };
