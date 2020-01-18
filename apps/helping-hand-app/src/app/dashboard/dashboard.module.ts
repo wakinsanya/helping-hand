@@ -24,6 +24,7 @@ import { FavorRequestListComponent } from './components/favor-request-list/favor
 import { FavorListComponent } from './components/favor-list/favor-list.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CommunityComponent } from './components/community/community.component';
+import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CommunityComponent } from './components/community/community.component';
     FavorRequestListComponent,
     FavorListComponent,
     ProfileComponent,
-    CommunityComponent
+    CommunityComponent,
+    CustomShortDatePipe
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,7 @@ import { CommunityComponent } from './components/community/community.component';
     NbIconModule,
     NbDatepickerModule,
     NbWindowModule.forChild()
-  ]
+  ],
+  exports: [CustomShortDatePipe]
 })
 export class DashboardModule {}

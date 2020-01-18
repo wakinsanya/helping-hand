@@ -42,6 +42,7 @@ export interface Favor {
   readonly isFufilled: boolean;
   readonly fufilledAt: Date;
   readonly fuffiledBy: string;
+  date?: Date;
   user?: User;
 }
 

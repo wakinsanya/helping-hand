@@ -54,15 +54,14 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
 
   updateFavorsAndOwners() {
     return this.favorService.getFavors(this.favorQuery).pipe(
-      tap((data: FavorQueryResult) => {
-        this.favorsTotalCount = data.favorsTotalCount;
-      }),
-      switchMap((data: FavorQueryResult) => {
-        return from(data.favors);
-      }),
+      tap(({ favorsTotalCount }) => (this.favorsTotalCount = favorsTotalCount)),
+      switchMap(({ favors }) => from(favors)),
       mergeMap((favor: Favor) => {
         return this.userService.getUserById(favor.owner).pipe(
-          tap((user: User) => (favor.user = user)),
+          tap((user: User) => {
+            favor.user = user;
+            favor.date = new Date(favor.deadline);
+          }),
           map(() => favor)
         );
       }),
