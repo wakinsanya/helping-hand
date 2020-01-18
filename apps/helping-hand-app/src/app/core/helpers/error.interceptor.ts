@@ -7,8 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '@helping-hand/core/services/auth.service';
-import { UserService } from '../services/user.service';
+import { UserService } from '@helping-hand/core/services/user.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -21,6 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(e => {
         if (e.status === 401) {
+          this.userService.removeUserProvider();
           this.userService.removeLoggedInUser();
           location.reload();
         }

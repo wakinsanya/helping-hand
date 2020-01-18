@@ -1,32 +1,37 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserProvider, SubscriptionLabel } from '@helping-hand/api-common';
+import { UserProvider } from '@helping-hand/api-common';
 import { takeUntil, map, mergeMap } from 'rxjs/operators';
 import { Subject, of } from 'rxjs';
 import { NbAuthService, NbAuthOAuth2Token } from '@nebular/auth';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { SubscriptionService } from '@helping-hand/core/services/subscription.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'helping-hand-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnDestroy, OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   token: NbAuthOAuth2Token;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
+    private router: Router,
     private userService: UserService,
-    private authService: NbAuthService,
-    private subscriptionService: SubscriptionService
+    private authService: NbAuthService
   ) {}
 
-  ngOnInit() {
-    this.subscriptionService.requestSubscription(
-      SubscriptionLabel.Favor,
-      ''
-    );
-  }
+    ngOnInit() {
+      this.authService.isAuthenticated()
+        .subscribe({
+          next: (isAuthenticated: boolean) => {
+            if (isAuthenticated) {
+              this.router.navigateByUrl('/dashboard');
+            }
+          },
+          error: e => console.error(e)
+        })
+    }
 
   login(provider: string) {
     of(provider)

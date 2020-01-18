@@ -52,7 +52,6 @@ export class SubscriptionService {
         }),
         mergeMap((sub: PushSubscription) => {
           const parsedSub = sub.toJSON();
-          console.log(parsedSub);
           return this.createSubscription({
             owner,
             label,
