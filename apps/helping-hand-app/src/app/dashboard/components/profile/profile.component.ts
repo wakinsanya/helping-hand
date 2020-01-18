@@ -1,10 +1,12 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { User, Profile, UpdateProfileDto } from '@helping-hand/api-common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { User, Profile, SubscriptionLabel } from '@helping-hand/api-common';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { tap, takeUntil, map, mergeMap } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
+import { SubscriptionService } from '@helping-hand/core/services/subscription.service';
+import { environment } from '@helping-hand-environments/environment';
 
 @Component({
   selector: 'helping-hand-profile',
@@ -20,7 +22,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private toastrService: NbToastrService,
     private profileService: ProfileService,
-    private userService: UserService
+    private userService: UserService,
+    private subscriptionService: SubscriptionService
   ) {}
 
   ngOnInit() {
@@ -42,7 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveProfile() {
     this.profileService
-      .updateProfile(this.profile._id, { bio: this.newBio  })
+      .updateProfile(this.profile._id, { bio: this.newBio })
       .pipe(
         mergeMap(() => {
           return this.profileService.getProfileById(this.profile._id);

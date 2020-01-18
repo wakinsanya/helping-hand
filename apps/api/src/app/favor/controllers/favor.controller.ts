@@ -35,8 +35,8 @@ export class FavorController {
     @Query('limit') limit: string
   ): Observable<FavorQueryResult> {
     return this.favorService.list(
-      (owners && owners.length) ? owners.split(',') : [],
-      (notOwners && notOwners) ? notOwners.split(',') : [],
+      owners && owners.length ? owners.split(',') : [],
+      notOwners && notOwners.length ? notOwners.split(',') : [],
       sort === 'true',
       parseInt(skip, 10),
       parseInt(limit, 10)

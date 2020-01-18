@@ -1,5 +1,4 @@
 import { UserProvider, UserRole, SubscriptionLabel } from './enums';
-import { isMaster } from 'cluster';
 
 export interface User {
   readonly _id: string;
@@ -73,4 +72,9 @@ export interface FavorQueryResult {
 export interface UserQueryResult {
   users: User[];
   usersTotalCount: number;
+}
+
+export interface SubscriptionQuery {
+  owner: string;
+  labels: SubscriptionLabel[];
 }

@@ -25,6 +25,9 @@ export class FavorService {
     );
   }
 
+
+  getFavorById() {}
+
   getFavorsWithOwners(
     query: FavorQuery
   ): Observable<Array<{ favor: Favor; owner: User }>> {

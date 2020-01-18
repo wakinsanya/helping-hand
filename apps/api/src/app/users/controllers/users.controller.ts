@@ -9,7 +9,12 @@ import {
   Query
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { User, CreateUserDto, UpdateUserDto, UserQueryResult } from '@helping-hand/api-common';
+import {
+  User,
+  CreateUserDto,
+  UpdateUserDto,
+  UserQueryResult
+} from '@helping-hand/api-common';
 import { UsersService } from '@api/users/services/users.service';
 
 @Controller('users')
@@ -34,7 +39,7 @@ export class UsersController {
     @Query('limit') limit: string
   ): Observable<UserQueryResult> {
     return this.usersService.list(
-      (users && users.length) ? users.split(',') : [],
+      users && users.length ? users.split(',') : [],
       sort === 'true',
       parseInt(skip, 10),
       parseInt(limit, 10)
@@ -50,9 +55,7 @@ export class UsersController {
   }
 
   @Delete(':userId')
-  delete(
-    @Param('userId') userId: string
-  ): Observable<any> {
+  delete(@Param('userId') userId: string): Observable<any> {
     return this.usersService.delete(userId);
   }
 }

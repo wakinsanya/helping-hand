@@ -25,8 +25,13 @@ export class SubscriptionService {
     );
   }
 
-  list(): Observable<Subscription[]> {
-    return from(this.subscriptionModel.find({})).pipe(
+  list(owner: string, labels: string[]): Observable<Subscription[]> {
+    return from(
+      this.subscriptionModel.find({
+        owner,
+        label: { $in: labels }
+      })
+    ).pipe(
       map((subDocs: Subscription[]) => subDocs.map(doc => doc as Subscription))
     );
   }

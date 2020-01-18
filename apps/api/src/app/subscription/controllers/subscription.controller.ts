@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  Query
+} from '@nestjs/common';
 import { Subscription } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
 import { SubscriptionService } from '@api/subscription/services/subscription.service';
@@ -10,6 +18,17 @@ export class SubscriptionController {
   @Post()
   create(@Body() sub: Subscription): Observable<Subscription> {
     return this.subscriptionService.create(sub);
+  }
+
+  @Get()
+  list(
+    @Query('owner') owner: string,
+    @Query('labels') labels: string
+  ): Observable<Subscription[]> {
+    return this.subscriptionService.list(
+      owner,
+      labels && labels.length ? labels.split(',') : []
+    );
   }
 
   @Get(':subscriptionId')
