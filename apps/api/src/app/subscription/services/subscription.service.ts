@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { SUBSCRIPTION_MODEL } from '@api/constants';
-import { Subscription } from '@helping-hand/api-common';
+import { Subscription, SubscriptionLabel } from '@helping-hand/api-common';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SubscriptionDocument } from '@api/subscription/interfaces/subscription-document.interface';
@@ -32,11 +32,19 @@ export class SubscriptionService {
         label: { $in: labels }
       })
     ).pipe(
-      map((subDocs: Subscription[]) => subDocs.map(doc => doc as Subscription))
+      map((subDocs: Subscription[]) => subDocs as Subscription[])
     );
   }
 
   delete(_id: string): Observable<any> {
     return from(this.subscriptionModel.deleteOne({ _id }));
+  }
+
+  getByLabel(label: SubscriptionLabel): Observable<Subscription[]> {
+    return from(
+      this.subscriptionModel.find({ label })
+    ).pipe(
+      map((subDocs: Subscription[]) => subDocs as Subscription[])
+    )
   }
 }

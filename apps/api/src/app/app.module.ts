@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { FavorModule } from './favor/favor.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { SubscriptionModule } from './subscription/subscription.module';
     AuthModule,
     ProfileModule,
     FavorModule,
-    SubscriptionModule
+    SubscriptionModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService]
