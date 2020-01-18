@@ -27,9 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           next: (isAuthenticated: boolean) => {
             if (isAuthenticated) {
               this.router.navigateByUrl('/dashboard');
-            } else {
-              this.userService.removeLoggedInUser();
-              this.userService.removeUserProvider();
             }
           },
           error: e => console.error(e)

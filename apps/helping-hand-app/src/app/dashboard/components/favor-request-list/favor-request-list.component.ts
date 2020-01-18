@@ -1,8 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FavorService } from '@helping-hand/core/services/favor.service';
-import { User, FavorQuery, Favor } from '@helping-hand/api-common';
-import { Observable, of, Subject } from 'rxjs';
-import { tap, mergeMap, takeUntil } from 'rxjs/operators';
+import {
+  User,
+  FavorQuery,
+  Favor,
+  FavorQueryResult
+} from '@helping-hand/api-common';
+import { Observable, of, Subject, from } from 'rxjs';
+import {
+  tap,
+  mergeMap,
+  takeUntil,
+  switchMap,
+  map,
+  toArray
+} from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 
 @Component({
@@ -35,18 +47,28 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
             limit: 10
           };
         }),
-        mergeMap(() => this.updateFavorList())
+        mergeMap(() => this.updateFavorsAndOwners())
       )
       .subscribe({ error: e => console.error(e) });
   }
 
-  updateFavorList(): Observable<{}> {
+  updateFavorsAndOwners() {
     return this.favorService.getFavors(this.favorQuery).pipe(
-      tap(({ favors, favorsTotalCount }) => {
-        this.favorList = favors;
-        this.favorsTotalCount = favorsTotalCount;
+      tap((data: FavorQueryResult) => {
+        this.favorsTotalCount = data.favorsTotalCount;
       }),
-      mergeMap(() => of({}))
+      switchMap((data: FavorQueryResult) => {
+        return from(data.favors);
+      }),
+      mergeMap((favor: Favor) => {
+        return this.userService.getUserById(favor.owner).pipe(
+          tap((user: User) => (favor.user = user)),
+          map(() => favor)
+        );
+      }),
+      toArray(),
+      tap((favors: Favor[]) => (this.favorList = favors)),
+      switchMap(() => of({}))
     );
   }
 

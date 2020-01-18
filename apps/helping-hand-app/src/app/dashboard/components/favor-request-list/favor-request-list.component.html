@@ -2,7 +2,12 @@
   <h4>Favour Requests by Others</h4>
   <nb-list>
     <nb-list-item *ngFor="let favor of favorList">
-      {{ favor.title }}
+      <nb-user
+        [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
+        size="giant"
+        [picture]="favor.user?.pictureUrl"
+      >
+      </nb-user>
     </nb-list-item>
   </nb-list>
 </div>

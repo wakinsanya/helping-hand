@@ -8,8 +8,9 @@ import {
   FavorQueryResult,
   User
 } from '@helping-hand/api-common';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, of, from } from 'rxjs';
 import { queryString } from '@helping-hand/core/helpers/query-string';
+import { mergeMap, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class FavorService {
@@ -25,16 +26,7 @@ export class FavorService {
     );
   }
 
-
   getFavorById() {}
-
-  getFavorsWithOwners(
-    query: FavorQuery
-  ): Observable<Array<{ favor: Favor; owner: User }>> {
-    return this.httpClient.get<Array<{ favor: Favor; owner: User }>>(
-      `api/favors${queryString(query)}`
-    );
-  }
 
   updateFavor(favorId: string, favorDto: UpdateFavorDto): Observable<any> {
     return this.httpClient.patch(`api/favors/${favorId}`, favorDto);
