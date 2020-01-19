@@ -29,6 +29,7 @@ interface FavorBody {
 })
 export class FavorListComponent implements OnInit, OnDestroy {
   today: Date;
+  currentPage = 1;
   loggedInUser: User;
   favorQuery: FavorQuery;
   favorList: Favor[] = [];
@@ -180,13 +181,17 @@ export class FavorListComponent implements OnInit, OnDestroy {
   }
 
   onPageNav(direction: 'next' | 'prev') {
-    this.favorQuery.skip =
-      direction === 'next'
-        ? this.favorQuery.skip + this.favorQuery.limit
-        : this.favorQuery.skip - this.favorQuery.limit;
+    if (direction === 'next') {
+      this.favorQuery.skip += this.favorQuery.limit;
+      this.currentPage++;
+    } else {
+      this.favorQuery.skip -= this.favorQuery.limit;
+      this.currentPage--;
+    }
     this.updateFavorList()
       .subscribe({ error: e => console.error(e) });
   }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

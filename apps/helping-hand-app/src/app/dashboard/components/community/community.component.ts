@@ -36,10 +36,13 @@ export class CommunityComponent implements OnInit {
   }
 
   onPageNav(direction: 'next' | 'prev') {
-    this.userQuery.skip =
-      direction === 'next'
-        ? this.userQuery.skip + this.userQuery.limit
-        : this.userQuery.skip - this.userQuery.limit;
+    if (direction === 'next') {
+      this.userQuery.skip += this.userQuery.limit;
+      this.currentPage++;
+    } else {
+      this.userQuery.skip -= this.userQuery.limit;
+      this.currentPage--;
+    }
     this.updateUserList().subscribe({ error: e => console.error(e) });
   }
 }

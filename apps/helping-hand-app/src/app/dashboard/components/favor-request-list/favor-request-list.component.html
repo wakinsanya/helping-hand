@@ -69,7 +69,7 @@
   </div>
   <div class="favor-request-list__pagin__wrap">
     <button nbButton [disabled]="favorQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
-    <button nbButton (click)="onPageNav('next')" [disabled]="!favorList?.length">Next Page</button>
+    <button nbButton (click)="onPageNav('next')" [disabled]="(currentPage * favorQuery.limit) >= favorsTotalCount">Next Page</button>
   </div>
   <ng-template #help let-context="$implicit">
     <nb-card>
