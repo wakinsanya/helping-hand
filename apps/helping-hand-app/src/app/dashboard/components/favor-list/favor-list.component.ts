@@ -19,8 +19,7 @@ import {
   NbWindowService,
   NbDateService,
   NbWindowRef,
-  NbToastrService,
-  NbDialogService
+  NbToastrService
 } from '@nebular/theme';
 
 interface FavorBody {
@@ -54,8 +53,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
   constructor(
     private favorService: FavorService,
     private userService: UserService,
-    private windowService: NbWindowService,
-    private dialogService: NbDialogService,
+    private windowService: NbWindowService
     private dateService: NbDateService<Date>,
     private toastrService: NbToastrService
   ) {}
