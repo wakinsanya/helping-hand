@@ -39,6 +39,7 @@ import { ChatModule } from './chat/chat.module';
     NbToastrModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
+    NbSidebarModule.forRoot(),
     NbDatepickerModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [

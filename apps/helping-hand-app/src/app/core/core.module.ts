@@ -12,6 +12,7 @@ import { ProfileService } from './services/profile.service';
 import { EventBusService } from './services/event-bus.service';
 import { FavorService } from './services/favor.service';
 import { SubscriptionService } from './services/subscription.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -21,7 +22,8 @@ import { SubscriptionService } from './services/subscription.service';
     NbEvaIconsModule,
     NbActionsModule,
     NbUserModule,
-    NbToastrModule
+    NbToastrModule,
+    RouterModule
   ],
   providers: [
     AuthService,

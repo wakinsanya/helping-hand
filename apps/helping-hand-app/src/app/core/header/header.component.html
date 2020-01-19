@@ -13,14 +13,12 @@
     </nb-user
   ></nb-action>
   <nb-action *ngIf="loggedInUser">
-    <span (click)="logout()" class="header__logout">
-      Dashboard
-    </span>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser">
-    <span (click)="logout()" class="header__logout">
-      Messages
-    </span>
+    <span *ngIf="!isOnMessages" class="header__logout" (click)="goToMessages()"
+      >Messages</span
+    >
+    <span *ngIf="isOnMessages" class="header__logout" (click)="goHome()"
+      >Dashboard</span
+    >
   </nb-action>
   <nb-action *ngIf="loggedInUser">
     <span (click)="logout()" class="header__logout">

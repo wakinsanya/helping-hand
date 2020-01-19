@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '@helping-hand/api-common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { NbAuthService } from '@nebular/auth';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '../services/user.service';
 
@@ -12,6 +12,7 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  isOnMessages = false;
   loggedInUser: User;
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -27,6 +28,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         tap((user: User) => {
           this.loggedInUser = user;
+        })
+      )
+      .subscribe({ error: e => console.error(e) });
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        tap(e => {
+          const { url } = e as NavigationEnd;
+          this.isOnMessages = url === '/chat';
         })
       )
       .subscribe({ error: e => console.error(e) });
@@ -49,6 +59,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   goHome() {
     this.router.navigate(['/dashboard']);
+  }
+
+  goToMessages() {
+    this.isOnMessages = true;
+    this.router.navigate(['/chat']);
   }
 
   ngOnDestroy() {
