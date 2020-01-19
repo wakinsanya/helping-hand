@@ -88,7 +88,6 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
       toArray(),
       tap((favors: Favor[]) => {
         this.favorList = favors;
-        console.log(this.favorList);
         this.cardFlipStates = new Array(favors.length).fill(false);
       }),
       switchMap(() => of({}))

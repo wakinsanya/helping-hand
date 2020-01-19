@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewEncapsulation } from '@angular/core';
 import {
   FavorQuery,
   User,
@@ -19,7 +19,8 @@ import {
   NbWindowService,
   NbDateService,
   NbWindowRef,
-  NbToastrService
+  NbToastrService,
+  NbDialogService
 } from '@nebular/theme';
 
 interface FavorBody {
@@ -31,7 +32,8 @@ interface FavorBody {
 @Component({
   selector: 'helping-hand-favor-list',
   templateUrl: './favor-list.component.html',
-  styleUrls: ['./favor-list.component.scss']
+  styleUrls: ['./favor-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FavorListComponent implements OnInit, OnDestroy {
   today: Date;
@@ -53,6 +55,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
     private favorService: FavorService,
     private userService: UserService,
     private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private dateService: NbDateService<Date>,
     private toastrService: NbToastrService
   ) {}
@@ -178,11 +181,12 @@ export class FavorListComponent implements OnInit, OnDestroy {
   openFavorFormWindow(
     favorForm: TemplateRef<any>,
     title: string,
-    context = {}
+    context = {},
   ) {
     this.favorWindowRef$ = this.windowService.open(favorForm, {
       title,
-      context
+      context,
+      windowClass: 'favor-form-window'
     });
   }
 

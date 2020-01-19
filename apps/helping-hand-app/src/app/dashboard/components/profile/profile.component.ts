@@ -56,7 +56,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   toggleDataKeyVisibility(key: string) {
-    console.log('Data Key Param', key);
     const profileDto: UpdateProfileDto = this.profile.publicDataKeys.includes(
       key as ProfileDataKey
     )
@@ -66,7 +65,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       : {
           publicDataKeys: [...this.profile.publicDataKeys, key]
         };
-    console.log('resolved dto', profileDto);
     this.profileService
       .updateProfile(this.profile._id, profileDto)
       .pipe(
@@ -88,8 +86,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
-    console.log('Raw Profile', this.profile);
-    console.log('Casted Profile', this.profile as  UpdateProfileDto)
     this.profileService
       .updateProfile(this.profile._id, this.profile as UpdateProfileDto)
       .pipe(
