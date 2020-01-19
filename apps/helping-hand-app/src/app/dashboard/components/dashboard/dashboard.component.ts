@@ -4,13 +4,9 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {
-  Profile,
-  User,
-  CreateProfileDto
-} from '@helping-hand/api-common';
+import { Profile, User, CreateProfileDto } from '@helping-hand/api-common';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { NbDialogService } from '@nebular/theme';
+import { NbDialogService, NbTabComponent } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { mergeMap, tap } from 'rxjs/operators';
 
@@ -22,6 +18,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 export class DashboardComponent implements AfterViewInit {
   isLoading = false;
   favorRequestCount: number;
+  hideFavorRequestCount = false;
   @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
 
   constructor(
@@ -64,8 +61,12 @@ export class DashboardComponent implements AfterViewInit {
     }
   }
 
-  updateFavorRequestCount(count: any) {
-    console.log(count);
+  updateFavorRequestCount(count: number) {
     this.favorRequestCount = count;
+  }
+
+  onTabChange({ tabTitle }) {
+    this.hideFavorRequestCount =
+      (tabTitle as string).toLowerCase() === 'help others';
   }
 }

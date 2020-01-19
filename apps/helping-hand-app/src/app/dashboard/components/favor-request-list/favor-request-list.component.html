@@ -1,17 +1,42 @@
 <div class="favor-request-list__container">
   <h4>Favour Requests by Others</h4>
-  <nb-list>
-    <nb-list-item *ngFor="let favor of favorList">
-      <nb-user
-        badgeStatus="warning"
-        badgePosition="bottom right"
-        [badgeText]="'expires ' + (favor.date | customShortDate)"
-        [title]="favor.title"
-        [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
-        size="giant"
-        [picture]="favor.user?.pictureUrl"
-      >
-      </nb-user>
-    </nb-list-item>
-  </nb-list>
+  <div *ngFor="let favor of favorList; let i = index">
+    <nb-card>
+      <nb-card-body>
+        <div>
+          <nb-user
+            badgeStatus="warning"
+            badgePosition="bottom right"
+            [badgeText]="'expires ' + (favor.date | customShortDate)"
+            [title]="favor.title"
+            [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
+            size="giant"
+            [picture]="favor.user?.pictureUrl"
+          >
+          </nb-user>
+          <div class="favor-request-list__opts__wrap">
+            <button nbButton size="small" [nbPopover]="help" [nbPopoverContext]="{ favor: favor }">
+              <nb-icon icon="chevron-right-outline"></nb-icon>
+              Help
+            </button>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <ng-template #help let-context="$implicit">
+    <nb-card>
+      <nb-card-header>
+        Do you think you can help {{ context?.favor?.user?.firstName }} ?
+      </nb-card-header>
+      <nb-list>
+        <nb-list-item>
+          <button nbButton>Leave Comment</button>
+        </nb-list-item>
+        <nb-list-item>
+          <button nbButton>Send Message</button>
+        </nb-list-item>
+      </nb-list>
+    </nb-card>
+  </ng-template>
 </div>

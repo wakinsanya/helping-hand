@@ -19,6 +19,8 @@ import { JwtInterceptor } from '@helping-hand/core/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +30,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
+    DashboardModule,
+    ChatModule,
     AuthModule,
     NbThemeModule.forRoot({ name: 'helping-hand' }),
     NbLayoutModule,

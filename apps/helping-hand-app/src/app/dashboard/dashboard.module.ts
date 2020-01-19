@@ -17,7 +17,11 @@ import {
   NbAccordionModule,
   NbIconModule,
   NbWindowModule,
-  NbDatepickerModule
+  NbDatepickerModule,
+  NbActionsModule,
+  NbDialogModule,
+  NbPopoverModule,
+  NbChatModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -54,6 +58,10 @@ import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
     NbAccordionModule,
     NbIconModule,
     NbDatepickerModule,
+    NbActionsModule,
+    NbPopoverModule,
+    NbDialogModule,
+    NbChatModule,
     NbWindowModule.forChild()
   ],
   exports: [CustomShortDatePipe]

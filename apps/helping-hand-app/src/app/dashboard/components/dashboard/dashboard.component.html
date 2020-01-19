@@ -1,24 +1,46 @@
 <nb-layout>
   <nb-layout-column class="dashboard__container">
     <h1>Your Dashboard</h1>
-    <nb-tabset fullWidth>
-      <nb-tab tabTitle="Make Favour Request" tabIcon="radio-outline" responsive>
+    <nb-tabset fullWidth (changeTab)="onTabChange($event)">
+      <nb-tab
+        tabTitle="Make Favour Request"
+        tabIcon="radio-outline"
+        responsive
+        lazyLoad="true"
+      >
         <helping-hand-favor-list></helping-hand-favor-list>
       </nb-tab>
       <nb-tab
         badgeStatus="success"
-        [badgeText]="favorRequestCount"
+        [badgeText]="
+          favorRequestCount && !hideFavorRequestCount
+            ? favorRequestCount
+            : ''
+        "
         badgePosition="top right"
         tabTitle="Help Others"
         tabIcon="message-circle-outline"
         responsive
+        lazyLoad="true"
       >
-      <helping-hand-favor-request-list (favorRequestCount)="updateFavorRequestCount($event)"></helping-hand-favor-request-list>
+        <helping-hand-favor-request-list
+          (favorRequestCount)="updateFavorRequestCount($event)"
+        ></helping-hand-favor-request-list>
       </nb-tab>
-      <nb-tab tabTitle="Community" tabIcon="people-outline" responsive>
+      <nb-tab
+        tabTitle="Community"
+        tabIcon="people-outline"
+        responsive
+        lazyLoad="true"
+      >
         <helping-hand-community></helping-hand-community>
       </nb-tab>
-      <nb-tab tabTitle="Profile" tabIcon="person-outline" responsive>
+      <nb-tab
+        tabTitle="Profile"
+        tabIcon="person-outline"
+        responsive
+        lazyLoad="true"
+      >
         <helping-hand-profile></helping-hand-profile>
       </nb-tab>
     </nb-tabset>
@@ -28,9 +50,8 @@
         <nb-card-header><h4>Welcome to Helping Hand</h4></nb-card-header>
         <nb-card-body>
           <p>
-            Helping Hand helps you to get that little bit of
-            help when you need it and gives you a chance to help others out as
-            well.
+            Helping Hand helps you to get that little bit of help when you need
+            it and gives you a chance to help others out as well.
           </p>
         </nb-card-body>
         <nb-card-footer>

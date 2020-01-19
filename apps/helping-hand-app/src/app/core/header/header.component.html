@@ -14,6 +14,16 @@
   ></nb-action>
   <nb-action *ngIf="loggedInUser">
     <span (click)="logout()" class="header__logout">
+      Dashboard
+    </span>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser">
+    <span (click)="logout()" class="header__logout">
+      Messages
+    </span>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser">
+    <span (click)="logout()" class="header__logout">
       Log Out
     </span>
   </nb-action>

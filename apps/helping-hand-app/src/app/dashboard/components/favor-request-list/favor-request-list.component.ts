@@ -1,10 +1,15 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import {
   User,
   FavorQuery,
-  Favor,
-  FavorQueryResult
+  Favor
 } from '@helping-hand/api-common';
 import { Observable, of, Subject, from } from 'rxjs';
 import {
@@ -23,12 +28,15 @@ import { UserService } from '@helping-hand/core/services/user.service';
   styleUrls: ['./favor-request-list.component.scss']
 })
 export class FavorRequestListComponent implements OnInit, OnDestroy {
+  cardFlipStates: boolean[];
   loggedInUser: User;
   favorQuery: FavorQuery;
   favorList: Favor[] = [];
   favorsTotalCount: number;
   private destroy$: Subject<void> = new Subject<void>();
-  @Output() favorRequestCount: EventEmitter<number> = new EventEmitter<number>();
+  @Output() favorRequestCount: EventEmitter<number> = new EventEmitter<
+    number
+  >();
 
   constructor(
     private userService: UserService,
@@ -53,7 +61,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
       .subscribe({ error: e => console.error(e) });
   }
 
-  updateFavorsAndOwners() {
+  updateFavorsAndOwners(): Observable<{}> {
     return this.favorService.getFavors(this.favorQuery).pipe(
       tap(({ favorsTotalCount }) => {
         this.favorsTotalCount = favorsTotalCount;
@@ -70,10 +78,18 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
         );
       }),
       toArray(),
-      tap((favors: Favor[]) => (this.favorList = favors)),
+      tap((favors: Favor[]) => {
+        this.favorList = favors;
+        this.cardFlipStates = new Array(favors.length).fill(false);
+      }),
       switchMap(() => of({}))
     );
   }
+
+
+ toggleCardFlipState(i: number) {
+  this.cardFlipStates[i] = !this.cardFlipStates[i];
+ }
 
   ngOnDestroy() {
     this.destroy$.next();
