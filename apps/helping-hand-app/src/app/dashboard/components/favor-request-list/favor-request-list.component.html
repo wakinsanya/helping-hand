@@ -1,28 +1,56 @@
 <div class="favor-request-list__container">
   <h4>Favour Requests by Others</h4>
   <div *ngFor="let favor of favorList; let i = index">
-    <nb-card>
-      <nb-card-body>
-        <div>
-          <nb-user
-            badgeStatus="warning"
-            badgePosition="bottom right"
-            [badgeText]="'expires ' + (favor.date | customShortDate)"
-            [title]="favor.title"
-            [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
-            size="giant"
-            [picture]="favor.user?.pictureUrl"
-          >
-          </nb-user>
-          <div class="favor-request-list__opts__wrap">
-            <button nbButton size="small" [nbPopover]="help" [nbPopoverContext]="{ favor: favor }">
-              <nb-icon icon="chevron-right-outline"></nb-icon>
-              Help
+    <nb-flip-card [showToggleButton]="false" [flipped]="cardFlipStates[i]">
+      <nb-card-front>
+        <nb-card size="xsmall">
+          <nb-card-header>
+            <nb-user
+              badgeStatus="warning"
+              badgePosition="bottom right"
+              [badgeText]="'expires ' + (favor.date | customShortDate)"
+              [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
+              size="large"
+              [picture]="favor.user?.pictureUrl"
+            >
+            </nb-user>
+          </nb-card-header>
+          <nb-card-body>
+            <h5>{{ favor.title }}</h5>
+          </nb-card-body>
+          <nb-card-footer>
+            <div class="favor-request-list__opts__wrap">
+              <button nbButton [nbPopover]="favor.text ? favor.text : 'No additonal information'" [nbPopoverTrigger]="'hover'">
+                <nb-icon icon="book-outline"> </nb-icon>More Information
+              </button>
+              <button
+                nbButton
+                (click)="toggleCardFlipState(i)"
+                class="favor-request-list__help-btn"
+              >
+                <nb-icon icon="chevron-right-outline"></nb-icon>Help
+              </button>
+            </div>
+          </nb-card-footer>
+        </nb-card>
+      </nb-card-front>
+      <nb-card-back>
+        <nb-card size="xsmall">
+          <nb-card-header>
+            Do you think you can help {{ favor.user.firstName }}?
+          </nb-card-header>
+          <nb-card-body>
+            <p>Contact Information</p>
+            <p>Email: {{ favor.user.email }}</p>
+          </nb-card-body>
+          <nb-card-footer>
+            <button nbButton status="warning" (click)="toggleCardFlipState(i)">
+              <nb-icon icon="chevron-left-outline"></nb-icon>Back
             </button>
-          </div>
-        </div>
-      </nb-card-body>
-    </nb-card>
+          </nb-card-footer>
+        </nb-card>
+      </nb-card-back>
+    </nb-flip-card>
   </div>
   <ng-template #help let-context="$implicit">
     <nb-card>

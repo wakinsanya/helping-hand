@@ -2,6 +2,7 @@ import { UserProvider, UserRole, SubscriptionLabel } from './enums';
 
 export interface User {
   readonly _id: string;
+  readonly email: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly profile: string;

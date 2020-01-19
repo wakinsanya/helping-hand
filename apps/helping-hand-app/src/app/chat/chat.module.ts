@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbLayoutModule, NbChatModule, NbSidebarModule } from '@nebular/theme';
+import { NbLayoutModule, NbChatModule, NbSidebarModule, NbUserModule, NbListModule } from '@nebular/theme';
 import { ChatComponent } from './chat/chat.component';
 import { ChatRoutingModule } from './chat-routing.module';
 
@@ -11,6 +11,8 @@ import { ChatRoutingModule } from './chat-routing.module';
     ChatRoutingModule,
     NbLayoutModule,
     NbSidebarModule,
+    NbUserModule,
+    NbListModule,
     NbChatModule
   ]
 })

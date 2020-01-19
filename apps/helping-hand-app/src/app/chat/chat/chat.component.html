@@ -1,6 +1,18 @@
 <nb-layout>
-  <nb-sidebar>
-
+  <nb-sidebar responsive="true">
+    <div>
+      <h4>Your Contacts</h4>
+      <nb-list>
+        <nb-list-item *ngFor="let user of userList">
+          <nb-user [name]="user.firstName + ' ' + user.lastName" size="giant" [picture]="user.pictureUrl">
+          </nb-user>
+        </nb-list-item>
+      </nb-list>
+    </div>
   </nb-sidebar>
-  <nb-layout-column></nb-layout-column>
+  <nb-layout-column>
+    <nb-chat>
+
+    </nb-chat>
+  </nb-layout-column>
 </nb-layout>
