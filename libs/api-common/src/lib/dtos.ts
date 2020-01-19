@@ -25,6 +25,7 @@ export class CreateProfileDto {
 
 export class UpdateProfileDto {
   readonly bio?: string;
+  readonly visibleDataKeys?: string[];
 }
 
 export class CreateFavorDto {

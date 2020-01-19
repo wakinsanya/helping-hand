@@ -12,5 +12,9 @@ export const ProfileSchema = new Schema({
   subscriptions: [{
     type: Schema.Types.ObjectId,
     default: []
+  }],
+  visibleDataKeys: [{
+    type: Schema.Types.String,
+    default: []
   }]
 });

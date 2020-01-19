@@ -9,9 +9,9 @@
               badgeStatus="warning"
               badgePosition="bottom right"
               [badgeText]="'expires ' + (favor.date | customShortDate)"
-              [name]="favor.user?.firstName + ' ' + favor.user?.lastName"
+              [name]="favor?.user?.firstName + ' ' + favor?.user?.lastName"
               size="large"
-              [picture]="favor.user?.pictureUrl"
+              [picture]="favor?.user?.pictureUrl"
             >
             </nb-user>
           </nb-card-header>
@@ -20,7 +20,16 @@
           </nb-card-body>
           <nb-card-footer>
             <div class="favor-request-list__opts__wrap">
-              <button nbButton [nbPopover]="favor.text ? favor.text : 'No additonal information'" [nbPopoverTrigger]="'hover'">
+              <button
+                nbButton
+                [nbPopover]="
+                  favor.text
+                    ? favor.text
+                    : favor.user.firstName +
+                      ' did not include any additonal information'
+                "
+                [nbPopoverTrigger]="'hover'"
+              >
                 <nb-icon icon="book-outline"> </nb-icon>More Information
               </button>
               <button
@@ -37,11 +46,20 @@
       <nb-card-back>
         <nb-card size="xsmall">
           <nb-card-header>
-            Do you think you can help {{ favor.user.firstName }}?
+            Do you think you can help {{ favor?.user?.firstName }}?
           </nb-card-header>
           <nb-card-body>
-            <p>Contact Information</p>
-            <p>Email: {{ favor.user.email }}</p>
+            <p>Ways to contact {{ favor?.user?.firstName }}:</p>
+            <div class="favor-request-list__opts__wrap">
+              <button nbButton>
+                <nb-icon icon="email-outline"></nb-icon>
+                View Email
+              </button>
+              <button nbButton>
+                <nb-icon icon="phone-outline"></nb-icon>
+                View Phone Number
+              </button>
+            </div>
           </nb-card-body>
           <nb-card-footer>
             <button nbButton status="warning" (click)="toggleCardFlipState(i)">

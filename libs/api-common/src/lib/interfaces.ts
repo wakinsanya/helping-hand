@@ -18,6 +18,7 @@ export interface Profile {
   readonly owner: string;
   readonly bio: string;
   readonly subscriptions: Subscription[];
+  readonly visibleDataKeys: string[];
 }
 
 export interface Subscription {
