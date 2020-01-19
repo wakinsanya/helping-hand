@@ -5,3 +5,10 @@
 .profile__bio__textarea {
   width: 100%;
 }
+
+.profile__pref-opts__wrap {
+  width: 100%;
+  & > div {
+    margin-top: 20px;
+  }
+}

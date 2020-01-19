@@ -1,5 +1,5 @@
 import { UserProvider, UserRole } from './enums';
-import { Subscription } from './interfaces';
+import { Subscription, ProfileData } from './interfaces';
 
 export class CreateUserDto {
   readonly email: string;
@@ -21,11 +21,14 @@ export class UpdateUserDto {
 export class CreateProfileDto {
   readonly owner: string;
   readonly bio: string;
+  readonly publicDataKeys?: string[];
+  readonly data: ProfileData;
 }
 
 export class UpdateProfileDto {
   readonly bio?: string;
-  readonly visibleDataKeys?: string[];
+  readonly publicDataKeys?: string[];
+  readonly data?: ProfileData;
 }
 
 export class CreateFavorDto {

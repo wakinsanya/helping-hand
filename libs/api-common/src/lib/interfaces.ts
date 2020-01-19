@@ -18,7 +18,8 @@ export interface Profile {
   readonly owner: string;
   readonly bio: string;
   readonly subscriptions: Subscription[];
-  readonly visibleDataKeys: string[];
+  readonly publicDataKeys: string[];
+  readonly data: ProfileData;
 }
 
 export interface Subscription {
@@ -46,6 +47,13 @@ export interface Favor {
   readonly fuffiledBy: string;
   date?: Date;
   user?: User;
+}
+
+export interface ProfileData {
+  email?: string;
+  phoneNumber?: string;
+  instagramUsername?: string;
+  twitterUsername?: string;
 }
 
 export interface PaginationQuery {

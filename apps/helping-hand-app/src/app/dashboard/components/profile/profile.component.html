@@ -1,15 +1,96 @@
 <div>
   <nb-user
-      size="giant"
-      [title]="loggedInUser?.role"
-      [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
-      [picture]="loggedInUser.pictureUrl"
-    >
-</nb-user>
-<h5>Why not say a little about yourself?</h5>
-  <label for="bio"><h5>About</h5></label>
-  <textarea nbInput fieldSize="giant" [(ngModel)]="newBio" name="bio" class="profile__bio__textarea"></textarea>
-  <div class="profile__actions-wrap">
-    <button nbButton (click)="saveProfile()">Save</button>
+    size="giant"
+    [title]="loggedInUser?.role"
+    [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
+    [picture]="loggedInUser.pictureUrl"
+  >
+  </nb-user>
+  <div>
+    <div>
+      <h5>Why not say a little about yourself?</h5>
+      <label for="bio"><h5>About</h5></label>
+      <textarea
+        nbInput
+        fieldSize="giant"
+        [(ngModel)]="newBio"
+        name="bio"
+        class="profile__bio__textarea"
+      ></textarea>
+      <div class="profile__actions-wrap">
+        <button nbButton (click)="saveProfile()">Save</button>
+      </div>
+    </div>
+    <div>
+      <h5>How do you want members of the community of reach you?</h5>
+      <nb-list>
+        <nb-list-item>
+          <div class="profile__pref-opts__wrap">
+            <nb-toggle
+              status="primary"
+              (checkedChange)=""
+              [checked]="profile.publicDataKeys.includes('email')"
+              >Share email</nb-toggle
+            >
+            <div *ngIf="profile.publicDataKeys.includes('email')">
+              <input
+                readonly
+                nbInput
+                [(ngModel)]="loggedInUser.email"
+                fullWidth="true"
+              />
+            </div>
+          </div>
+        </nb-list-item>
+        <nb-list-item>
+          <div class="profile__pref-opts__wrap">
+            <nb-toggle
+              status="primary"
+              [checked]="profile.publicDataKeys.includes('phoneNumber')"
+              >Share phone number</nb-toggle
+            >
+            <div *ngIf="profile.publicDataKeys.includes('phoneNumber')">
+              <input
+                nbInput
+                [(ngModel)]="loggedInUser.email"
+                fullWidth="true"
+              />
+            </div>
+          </div>
+        </nb-list-item>
+        <nb-list-item>
+          <div class="profile__pref-opts__wrap">
+            <nb-toggle
+              status="primary"
+              [checked]="profile.publicDataKeys.includes('instagramUsername')"
+              >Share instagram username</nb-toggle
+            >
+            <div *ngIf="profile.publicDataKeys.includes('instagramUsername')">
+              <input
+                nbInput
+                [(ngModel)]="loggedInUser.email"
+                fullWidth="true"
+              />
+            </div>
+          </div>
+        </nb-list-item>
+        <nb-list-item>
+          <div class="profile__pref-opts__wrap">
+            <nb-toggle
+              status="primary"
+              [checked]="profile.publicDataKeys.includes('twitterUsername')"
+              >Share twitter username</nb-toggle
+            >
+            <div *ngIf="profile.publicDataKeys.includes('twitterUsername')">
+              <input
+                nbInput
+                [(ngModel)]="loggedInUser.email"
+                fullWidth="true"
+              />
+            </div>
+          </div>
+        </nb-list-item>
+      </nb-list>
+    </div>
   </div>
 </div>

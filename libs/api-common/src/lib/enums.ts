@@ -12,3 +12,10 @@ export enum UserRole {
 export enum SubscriptionLabel {
   Favor = 'favor'
 }
+
+export enum PublicDataKeys {
+  Email = 'email',
+  PhoneNumber = 'phoneNumber',
+  InstagramUsername = 'instagramUsername',
+  TwitterUsername = 'twitterUsername'
+}

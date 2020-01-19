@@ -21,7 +21,8 @@ import {
   NbActionsModule,
   NbDialogModule,
   NbPopoverModule,
-  NbChatModule
+  NbChatModule,
+  NbToggleComponent
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -37,7 +38,8 @@ import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
     FavorListComponent,
     ProfileComponent,
     CommunityComponent,
-    CustomShortDatePipe
+    CustomShortDatePipe,
+    NbToggleComponent
   ],
   imports: [
     CommonModule,

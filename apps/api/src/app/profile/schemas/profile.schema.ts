@@ -13,8 +13,23 @@ export const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId,
     default: []
   }],
-  visibleDataKeys: [{
+  publicDataKeys: [{
     type: Schema.Types.String,
     default: []
-  }]
+  }],
+  data: {
+    email: {
+      type: Schema.Types.String,
+      required: 'profile email is required'
+    },
+    phoneNumber: {
+      type: Schema.Types.String // potential for refactor if functionality changes
+    },
+    instagramUsername: {
+      type: Schema.Types.String
+    },
+    twitterUsername: {
+      type: Schema.Types.String
+    }
+  }
 });
