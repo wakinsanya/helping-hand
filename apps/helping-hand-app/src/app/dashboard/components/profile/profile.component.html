@@ -20,7 +20,7 @@
         <nb-list-item *ngFor="let dataKey of profileDataKeys">
           <div class="profile__pref-opts__wrap">
             <nb-toggle
-              status="primary"
+              [status]="profile?.publicDataKeys?.includes(dataKey) ? 'primary' : 'danger'"
               [ngModel]="profile?.publicDataKeys?.includes(dataKey)"
               (checkedChange)="toggleDataKeyVisibility(dataKey)"
               >{{ profileDataKeyDisplayMap[dataKey] }}</nb-toggle
@@ -34,11 +34,11 @@
                   profileDataKeyDisplayMap[dataKey]
                 }} here"
               />
-              <button nbButton fullWidth size="tiny" class="profile__tiny-btn">Update</button>
             </div>
           </div>
         </nb-list-item>
       </nb-list>
+      <button nbButton fullWidth size="tiny" class="profile__tiny-btn" (click)="saveProfile()">Update</button>
     </div>
     <div>
       <h5>Why not say a little about yourself?</h5>

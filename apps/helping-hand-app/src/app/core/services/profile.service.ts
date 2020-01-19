@@ -18,14 +18,15 @@ export class ProfileService {
     return this.httpClient.get<Profile>(`api/profiles/${profileId}`);
   }
 
+  getProfileByOwner(ownerId: string): Observable<Profile> {
+    return this.httpClient.get<Profile>(`api/profiles/owner/${ownerId}`);
+  }
+
   updateProfile(
     profileId: string,
     profileDto: UpdateProfileDto
   ): Observable<any> {
-    return this.httpClient.patch<any>(
-      `api/profiles/${profileId}`,
-      profileDto
-    );
+    return this.httpClient.patch<any>(`api/profiles/${profileId}`, profileDto);
   }
 
   deleteProfile(profileId: string): Observable<any> {

@@ -45,4 +45,9 @@ export class ProfileService {
   delete(_id: string): Observable<any> {
     return from(this.profileModel.deleteOne({ _id }));
   }
+
+  getByOwner(ownerId: string): Observable<Profile> {
+    return from(this.profileModel.findOne({ owner: ownerId }))
+      .pipe(map((profileDoc: ProfileDocument) => profileDoc as Profile));
+  }
 }

@@ -47,6 +47,7 @@ export interface Favor {
   readonly fuffiledBy: string;
   date?: Date;
   user?: User;
+  profile?: Profile;
 }
 
 export interface ProfileData {

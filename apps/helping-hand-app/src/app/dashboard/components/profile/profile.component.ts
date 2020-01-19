@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               `Helping Hand will now share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
             );
           } else {
-            this.toastrService.danger(
+            this.toastrService.info(
               `Helping Hand will no longer share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
             );
           }
@@ -88,8 +88,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
+    console.log('Raw Profile', this.profile);
+    console.log('Casted Profile', this.profile as  UpdateProfileDto)
     this.profileService
-      .updateProfile(this.profile._id, { bio: this.newBio })
+      .updateProfile(this.profile._id, this.profile as UpdateProfileDto)
       .pipe(
         switchMap(() => this.profileService.getProfileById(this.profile._id)),
         tap((profile: Profile) => {

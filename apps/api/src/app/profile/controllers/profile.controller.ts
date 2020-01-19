@@ -46,4 +46,9 @@ export class ProfileController {
   delete(@Param('profileId') profileId: string): Observable<any> {
     return this.profileService.delete(profileId);
   }
+
+  @Get('owner/:ownerId')
+  getByOwner(@Param('ownerId') ownerId: string): Observable<Profile> {
+    return this.profileService.getByOwner(ownerId);
+  }
 }
