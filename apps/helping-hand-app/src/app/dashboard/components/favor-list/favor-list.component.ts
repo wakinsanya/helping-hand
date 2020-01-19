@@ -179,6 +179,14 @@ export class FavorListComponent implements OnInit, OnDestroy {
     );
   }
 
+  onPageNav(direction: 'next' | 'prev') {
+    this.favorQuery.skip =
+      direction === 'next'
+        ? this.favorQuery.skip + this.favorQuery.limit
+        : this.favorQuery.skip - this.favorQuery.limit;
+    this.updateFavorList()
+      .subscribe({ error: e => console.error(e) });
+  }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

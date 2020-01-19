@@ -4,7 +4,8 @@ import { PROFILE_MODEL } from '@api/constants';
 import {
   Profile,
   CreateProfileDto,
-  UpdateProfileDto
+  UpdateProfileDto,
+  ProfileDataKey
 } from '@helping-hand/api-common';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';

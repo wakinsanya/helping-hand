@@ -10,6 +10,15 @@
   animation: pulsate 2s infinite;
 }
 
+.favor-request-list__pagin__wrap {
+  display: flex;
+  flex-direction: row;
+  & > button {
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+}
+
 @keyframes pulsate
 {
      0% {

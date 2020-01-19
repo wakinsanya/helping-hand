@@ -6,12 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { FavorService } from '@helping-hand/core/services/favor.service';
-import {
-  User,
-  FavorQuery,
-  Favor,
-  Profile
-} from '@helping-hand/api-common';
+import { User, FavorQuery, Favor, Profile } from '@helping-hand/api-common';
 import { Observable, of, Subject, from, forkJoin } from 'rxjs';
 import {
   tap,
@@ -43,7 +38,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private favorService: FavorService,
-    private profileService: ProfileService
+    public profileService: ProfileService
   ) {}
 
   ngOnInit() {
@@ -56,7 +51,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
             notOwners: [user._id],
             sort: true,
             skip: 0,
-            limit: 10
+            limit: 5
           };
         }),
         mergeMap(() => this.updateFavorsAndOwners())
@@ -71,7 +66,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
         this.favorRequestCount.emit(favorsTotalCount);
       }),
       switchMap(({ favors }) => from(favors)),
-      switchMap((favor: Favor) => {
+      mergeMap((favor: Favor) => {
         return forkJoin([
           this.userService.getUserById(favor.owner).pipe(
             tap((user: User) => {
@@ -86,7 +81,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
         ]).pipe(
           tap(() => (favor.date = new Date(favor.deadline))),
           map(() => favor)
-        )
+        );
       }),
       toArray(),
       tap((favors: Favor[]) => {
@@ -98,10 +93,18 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
     );
   }
 
+  toggleCardFlipState(i: number) {
+    this.cardFlipStates[i] = !this.cardFlipStates[i];
+  }
 
- toggleCardFlipState(i: number) {
-  this.cardFlipStates[i] = !this.cardFlipStates[i];
- }
+  onPageNav(direction: 'next' | 'prev') {
+    this.favorQuery.skip =
+      direction === 'next'
+        ? this.favorQuery.skip + this.favorQuery.limit
+        : this.favorQuery.skip - this.favorQuery.limit;
+    this.updateFavorsAndOwners()
+      .subscribe({ error: e => console.error(e) });
+  }
 
   ngOnDestroy() {
     this.destroy$.next();

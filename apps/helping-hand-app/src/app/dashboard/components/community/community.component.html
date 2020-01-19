@@ -6,5 +6,9 @@
       </nb-user>
     </nb-list-item>
   </nb-list>
+  <div class="user-list__pagin__wrap">
+    <button nbButton [disabled]="userQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
+    <button nbButton (click)="onPageNav('next')" [disabled]="!userList?.length">Next Page</button>
+  </div>
 </div>
 

@@ -12,7 +12,7 @@
   </div>
   <ng-container
     *ngTemplateOutlet="
-      favorList.length ? favorListTemplate : noFavorListTemplate
+      (favorList.length || favorQuery.skip)? favorListTemplate : noFavorListTemplate
     "
   ></ng-container>
   <ng-template #noFavorListTemplate>
@@ -44,6 +44,10 @@
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>
+    <div class="favor-list__pagin__wrap">
+      <button nbButton [disabled]="favorQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
+      <button nbButton (click)="onPageNav('next')" [disabled]="!favorList?.length">Next Page</button>
+    </div>
   </ng-template>
 
   <ng-template #favorForm let-heading="heading" let-context="$implicit">

@@ -34,6 +34,7 @@
               </button>
               <button
                 nbButton
+                status="success"
                 (click)="toggleCardFlipState(i)"
                 class="favor-request-list__help-btn"
               >
@@ -51,13 +52,9 @@
           <nb-card-body>
             <p>Ways to contact {{ favor?.user?.firstName }}:</p>
             <div class="favor-request-list__opts__wrap">
-              <button nbButton>
-                <nb-icon icon="email-outline"></nb-icon>
-                View Email
-              </button>
-              <button nbButton>
-                <nb-icon icon="phone-outline"></nb-icon>
-                View Phone Number
+              <button nbButton *ngFor="let key of favor.profile.publicDataKeys" [nbPopover]="favor?.profile?.data[key]">
+                <nb-icon [icon]="profileService.publicDataKeyMap[key]?.iconKey"></nb-icon>
+                View {{ profileService.publicDataKeyMap[key]?.name }}
               </button>
             </div>
           </nb-card-body>
@@ -69,6 +66,10 @@
         </nb-card>
       </nb-card-back>
     </nb-flip-card>
+  </div>
+  <div class="favor-request-list__pagin__wrap">
+    <button nbButton [disabled]="favorQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
+    <button nbButton (click)="onPageNav('next')" [disabled]="!favorList?.length">Next Page</button>
   </div>
   <ng-template #help let-context="$implicit">
     <nb-card>

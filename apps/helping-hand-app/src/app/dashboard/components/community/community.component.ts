@@ -10,18 +10,19 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./community.component.scss']
 })
 export class CommunityComponent implements OnInit {
-  private userQuery: UserQuery = {
+  userQuery: UserQuery = {
     skip: 0,
     limit: 10,
     sort: true
   };
+  currentPage = 1;
   userList: User[] = [];
   usersTotalCount: number;
 
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.updateUserList().subscribe({ error: e => console.error(e) })
+    this.updateUserList().subscribe({ error: e => console.error(e) });
   }
 
   updateUserList(): Observable<{}> {
@@ -32,5 +33,13 @@ export class CommunityComponent implements OnInit {
       }),
       mergeMap(() => of({}))
     );
+  }
+
+  onPageNav(direction: 'next' | 'prev') {
+    this.userQuery.skip =
+      direction === 'next'
+        ? this.userQuery.skip + this.userQuery.limit
+        : this.userQuery.skip - this.userQuery.limit;
+    this.updateUserList().subscribe({ error: e => console.error(e) });
   }
 }
