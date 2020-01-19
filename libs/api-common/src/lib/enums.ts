@@ -13,7 +13,7 @@ export enum SubscriptionLabel {
   Favor = 'favor'
 }
 
-export enum PublicDataKeys {
+export enum ProfileDataKey {
   Email = 'email',
   PhoneNumber = 'phoneNumber',
   InstagramUsername = 'instagramUsername',

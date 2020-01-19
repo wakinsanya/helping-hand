@@ -11,4 +11,19 @@
   & > div {
     margin-top: 20px;
   }
+  & > button {
+    margin-top: 10px;
+  }
+}
+
+.profile__tip__wrap {
+  & > span {
+    opacity: .6;
+    font-style: italic;
+  }
+  margin-bottom: 20px;
+}
+
+.profile__tiny-btn {
+  margin-top: 10px;
 }

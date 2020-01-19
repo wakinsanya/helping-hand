@@ -4,7 +4,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Profile, User, CreateProfileDto, PublicDataKeys } from '@helping-hand/api-common';
+import { Profile, User, CreateProfileDto, ProfileDataKey } from '@helping-hand/api-common';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbDialogService, NbTabComponent } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
@@ -35,7 +35,7 @@ export class DashboardComponent implements AfterViewInit {
       const profileDto: CreateProfileDto = {
         owner: this.userService.loggedInUser._id,
         bio: '',
-        publicDataKeys: [PublicDataKeys.Email],
+        publicDataKeys: [ProfileDataKey.Email],
         data: {
           email: this.userService.loggedInUser.email
         }

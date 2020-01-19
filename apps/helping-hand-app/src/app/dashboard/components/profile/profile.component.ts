@@ -1,11 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User, Profile, UpdateProfileDto } from '@helping-hand/api-common';
+import {
+  User,
+  Profile,
+  UpdateProfileDto,
+  ProfileDataKey
+} from '@helping-hand/api-common';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { tap, takeUntil, map, mergeMap } from 'rxjs/operators';
+import { tap, takeUntil, map, switchMap } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
-import { SubscriptionService } from '@helping-hand/core/services/subscription.service';
 
 @Component({
   selector: 'helping-hand-profile',
@@ -17,6 +21,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   loggedInUser: User;
   profile: Profile;
   profileDataKeys: string[];
+  profileDataKeyDisplayMap = {
+    [ProfileDataKey.Email]: 'email',
+    [ProfileDataKey.PhoneNumber]: 'phone number',
+    [ProfileDataKey.InstagramUsername]: 'instagram username',
+    [ProfileDataKey.TwitterUsername]: 'twitter username'
+  };
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -31,21 +41,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         tap((user: User) => (this.loggedInUser = user)),
         map((user: User) => user.profile),
-        mergeMap((profile: string) => {
+        switchMap((profile: string) => {
           return this.profileService.getProfileById(profile);
         }),
         tap((profile: Profile) => {
           this.newBio = profile.bio;
           this.profile = profile;
-          this.profileDataKeys = Object.keys(profile.data);
+          this.profileDataKeys = Object.keys(ProfileDataKey).map(
+            x => ProfileDataKey[x]
+          );
         })
       )
       .subscribe({ error: e => console.error(e) });
   }
 
   toggleDataKeyVisibility(key: string) {
+    console.log('Data Key Param', key);
     const profileDto: UpdateProfileDto = this.profile.publicDataKeys.includes(
-      key
+      key as ProfileDataKey
     )
       ? {
           publicDataKeys: this.profile.publicDataKeys.filter(x => x !== key)
@@ -53,23 +66,32 @@ export class ProfileComponent implements OnInit, OnDestroy {
       : {
           publicDataKeys: [...this.profile.publicDataKeys, key]
         };
-    this.profileService.updateProfile(this.profile._id, profileDto).pipe(
-      tap((profile: Profile) => {
-        this.profile = profile;
-        this.toastrService.success(
-          `Helping Hand will now share your ${key} with potential helpers.`
-        );
-      })
-    ).subscribe({ error: e => console.error(e) })
+    console.log('resolved dto', profileDto);
+    this.profileService
+      .updateProfile(this.profile._id, profileDto)
+      .pipe(
+        switchMap(() => this.profileService.getProfileById(this.profile._id)),
+        tap((profile: Profile) => {
+          this.profile = profile;
+          if (this.profile.publicDataKeys.includes(key as ProfileDataKey)) {
+            this.toastrService.success(
+              `Helping Hand will now share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
+            );
+          } else {
+            this.toastrService.danger(
+              `Helping Hand will no longer share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
+            );
+          }
+        })
+      )
+      .subscribe({ error: e => console.error(e) });
   }
 
   saveProfile() {
     this.profileService
       .updateProfile(this.profile._id, { bio: this.newBio })
       .pipe(
-        mergeMap(() => {
-          return this.profileService.getProfileById(this.profile._id);
-        }),
+        switchMap(() => this.profileService.getProfileById(this.profile._id)),
         tap((profile: Profile) => {
           this.profile = profile;
           this.toastrService.success('Your profile has been updated');
