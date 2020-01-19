@@ -12,7 +12,7 @@
       <div class="profile__tip__wrap">
         <span
           >Tip: Remember that the Helping Hand community will be able to see the
-          information you make available. Only share information you feel
+          information you make available here. Only share information you feel
           comfortable with other users seeing.</span
         >
       </div>
@@ -20,7 +20,11 @@
         <nb-list-item *ngFor="let dataKey of profileDataKeys">
           <div class="profile__pref-opts__wrap">
             <nb-toggle
-              [status]="profile?.publicDataKeys?.includes(dataKey) ? 'primary' : 'danger'"
+              [status]="
+                profile?.publicDataKeys?.includes(dataKey)
+                  ? 'primary'
+                  : 'danger'
+              "
               [ngModel]="profile?.publicDataKeys?.includes(dataKey)"
               (checkedChange)="toggleDataKeyVisibility(dataKey)"
               >{{ profileDataKeyDisplayMap[dataKey] }}</nb-toggle
@@ -38,7 +42,15 @@
           </div>
         </nb-list-item>
       </nb-list>
-      <button nbButton fullWidth size="tiny" class="profile__tiny-btn" (click)="saveProfile()">Update</button>
+      <button
+        nbButton
+        fullWidth
+        size="tiny"
+        class="profile__tiny-btn"
+        (click)="saveProfile()"
+      >
+        Update Contact Details
+      </button>
     </div>
     <div>
       <h5>Why not say a little about yourself?</h5>

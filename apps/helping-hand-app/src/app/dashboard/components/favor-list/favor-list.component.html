@@ -12,7 +12,9 @@
   </div>
   <ng-container
     *ngTemplateOutlet="
-      (favorList.length || favorQuery.skip)? favorListTemplate : noFavorListTemplate
+      favorList.length || favorQuery.skip
+        ? favorListTemplate
+        : noFavorListTemplate
     "
   ></ng-container>
   <ng-template #noFavorListTemplate>
@@ -21,18 +23,29 @@
   <ng-template #favorListTemplate>
     <h4>Favour Requests by You</h4>
     <nb-accordion multi="true" status="primary">
-      <nb-accordion-item *ngFor="let favor of favorList; let i = index">
+      <nb-accordion-item
+        *ngFor="let favor of favorList; let i = index"
+        [disabled]="favor.isFufilled"
+      >
         <nb-accordion-item-header>
           {{ favor.title }}
+          <span *ngIf="favor.isFufilled" class="favor-list__completed-favor"
+            >&nbsp;(compeleted)</span
+          >
         </nb-accordion-item-header>
         <nb-accordion-item-body>
           <p>Description: {{ favor.text ? favor.text : 'None' }}</p>
           <p>Fufilled: {{ favor.isFufilled ? 'Yes' : 'Not yet' }}</p>
-          <p>Expires: {{ favor.deadline | date: 'fullDate'}}</p>
+          <p>Expires: {{ favor.deadline | date: 'fullDate' }}</p>
           <div class="favor-list__favor-opts">
+            <button nbButton outline (click)="fufillFavor(i)">
+              <nb-icon icon="checkmark-circle-outline"></nb-icon>Mark as
+              Compelete
+            </button>
             <button
               nbButton
               outline
+              status="info"
               (click)="openFavorEditWindow(favorForm, i)"
             >
               <nb-icon icon="edit-outline"></nb-icon>Edit
@@ -45,8 +58,20 @@
       </nb-accordion-item>
     </nb-accordion>
     <div class="favor-list__pagin__wrap">
-      <button nbButton [disabled]="favorQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
-      <button nbButton (click)="onPageNav('next')"  [disabled]="(currentPage * favorQuery.limit) >= favorsTotalCount">Next Page</button>
+      <button
+        nbButton
+        [disabled]="favorQuery.skip === 0"
+        (click)="onPageNav('prev')"
+      >
+        Previous Page
+      </button>
+      <button
+        nbButton
+        (click)="onPageNav('next')"
+        [disabled]="currentPage * favorQuery.limit >= favorsTotalCount"
+      >
+        Next Page
+      </button>
     </div>
   </ng-template>
 
@@ -64,7 +89,7 @@
       <label for="description">Description:</label>
       <textarea
         [(ngModel)]="favorBody.text"
-      name="description"
+        name="description"
         nbInput
         fullWidth
         placeholder="Add some more information here if you wish"
@@ -79,14 +104,21 @@
         [nbDatepicker]="datePicker"
       />
       <nb-datepicker #datePicker [min]="today"></nb-datepicker>
-      <button nbButton outline fullWidth>Add A Picture</button>
+      <button nbButton outline fullWidth disabled>
+        <nb-icon icon="attach-outline"></nb-icon>
+        Add A Picture (coming soon)
+      </button>
       <div class="create-favor-form__tip__wrap">
-        <span
+        <!-- <span
           >Tip: adding a picture can help people know exactly what you're
           looking for!</span
-        >
+        > -->
       </div>
-      <button nbButton fullWidth (click)="context.isEditing ? updateFavor() : createFavor()">
+      <button
+        nbButton
+        fullWidth
+        (click)="context.isEditing ? updateFavor() : createFavor()"
+      >
         {{ context.isEditing ? 'Save Changes' : 'Make Favour Request' }}
       </button>
     </div>

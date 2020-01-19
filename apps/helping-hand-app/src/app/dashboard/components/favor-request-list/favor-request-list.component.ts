@@ -50,6 +50,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
           this.loggedInUser = user;
           this.favorQuery = {
             notOwners: [user._id],
+            fufilled: false,
             sort: true,
             skip: 0,
             limit: 5

@@ -42,7 +42,8 @@ export class FavorService {
     notOwners: string[],
     sort: boolean,
     skip: number,
-    limit: number
+    limit: number,
+    fufilled: boolean
   ): Observable<FavorQueryResult> {
     const matchStage: any = {
       $match: {
@@ -56,6 +57,10 @@ export class FavorService {
 
     if (notOwners && notOwners.length) {
       matchStage.$match.owner.$nin = notOwners.map(v => Types.ObjectId(v));
+    }
+
+    if (fufilled === false) {
+      matchStage.$match.isFufilled = false;
     }
 
     const pipeline = [

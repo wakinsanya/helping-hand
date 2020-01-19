@@ -8,7 +8,13 @@ import {
 import { Subject, throwError, of, Observable } from 'rxjs';
 import { FavorService } from '@helping-hand/core/services/favor.service';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { takeUntil, tap, mergeMap, catchError } from 'rxjs/operators';
+import {
+  takeUntil,
+  tap,
+  mergeMap,
+  catchError,
+  switchMap
+} from 'rxjs/operators';
 import {
   NbWindowService,
   NbDateService,
@@ -109,6 +115,20 @@ export class FavorListComponent implements OnInit, OnDestroy {
     });
   }
 
+  fufillFavor(favorIndex: number) {
+    this.favorService
+      .updateFavor(this.favorList[favorIndex]._id, { isFufilled: true })
+      .pipe(
+        tap(() => {
+          this.toastrService.success(
+            'Hooray! You were able to get some help. Be sure to help others out too!'
+          );
+        }),
+        switchMap(() => this.updateFavorList())
+      )
+      .subscribe({ error: e => console.error(e) });
+  }
+
   deleteFavor(favorIndex: number) {
     this.favorService
       .deleteFavor(this.favorList[favorIndex]._id)
@@ -116,7 +136,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
         tap(() => {
           this.toastrService.success('Your favour request has been deleted.');
         }),
-        mergeMap(() => this.updateFavorList()),
+        switchMap(() => this.updateFavorList()),
         catchError(e => {
           this.toastrService.danger(
             'Something went wrong when deleting your favour request, please try again.'
@@ -145,10 +165,6 @@ export class FavorListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({ error: e => console.error(e) });
-  }
-
-  getMoreFavors() {
-    //infinite list trigger query
   }
 
   resetNewFavorBody() {
@@ -188,8 +204,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
       this.favorQuery.skip -= this.favorQuery.limit;
       this.currentPage--;
     }
-    this.updateFavorList()
-      .subscribe({ error: e => console.error(e) });
+    this.updateFavorList().subscribe({ error: e => console.error(e) });
   }
 
   ngOnDestroy() {

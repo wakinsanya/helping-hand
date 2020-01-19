@@ -66,6 +66,7 @@ export interface FavorQuery extends PaginationQuery {
   sort: boolean;
   owners?: string[];
   notOwners?: string[];
+  fufilled?: boolean;
 }
 
 export interface UserQuery extends PaginationQuery {

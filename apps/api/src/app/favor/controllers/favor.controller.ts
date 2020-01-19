@@ -32,14 +32,16 @@ export class FavorController {
     @Query('notOwners') notOwners: string,
     @Query('sort') sort: string,
     @Query('skip') skip: string,
-    @Query('limit') limit: string
+    @Query('limit') limit: string,
+    @Query('fufilled') fufilled: string,
   ): Observable<FavorQueryResult> {
     return this.favorService.list(
       owners && owners.length ? owners.split(',') : [],
       notOwners && notOwners.length ? notOwners.split(',') : [],
       sort === 'true',
       parseInt(skip, 10),
-      parseInt(limit, 10)
+      parseInt(limit, 10),
+      fufilled === 'false' ? false : undefined,
     );
   }
 

@@ -13,9 +13,7 @@
       <nb-tab
         badgeStatus="success"
         [badgeText]="
-          favorRequestCount && !hideFavorRequestCount
-            ? favorRequestCount
-            : ''
+          favorRequestCount && !hideFavorRequestCount ? favorRequestCount : ''
         "
         badgePosition="top right"
         tabTitle="Help Others"
@@ -28,20 +26,20 @@
         ></helping-hand-favor-request-list>
       </nb-tab>
       <nb-tab
-        tabTitle="Community"
-        tabIcon="people-outline"
-        responsive
-        lazyLoad="true"
-      >
-        <helping-hand-community></helping-hand-community>
-      </nb-tab>
-      <nb-tab
         tabTitle="Profile"
         tabIcon="person-outline"
         responsive
         lazyLoad="true"
       >
         <helping-hand-profile></helping-hand-profile>
+      </nb-tab>
+      <nb-tab
+        tabTitle="Community"
+        tabIcon="people-outline"
+        responsive
+        lazyLoad="true"
+      >
+        <helping-hand-community></helping-hand-community>
       </nb-tab>
     </nb-tabset>
 
@@ -50,9 +48,16 @@
         <nb-card-header><h4>Welcome to Helping Hand</h4></nb-card-header>
         <nb-card-body>
           <p>
-            Helping Hand helps you to get that little bit of help when you need
+            Helping Hand helps you get that little bit of help when you need
             it and gives you a chance to help others out as well.
           </p>
+          <p>
+            <b>Important:</b> by default Helping Hand shares your email with other memebers
+            of the community so that they're able to respond to your favour requests.
+            We recommend that you go to the profile tab and customize how you
+            prefer for other users to contact you e.g provide your instagram username instead.
+          </p>
+          <p>Thank you for checking out Helping Hand!</p>
         </nb-card-body>
         <nb-card-footer>
           <button nbButton (click)="ref.close()">Close</button>
