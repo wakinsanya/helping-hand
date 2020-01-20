@@ -13,11 +13,11 @@ export class NotificationService {
     protected configService: ConfigService,
     private readonly subscriptionService: SubscriptionService
   ) {
-    webpush.setVapidDetails(
-      `mailto:${configService.get(ConfigKeys.APP_EMAIL)}`,
-      configService.get(ConfigKeys.VAPID_PUBLIC_KEY),
-      configService.get(ConfigKeys.VAPID_PRIVATE_KEY)
-    );
+    // webpush.setVapidDetails(
+    //   `mailto:${configService.get(ConfigKeys.APP_EMAIL)}`,
+    //   configService.get(ConfigKeys.VAPID_PUBLIC_KEY),
+    //   configService.get(ConfigKeys.VAPID_PRIVATE_KEY)
+    // );
   }
 
   create(label: SubscriptionLabel): Observable<boolean> {
