@@ -8,7 +8,7 @@ import { Profile, User, CreateProfileDto, ProfileDataKey } from '@helping-hand/a
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbDialogService } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { mergeMap, tap } from 'rxjs/operators';
+import { mergeMap, tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'helping-hand-dashboard',
@@ -31,7 +31,6 @@ export class DashboardComponent implements AfterViewInit {
     const loggedInUser = this.userService.loggedInUser;
     if (loggedInUser && !loggedInUser.profile) {
       this.isLoading = true;
-      this.dialogService.open(this.welcomeCard);
       const profileDto: CreateProfileDto = {
         owner: this.userService.loggedInUser._id,
         bio: '',
@@ -43,18 +42,20 @@ export class DashboardComponent implements AfterViewInit {
       this.profileService
         .createProfile(profileDto)
         .pipe(
-          mergeMap((profile: Profile) => {
+         switchMap((profile: Profile) => {
             return this.userService.updateUser(loggedInUser._id, {
               profile: profile._id
             });
           }),
-          mergeMap(() => {
+          switchMap(() => {
             return this.userService.getUserById(loggedInUser._id);
           }),
           tap((user: User) => {
             this.userService.setLoggedInUser(user);
             this.isLoading = false;
-          })
+          }),
+          switchMap(() => this.dialogService.open(this.welcomeCard).onClose),
+          tap(() => location.reload())
         )
         .subscribe({
           error: e => {

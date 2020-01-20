@@ -24,7 +24,7 @@ export class ProfileService {
   }
 
   getById(_id: string): Observable<Profile> {
-    return from(this.profileModel.findOne({ _id })).pipe(
+    return from(this.profileModel.findById( _id )).pipe(
       map((profileDoc: ProfileDocument) => profileDoc as Profile)
     );
   }

@@ -6,10 +6,11 @@ import {
   ProfileDataKey
 } from '@helping-hand/api-common';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { tap, takeUntil, map, switchMap } from 'rxjs/operators';
+import { tap, takeUntil, map, switchMap, first, filter } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'helping-hand-profile',
@@ -38,9 +39,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userService.loggedInUser$
       .pipe(
-        takeUntil(this.destroy$),
         tap((user: User) => (this.loggedInUser = user)),
         map((user: User) => user.profile),
+        filter(x => !!x),
         switchMap((profile: string) => {
           return this.profileService.getProfileById(profile);
         }),
@@ -87,7 +88,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveProfile() {
     this.profileService
-      .updateProfile(this.profile._id, this.profile as UpdateProfileDto)
+      .updateProfile(this.profile._id, {
+        bio: this.newBio,
+        publicDataKeys: this.profile.publicDataKeys,
+        data: this.profile.data
+      })
       .pipe(
         switchMap(() => this.profileService.getProfileById(this.profile._id)),
         tap((profile: Profile) => {

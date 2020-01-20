@@ -14,7 +14,8 @@ import {
   takeUntil,
   switchMap,
   map,
-  toArray
+  toArray,
+  filter
 } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
@@ -67,7 +68,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
         this.favorsTotalCount = favorsTotalCount;
         this.favorRequestCount.emit(favorsTotalCount);
       }),
-      switchMap(({ favors }) => from(favors)),
+      switchMap(({ favors }) => from(favors).pipe(filter(x => !!x))),
       mergeMap((favor: Favor) => {
         return forkJoin([
           this.userService.getUserById(favor.owner).pipe(
