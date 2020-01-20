@@ -31,7 +31,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
   loggedInUser: User;
   favorQuery: FavorQuery;
   favorList: Favor[] = [];
-  favorsTotalCount: number;
+  favorsTotalCount = 0;
   private destroy$: Subject<void> = new Subject<void>();
   @Output() favorRequestCount: EventEmitter<number> = new EventEmitter<
     number
@@ -65,7 +65,7 @@ export class FavorRequestListComponent implements OnInit, OnDestroy {
   updateFavorsAndOwners(): Observable<{}> {
     return this.favorService.getFavors(this.favorQuery).pipe(
       tap(({ favorsTotalCount }) => {
-        this.favorsTotalCount = favorsTotalCount;
+        this.favorsTotalCount = favorsTotalCount || 0;
         this.favorRequestCount.emit(favorsTotalCount);
       }),
       switchMap(({ favors }) => from(favors).pipe(filter(x => !!x))),

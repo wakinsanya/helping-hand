@@ -45,7 +45,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
     text: '',
     deadline: new Date()
   };
-  favorsTotalCount: number;
+  favorsTotalCount = 0;
   currentFavorIndex: number;
   favorWindowRef$: NbWindowRef;
   private destroy$: Subject<void> = new Subject<void>();
