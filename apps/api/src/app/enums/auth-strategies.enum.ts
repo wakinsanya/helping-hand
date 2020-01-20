@@ -1,3 +1,3 @@
-export enum AuthStrategies {
+export enum AuthStrategy {
   Google = 'google'
 }

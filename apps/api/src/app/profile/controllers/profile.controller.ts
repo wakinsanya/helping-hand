@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Patch,
-  Delete
+  Delete,
+  UseGuards
 } from '@nestjs/common';
 import { ProfileService } from '@api/profile/services/profile.service';
 import {
@@ -14,7 +15,9 @@ import {
   UpdateProfileDto
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('profiles')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}

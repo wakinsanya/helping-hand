@@ -10,7 +10,7 @@ export interface User {
   readonly provider: UserProvider;
   readonly thirdPartyId: string;
   readonly role: UserRole;
-  readonly access_token?: string;
+  access_token?: string;
 }
 
 export interface Profile {

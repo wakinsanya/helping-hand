@@ -6,7 +6,8 @@ import {
   Param,
   Patch,
   Delete,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
 import { FavorService } from '@api/favor/services/favor.service';
 import {
@@ -16,7 +17,9 @@ import {
   FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('favors')
 export class FavorController {
   constructor(private readonly favorService: FavorService) {}

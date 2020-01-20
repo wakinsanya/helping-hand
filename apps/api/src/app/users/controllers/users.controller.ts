@@ -6,7 +6,8 @@ import {
   Param,
   Delete,
   Patch,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import {
@@ -16,7 +17,9 @@ import {
   UserQueryResult
 } from '@helping-hand/api-common';
 import { UsersService } from '@api/users/services/users.service';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

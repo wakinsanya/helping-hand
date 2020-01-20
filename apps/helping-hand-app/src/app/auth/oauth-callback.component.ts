@@ -43,12 +43,17 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
                     payload
                   );
                 }),
-                tap((user: User) => {
-                  this.userService.setLoggedInUser(user);
+                switchMap((user: User) =>
+                  this.userService.loginUser(user.thirdPartyId)
+                ),
+                tap(isAuthenticated => {
+                  if (!isAuthenticated) {
+                    throwError(new Error('unable to authenticate with API'));
+                  }
                 })
               );
           } else {
-            return throwError(new Error('authentication failed'));
+            return throwError(new Error('authentication with provider failed'));
           }
         })
       )

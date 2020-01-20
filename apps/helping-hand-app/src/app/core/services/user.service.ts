@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
 import { queryString } from '../helpers/query-string';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -58,6 +59,17 @@ export class UserService {
     this._userProvider$.next(null);
   }
 
+  loginUser(thirdPartyId: string): Observable<boolean> {
+    return this.httpClient
+      .post<{ access_token: string }>('/api/auth/login', { thirdPartyId })
+      .pipe(
+        tap(
+          ({ access_token }) => (this.loggedInUser.access_token = access_token)
+        ),
+        map(() => true)
+      );
+  }
+
   createUser(provider: UserProvider, payload: any): Observable<User> {
     const userDto: CreateUserDto = this.getCreateUserDto(provider, payload);
     return this.httpClient.post<User>('/api/users', userDto);
@@ -72,7 +84,9 @@ export class UserService {
   }
 
   getUsers(query: UserQuery): Observable<UserQueryResult> {
-    return this.httpClient.get<UserQueryResult>(`/api/users${queryString(query)}`);
+    return this.httpClient.get<UserQueryResult>(
+      `/api/users${queryString(query)}`
+    );
   }
 
   private getCreateUserDto(
