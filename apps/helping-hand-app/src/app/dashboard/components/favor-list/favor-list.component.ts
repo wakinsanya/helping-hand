@@ -53,7 +53,7 @@ export class FavorListComponent implements OnInit, OnDestroy {
   constructor(
     private favorService: FavorService,
     private userService: UserService,
-    private windowService: NbWindowService
+    private windowService: NbWindowService,
     private dateService: NbDateService<Date>,
     private toastrService: NbToastrService
   ) {}
