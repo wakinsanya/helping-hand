@@ -8,6 +8,7 @@ import { ConfigModule } from '@api/config/config.module';
 import { ConfigService } from '@api/config/services/config.service';
 import { ConfigKeys } from '@api/enums/config-keys.enum';
 import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
       inject: [ConfigService]
     })
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, LocalStrategy],
   exports: [AuthService],
   controllers: [AuthController]
 })

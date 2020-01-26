@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { UserQuery, User } from '@helping-hand/api-common';
-import { tap, mergeMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { UserQuery, User, Profile } from '@helping-hand/api-common';
+import { tap, mergeMap, switchMap, filter, toArray, map } from 'rxjs/operators';
+import { Observable, of, from } from 'rxjs';
+import { ProfileService } from '@helping-hand/core/services/profile.service';
 
 @Component({
   selector: 'helping-hand-community',
@@ -19,7 +20,10 @@ export class CommunityComponent implements OnInit {
   userList: User[] = [];
   usersTotalCount: number;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private profileService: ProfileService
+  ) {}
 
   ngOnInit() {
     this.updateUserList().subscribe({ error: e => console.error(e) });
@@ -27,11 +31,19 @@ export class CommunityComponent implements OnInit {
 
   updateUserList(): Observable<{}> {
     return this.userService.getUsers(this.userQuery).pipe(
-      tap(({ users, usersTotalCount }) => {
-        this.userList = users;
+      tap(({ usersTotalCount }) => {
         this.usersTotalCount = usersTotalCount;
       }),
-      mergeMap(() => of({}))
+      switchMap(({ users }) => from(users).pipe(filter(x => !!x))),
+      mergeMap((user: User) => {
+        return this.profileService.getProfileByOwner(user._id).pipe(
+          tap((profile: Profile) => (user.profileBody = profile)),
+          map(() => user)
+        );
+      }),
+      toArray(),
+      tap((users: User[]) => (this.userList = users)),
+      switchMap(() => of({}))
     );
   }
 

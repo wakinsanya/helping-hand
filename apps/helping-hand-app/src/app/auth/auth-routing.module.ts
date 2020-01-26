@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NbAuthComponent } from '@nebular/auth';
 import { LoginComponent } from './login.component';
 import { OAuth2CallbackComponent } from './oauth-callback.component';
+import { AuthCallbackComponent } from './auth-callback.component';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,10 @@ export const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+      },
+      {
+        path: 'callback',
+        component: AuthCallbackComponent,
       },
       {
         path: 'oauth2/callback',

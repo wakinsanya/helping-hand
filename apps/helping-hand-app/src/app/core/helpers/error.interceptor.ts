@@ -20,9 +20,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(e => {
         if (e.status === 401) {
-          this.userService.removeUserProvider();
-          this.userService.removeLoggedInUser();
-          location.reload();
+          // this.userService.removeUserProvider();
+          // this.userService.removeLoggedInUser();
+          // location.reload();
         }
         const error = e.error.message || e.statusText;
         return throwError(error);

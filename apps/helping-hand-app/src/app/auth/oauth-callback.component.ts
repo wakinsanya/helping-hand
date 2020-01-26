@@ -25,7 +25,6 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((authResult: NbAuthResult) => {
-          localStorage.removeItem('isLogginIn');
           this.redirectUrl = authResult.getRedirect();
         }),
         switchMap((authResult: NbAuthResult) => {
@@ -43,17 +42,12 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
                     payload
                   );
                 }),
-                switchMap((user: User) =>
-                  this.userService.loginUser(user.thirdPartyId)
-                ),
-                tap(isAuthenticated => {
-                  if (!isAuthenticated) {
-                    throwError(new Error('unable to authenticate with API'));
-                  }
+                tap((user: User) => {
+                  this.userService.setLoggedInUser(user);
                 })
               );
           } else {
-            return throwError(new Error('authentication with provider failed'));
+            return throwError(new Error('authentication failed'));
           }
         })
       )

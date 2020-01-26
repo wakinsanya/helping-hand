@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { UsersService } from '@api/users/services/users.service';
 import { User } from '@helping-hand/api-common';
+import { switchMap } from 'rxjs/operators';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +17,19 @@ export class AuthService {
     return this.usersService.getByThirdPartyId(thirdPartyId);
   }
 
-  login(user: User): { access_token: string } {
-    const payload = { thirdPartyId: user.thirdPartyId };
-    return { access_token: this.jwtService.sign(payload) };
+  login(user: User): Observable<{ access_token: string }> {
+    return this.usersService.getById(user._id).pipe(
+      switchMap(payload => {
+        return payload
+          ? of({ access_token: this.jwtService.sign({ payload }) })
+          : throwError(
+              new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
+            );
+      })
+    );
+  }
+
+  private validateUserClaims(): boolean {
+    return false;
   }
 }

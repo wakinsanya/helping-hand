@@ -8,10 +8,10 @@ import {
   UserQueryResult
 } from '@helping-hand/api-common';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
 import { queryString } from '../helpers/query-string';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -59,14 +59,16 @@ export class UserService {
     this._userProvider$.next(null);
   }
 
-  loginUser(thirdPartyId: string): Observable<boolean> {
+  grantApiAcess(user: User): Observable<{}> {
     return this.httpClient
-      .post<{ access_token: string }>('/api/auth/login', { thirdPartyId })
+      .post<{ access_token: string }>('/api/auth/login', { user: user })
       .pipe(
-        tap(
-          ({ access_token }) => (this.loggedInUser.access_token = access_token)
-        ),
-        map(() => true)
+        tap(({ access_token }) => {
+          console.log('access token!', access_token);
+          user.access_token = access_token;
+          this.setLoggedInUser(user);
+        }),
+        switchMap(() => of({}))
       );
   }
 

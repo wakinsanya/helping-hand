@@ -11,6 +11,7 @@ export interface User {
   readonly thirdPartyId: string;
   readonly role: UserRole;
   access_token?: string;
+  profileBody?: Profile;
 }
 
 export interface Profile {

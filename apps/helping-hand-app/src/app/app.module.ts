@@ -46,7 +46,7 @@ import { ChatModule } from './chat/chat.module';
         NbOAuth2AuthStrategy.setup({
           name: UserProvider.Google,
           redirect: {
-            success: '/dashboard',
+            success: '/auth/callback',
             failure: '/auth/login'
           },
           clientId: environment.googleClientId,

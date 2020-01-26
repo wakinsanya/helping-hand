@@ -14,6 +14,7 @@ import {
 } from '@nebular/theme';
 import { LoginComponent } from './login.component';
 import { OAuth2CallbackComponent } from './oauth-callback.component';
+import { AuthCallbackComponent } from './auth-callback.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,6 @@ import { OAuth2CallbackComponent } from './oauth-callback.component';
     NbIconModule,
     NbLayoutModule
   ],
-  declarations: [LoginComponent, OAuth2CallbackComponent]
+  declarations: [LoginComponent, OAuth2CallbackComponent, AuthCallbackComponent]
 })
 export class AuthModule {}

@@ -8,7 +8,6 @@ export class CreateUserDto {
   readonly thirdPartyId?: string;
   readonly provider: UserProvider;
   readonly pictureUrl: string;
-  readonly role?: UserRole;
 }
 
 export class UpdateUserDto {

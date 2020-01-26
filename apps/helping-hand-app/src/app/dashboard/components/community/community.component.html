@@ -2,13 +2,45 @@
   <h5>Helping Hand Community</h5>
   <nb-list>
     <nb-list-item *ngFor="let user of userList">
-      <nb-user [name]="user.firstName + ' ' + user.lastName" size="giant" [picture]="user.pictureUrl">
-      </nb-user>
+      <div>
+        <nb-user
+          [name]="user.firstName + ' ' + user.lastName"
+          size="giant"
+          [picture]="user.pictureUrl"
+        >
+        </nb-user>
+        <div class="community__profile-description__wrap">
+          <ng-container
+            *ngTemplateOutlet="
+              user?.profileBody?.bio.length > 200 ? partialBio : fullBio
+            "
+          ></ng-container>
+          <ng-template #fullBio>
+            <p>{{ user?.profileBody?.bio }}</p>
+          </ng-template>
+          <ng-template #partialBio>
+            <p [nbPopover]="user?.profileBody?.bio">
+              {{ user?.profileBody?.bio.substring(0, 200).concat('...') }}
+            </p>
+          </ng-template>
+        </div>
+      </div>
     </nb-list-item>
   </nb-list>
   <div class="user-list__pagin__wrap">
-    <button nbButton [disabled]="userQuery.skip === 0" (click)="onPageNav('prev')">Previous Page</button>
-    <button nbButton (click)="onPageNav('next')" [disabled]="(currentPage * userQuery.limit) >= usersTotalCount">Next Page</button>
+    <button
+      nbButton
+      [disabled]="userQuery.skip === 0"
+      (click)="onPageNav('prev')"
+    >
+      Previous Page
+    </button>
+    <button
+      nbButton
+      (click)="onPageNav('next')"
+      [disabled]="currentPage * userQuery.limit >= usersTotalCount"
+    >
+      Next Page
+    </button>
   </div>
 </div>
-
