@@ -11,9 +11,9 @@ import {
 import { Subscription } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
 import { SubscriptionService } from '@api/subscription/services/subscription.service';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @Controller('subscriptions')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}

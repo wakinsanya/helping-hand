@@ -18,6 +18,7 @@ import {
 } from '@helping-hand/api-common';
 import { UsersService } from '@api/users/services/users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -33,7 +34,7 @@ export class UsersController {
     return this.usersService.getById(userId);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get()
   list(
     @Query('users') users: string,
@@ -49,7 +50,7 @@ export class UsersController {
     );
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Patch(':userId')
   update(
     @Param('userId') userId: string,
@@ -58,7 +59,7 @@ export class UsersController {
     return this.usersService.updateById(userId, userDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Delete(':userId')
   delete(@Param('userId') userId: string): Observable<any> {
     return this.usersService.delete(userId);

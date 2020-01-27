@@ -17,9 +17,9 @@ import {
   FavorQueryResult
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @Controller('favors')
 export class FavorController {
   constructor(private readonly favorService: FavorService) {}

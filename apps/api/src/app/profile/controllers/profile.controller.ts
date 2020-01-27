@@ -15,9 +15,9 @@ import {
   UpdateProfileDto
 } from '@helping-hand/api-common';
 import { Observable } from 'rxjs';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @Controller('profiles')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}

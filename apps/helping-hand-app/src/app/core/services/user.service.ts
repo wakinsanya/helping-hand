@@ -64,7 +64,6 @@ export class UserService {
       .post<{ access_token: string }>('/api/auth/login', { user: user })
       .pipe(
         tap(({ access_token }) => {
-          console.log('access token!', access_token);
           user.access_token = access_token;
           this.setLoggedInUser(user);
         }),

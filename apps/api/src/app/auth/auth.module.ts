@@ -9,6 +9,7 @@ import { ConfigService } from '@api/config/services/config.service';
 import { ConfigKeys } from '@api/enums/config-keys.enum';
 import { JwtStrategy } from '@api/auth/strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -19,13 +20,13 @@ import { LocalStrategy } from './strategies/local.strategy';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get(ConfigKeys.JWT_SECRET_KEY),
-        signOptions: { expiresIn: '60s' }
+        signOptions: { expiresIn: '604800s' }
       }),
       inject: [ConfigService]
     })
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy, LocalStrategy, JwtAuthGuard],
+  exports: [AuthService, JwtAuthGuard],
   controllers: [AuthController]
 })
 export class AuthModule {}
