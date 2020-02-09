@@ -47,3 +47,16 @@ export class UpdateFavorDto {
   readonly fufilledAt?: Date;
   readonly fuffiledBy?: string;
 }
+
+export class CreatePostDto {
+  readonly title: string;
+  readonly owner: string;
+  readonly text?: string;
+  readonly media?: string;
+}
+
+export class UpdatePostDto {
+  readonly title?: string;
+  readonly media?: string;
+  readonly text?: string;
+}

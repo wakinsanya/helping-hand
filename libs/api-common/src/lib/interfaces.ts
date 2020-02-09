@@ -94,6 +94,11 @@ export interface FavorQueryResult {
   favorsTotalCount: number;
 }
 
+export interface PostQueryResult {
+  posts: Post[];
+  postsTotalCount: number;
+}
+
 export interface UserQueryResult {
   users: User[];
   usersTotalCount: number;
@@ -102,4 +107,10 @@ export interface UserQueryResult {
 export interface SubscriptionQuery {
   owner: string;
   labels: SubscriptionLabel[];
+}
+
+export interface PostQuery extends PaginationQuery {
+  owner: string;
+  orderByComments?: boolean;
+  orderByDate?: boolean;
 }

@@ -7,7 +7,7 @@ import {
   CreateFavorDto,
   FavorQueryResult
 } from '@helping-hand/api-common';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FavorDocument } from '../interfaces/favor-document.interface';
 import { paginationQuery } from '@helping-hand/api-core';

@@ -1,6 +1,79 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { POST_MODEL } from '@api/constants';
+import { Model, Types } from 'mongoose';
+import { PostDocument } from '@api/post/interfaces/post-document.interface';
+import {
+  CreatePostDto,
+  Post,
+  UpdatePostDto,
+  PostQueryResult
+} from '@helping-hand/api-common';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { paginationQuery } from '@helping-hand/api-core';
+import { PostQueryAggregationResult } from '@api/post/interfaces/post-query-aggregation-result';
 
 @Injectable()
 export class PostService {
+  constructor(
+    @Inject(POST_MODEL) private readonly postModel: Model<PostDocument>
+  ) {}
 
+  create(postDto: CreatePostDto): Observable<Post> {
+    return from(this.postModel.create(postDto)).pipe(
+      map((postDoc: PostDocument) => postDoc as PostDocument)
+    );
+  }
+  getById(_id: string): Observable<Post> {
+    return from(this.postModel.findOne({ _id })).pipe(
+      map((postDoc: PostDocument) => postDoc as Post)
+    );
+  }
+
+  updateById(_id: string, postDto: UpdatePostDto): Observable<Post> {
+    return from(
+      this.postModel.updateOne({ _id }, postDto, { new: true })
+    ).pipe(map((postDoc: PostDocument) => postDoc as Post));
+  }
+
+  list(
+    owner: string,
+    sort: boolean,
+    skip: number,
+    limit: number
+  ): Observable<PostQueryResult> {
+    const matchStage: any = {
+      $match: {
+        owner: {}
+      }
+    };
+
+    if (owner) {
+      matchStage.$match.owner = Types.ObjectId(owner);
+    }
+
+    const pipeline = [
+      matchStage,
+      ...paginationQuery({
+        skip,
+        limit,
+        sort,
+        entity: 'posts'
+      })
+    ];
+    return from(this.postModel.aggregate(pipeline)).pipe(
+      map((data: PostQueryAggregationResult[]) => {
+        return data && data.length
+          ? data[0]
+          : {
+              posts: [],
+              postsTotalCount: 0
+            };
+      })
+    );
+  }
+
+  delete(_id: string): Observable<any> {
+    return from(this.postModel.deleteOne({ _id }));
+  }
 }
