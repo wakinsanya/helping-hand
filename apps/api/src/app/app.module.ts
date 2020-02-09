@@ -11,6 +11,8 @@ import { ProfileModule } from './profile/profile.module';
 import { FavorModule } from './favor/favor.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { NotificationModule } from './notification/notification.module';
+import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -22,7 +24,9 @@ import { NotificationModule } from './notification/notification.module';
     ProfileModule,
     FavorModule,
     SubscriptionModule,
-    NotificationModule
+    NotificationModule,
+    PostModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService]
