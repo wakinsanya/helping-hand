@@ -23,6 +23,15 @@ export interface Profile {
   readonly data: ProfileData;
 }
 
+export interface Post {
+  readonly _id: string;
+  readonly owner: string;
+  readonly title: string;
+  readonly text: string;
+  readonly media: string;
+  readonly comments: string[];
+}
+
 export interface Subscription {
   subscription: {
     endpoint: string;
