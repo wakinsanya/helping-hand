@@ -4,7 +4,7 @@ export const PostSchema = new Schema(
   {
     media: {
       type: Schema.Types.ObjectId,
-      ref: 'media'
+      ref: 'Media'
     },
     title: {
       type: Schema.Types.String,
@@ -17,14 +17,25 @@ export const PostSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: 'post must have an owner'
     },
-    updated: {
+    edited: {
       type: Schema.Types.Boolean,
       default: false
+    },
+    metadata: {
+      votes: {
+        type: Schema.Types.Number,
+        default: 0
+      },
+      favorites: {
+        type: Schema.Types.Number,
+        default: 0
+      }
     },
     comments: [
       {
         _id: false,
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
       }
     ]
   },

@@ -28,8 +28,20 @@ export interface Post {
   readonly owner: string;
   readonly title: string;
   readonly text: string;
+  readonly edited: boolean;
   readonly media: string;
   readonly comments: string[];
+}
+
+export interface Comment {
+  readonly _id: string;
+  readonly owner: string;
+  readonly text: string;
+  readonly edited: boolean;
+  readonly metadata: {
+    votes: number;
+    favorites: number;
+  };
 }
 
 export interface Subscription {
@@ -111,6 +123,16 @@ export interface SubscriptionQuery {
 
 export interface PostQuery extends PaginationQuery {
   owner: string;
-  orderByComments?: boolean;
+  orderByVotes?: boolean;
   orderByDate?: boolean;
+}
+
+export interface CommentQuery extends PaginationQuery {
+  ids: string[];
+  orderByDate?: boolean;
+}
+
+export interface CommentQueryResult {
+  comments: Comment[];
+  commentsTotalCount: number;
 }

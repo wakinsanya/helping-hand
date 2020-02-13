@@ -23,7 +23,7 @@ export const ProfileSchema = new Schema({
       required: 'profile email is required'
     },
     phoneNumber: {
-      type: Schema.Types.String // potential for refactor if functionality changes
+      type: Schema.Types.String
     },
     instagramUsername: {
       type: Schema.Types.String

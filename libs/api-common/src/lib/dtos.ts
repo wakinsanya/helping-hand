@@ -60,3 +60,21 @@ export class UpdatePostDto {
   readonly media?: string;
   readonly text?: string;
 }
+
+export class CreateCommentDto {
+  readonly text: string;
+  readonly media: string;
+  readonly metadata: {
+    votes: number;
+    isFavorite: boolean
+  }
+}
+
+export class UpdateCommentDto {
+  readonly text: string;
+  readonly media: string;
+  readonly metadata: {
+    votes: number;
+    isFavorite: boolean
+  }
+}
