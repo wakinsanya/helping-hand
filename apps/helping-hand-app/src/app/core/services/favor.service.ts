@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import {
   CreateFavorDto,
   Favor,
   FavorQuery,
-  UpdateFavorDto,
   FavorQueryResult,
-  User
+  UpdateFavorDto
 } from '@helping-hand/api-common';
-import { Observable, forkJoin, of, from } from 'rxjs';
 import { queryString } from '@helping-hand/core/helpers/query-string';
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FavorService {

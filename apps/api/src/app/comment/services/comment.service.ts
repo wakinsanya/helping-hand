@@ -24,6 +24,7 @@ export class CommentService {
       map((commentDoc: CommentDocument) => commentDoc as Comment)
     );
   }
+
   getById(_id: string): Observable<Comment> {
     return from(this.commentModel.findOne({ _id })).pipe(
       map((commentDoc: CommentDocument) => commentDoc as Comment)

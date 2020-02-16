@@ -13,6 +13,7 @@ import { EventBusService } from './services/event-bus.service';
 import { FavorService } from './services/favor.service';
 import { SubscriptionService } from './services/subscription.service';
 import { RouterModule } from '@angular/router';
+import { CommentService } from './services/comment.service';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -32,6 +33,7 @@ import { RouterModule } from '@angular/router';
     ProfileService,
     FavorService,
     EventBusService,
+    CommentService,
     SubscriptionService
   ],
   exports: [HeaderComponent]

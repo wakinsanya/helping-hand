@@ -2,12 +2,20 @@ import {
   FavorQuery,
   UserQuery,
   ProfileQuery,
-  SubscriptionQuery
+  SubscriptionQuery,
+  CommentQuery,
+  PostQuery
 } from '@helping-hand/api-common';
 
-export function queryString(
-  query: FavorQuery | UserQuery | ProfileQuery | SubscriptionQuery
-): string {
+declare type ResourceQuery =
+  | FavorQuery
+  | UserQuery
+  | ProfileQuery
+  | CommentQuery
+  | PostQuery
+  | SubscriptionQuery;
+
+export function queryString(query: ResourceQuery): string {
   return '?'.concat(
     Object.keys(query)
       .map(key => {

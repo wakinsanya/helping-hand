@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { FAVOR_MODEL } from '../../constants';
+import { FAVOR_MODEL } from '@api/constants';
 import {
   Favor,
   UpdateFavorDto,
@@ -9,9 +9,9 @@ import {
 } from '@helping-hand/api-common';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FavorDocument } from '../interfaces/favor-document.interface';
+import { FavorDocument } from '@api/favor/interfaces/favor-document.interface';
 import { paginationQuery } from '@helping-hand/api-core';
-import { FavorQueryAggregationResult } from '../interfaces/favor-query-aggregation-result.interface';
+import { FavorQueryAggregationResult } from '@api/favor/interfaces/favor-query-aggregation-result.interface';
 
 @Injectable()
 export class FavorService {
