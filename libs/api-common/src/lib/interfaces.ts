@@ -31,6 +31,7 @@ export interface Post {
   readonly edited: boolean;
   readonly media: string;
   readonly comments: string[];
+
 }
 
 export interface Comment {
@@ -122,7 +123,7 @@ export interface SubscriptionQuery {
 }
 
 export interface PostQuery extends PaginationQuery {
-  owner: string;
+  owner?: string;
   orderByVotes?: boolean;
   orderByDate?: boolean;
 }

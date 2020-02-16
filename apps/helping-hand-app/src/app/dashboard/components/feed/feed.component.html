@@ -1,0 +1,24 @@
+<p>feed works!</p>
+<div class="feed-list__container">
+  <div class="feed-list__new-favor__wrap">
+    <button
+      nbButton
+      fullWidth
+      (
+    >
+      <nb-icon icon="plus-outline"></nb-icon>Ask for a Favour
+    </button>
+  </div>
+  <ng-container
+    *ngTemplateOutlet="
+      favorList.length || favorQuery.skip
+        ? favorListTemplate
+        : noFavorListTemplate
+    "
+  ></ng-container>
+  <ng-template #noFavorListTemplate>
+    <h4 class="feed_list__no-feed-placeholder">No Posts Yet</h4>
+  </ng-template>
+  <ng-template #favorListTemplate>
+  </ng-template>
+</div>

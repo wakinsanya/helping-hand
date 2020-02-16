@@ -31,6 +31,7 @@ import { FavorListComponent } from './components/favor-list/favor-list.component
 import { ProfileComponent } from './components/profile/profile.component';
 import { CommunityComponent } from './components/community/community.component';
 import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
+import { FeedComponent } from './components/feed/feed.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
     ProfileComponent,
     CommunityComponent,
     CustomShortDatePipe,
+    FeedComponent,
   ],
   imports: [
     CommonModule,
