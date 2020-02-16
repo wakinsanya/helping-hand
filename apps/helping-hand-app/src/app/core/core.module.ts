@@ -14,6 +14,7 @@ import { FavorService } from './services/favor.service';
 import { SubscriptionService } from './services/subscription.service';
 import { RouterModule } from '@angular/router';
 import { CommentService } from './services/comment.service';
+import { PostService } from './services/post.service';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -34,6 +35,7 @@ import { CommentService } from './services/comment.service';
     FavorService,
     EventBusService,
     CommentService,
+    PostService,
     SubscriptionService
   ],
   exports: [HeaderComponent]
