@@ -13,18 +13,39 @@ import {
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbDialogService } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { mergeMap, tap, switchMap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'helping-hand-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'helping-hand-tabset',
+  templateUrl: './tabset.component.html',
+  styleUrls: ['./tabset.component.scss']
 })
-export class DashboardComponent implements AfterViewInit {
+export class TabsetComponent implements AfterViewInit {
   isLoading = false;
   favorRequestCount: number;
   hideFavorRequestCount = false;
   @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
+
+  readonly tabs = [
+    {
+      title: 'Feed',
+      icon: 'radio-outline',
+      route: './dashboard',
+      responsive: true
+    },
+    {
+      title: 'Profile',
+      icon: 'person-outline',
+      route: './profile',
+      responsive: true
+    },
+    {
+      title: 'Community',
+      icon: 'people-outline',
+      route: './community',
+      responsive: true
+    }
+  ];
 
   constructor(
     private userService: UserService,

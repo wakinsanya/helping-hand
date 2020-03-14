@@ -4,25 +4,32 @@
       Helping Hand
     </h4>
   </nb-action>
-  <nb-action *ngIf="loggedInUser"
-    ><nb-user
-      size="medium"
-      [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
-      [picture]="loggedInUser.pictureUrl"
-    >
-    </nb-user
-  ></nb-action>
-  <!-- <nb-action *ngIf="loggedInUser">
-    <span *ngIf="!isOnMessages" class="header__logout" (click)="goToMessages()"
-      >Messages</span
-    >
-    <span *ngIf="isOnMessages" class="header__logout" (click)="goHome()"
-      >Dashboard</span
-    >
-  </nb-action> -->
+  <nb-action>
+    <span class="header__opt">
+      Feed
+    </span>
+  </nb-action>
+  <nb-action>
+    <span class="header__opt">
+      Profile
+    </span>
+  </nb-action>
+  <nb-action>
+    <span class="header__opt">
+      Community
+    </span>
+  </nb-action>
   <nb-action *ngIf="loggedInUser">
-    <span (click)="logout()" class="header__logout">
+    <span (click)="logout()" class="header__opt">
       Log Out
     </span>
   </nb-action>
+  <nb-action *ngIf="loggedInUser"
+  ><nb-user
+    size="medium"
+    [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
+    [picture]="loggedInUser.pictureUrl"
+  >
+  </nb-user
+></nb-action>
 </nb-actions>

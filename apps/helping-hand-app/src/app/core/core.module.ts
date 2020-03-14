@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CustomOverlayService } from './services/custom-overlay.service';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { NbActionsModule, NbUserModule, NbToastrModule } from '@nebular/theme';
+import { NbActionsModule, NbUserModule, NbToastrModule, NbContextMenuModule } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
 import { EventBusService } from './services/event-bus.service';
@@ -24,6 +24,7 @@ import { PostService } from './services/post.service';
     NbEvaIconsModule,
     NbActionsModule,
     NbUserModule,
+    NbContextMenuModule,
     NbToastrModule,
     RouterModule
   ],

@@ -26,6 +26,7 @@ export class CommunityComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('COMMUNITY_INIT');
     this.updateUserList().subscribe({ error: e => console.error(e) });
   }
 

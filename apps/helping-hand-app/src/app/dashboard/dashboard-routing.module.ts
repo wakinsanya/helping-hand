@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TabsetComponent } from './components/tabset/tabset.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { CommunityComponent } from './components/community/community.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent
+    component: TabsetComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
+  },
+  {
+    path: 'community',
+    component: CommunityComponent
   }
 ];
 

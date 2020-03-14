@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '@helping-hand/api-common';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { NbAuthService } from '@nebular/auth';
 import { tap, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { NbMenuService } from '@nebular/theme';
 
 @Component({
   selector: 'helping-hand-header',
@@ -19,27 +20,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private userService: UserService,
-    private authService: NbAuthService
+    private authService: NbAuthService,
+    private nbMenuService: NbMenuService
   ) {}
 
   ngOnInit() {
-    this.userService.loggedInUser$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((user: User) => {
-          this.loggedInUser = user;
-        })
-      )
-      .subscribe({ error: e => console.error(e) });
-    this.router.events
-      .pipe(
-        filter(e => e instanceof NavigationEnd),
-        tap(e => {
-          const { url } = e as NavigationEnd;
-          this.isOnMessages = url === '/chat';
-        })
-      )
-      .subscribe({ error: e => console.error(e) });
+    this.setUpUserListener();
+    this.setUpLogOutHandler();
   }
 
   logout() {
@@ -60,10 +47,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
   goHome() {
     this.router.navigate(['/dashboard']);
   }
+  setUpUserListener() {
+    this.userService.loggedInUser$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((user: User) => {
+          this.loggedInUser = user;
+        })
+      )
+      .subscribe({ error: e => console.error(e) });
+  }
 
-  goToMessages() {
-    this.isOnMessages = true;
-    this.router.navigate(['/chat']);
+  setUpLogOutHandler() {
+    this.nbMenuService
+      .onItemClick()
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(({ tag }) => tag === 'logout'),
+        tap(() => this.logout())
+      )
+      .subscribe({ error: err => console.error(err) });
   }
 
   ngOnDestroy() {

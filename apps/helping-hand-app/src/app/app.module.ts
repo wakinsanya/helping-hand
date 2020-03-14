@@ -4,7 +4,17 @@ import { AppComponent } from '@helping-hand/app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@helping-hand/core/core.module';
-import { NbThemeModule, NbLayoutModule, NbToastrModule, NbDialogModule, NbSidebarModule, NbWindowModule, NbDatepickerModule } from '@nebular/theme';
+import {
+  NbThemeModule,
+  NbLayoutModule,
+  NbToastrModule,
+  NbDialogModule,
+  NbSidebarModule,
+  NbWindowModule,
+  NbDatepickerModule,
+  NbTabsetModule,
+  NbMenuModule
+} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from '@helping-hand/app-routing.module';
 import {
@@ -20,8 +30,6 @@ import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { ChatModule } from './chat/chat.module';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -31,11 +39,11 @@ import { ChatModule } from './chat/chat.module';
     AppRoutingModule,
     CoreModule,
     DashboardModule,
-    ChatModule,
     AuthModule,
     NbThemeModule.forRoot({ name: 'helping-hand' }),
     NbLayoutModule,
     NbEvaIconsModule,
+    NbMenuModule,
     NbToastrModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
@@ -60,7 +68,9 @@ import { ChatModule } from './chat/chat.module';
         })
       ]
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production
+    })
   ],
   providers: [
     AuthGuard,
