@@ -1,35 +1,27 @@
-<nb-actions size="medium" accent="primary" responsive>
+<nb-actions size="medium" accent="primary" *ngIf="loggedInUser">
   <nb-action>
     <h4 class="header__heading" (click)="goHome()">
       Helping Hand
     </h4>
   </nb-action>
-  <nb-action>
-    <span class="header__opt">
+  <nb-action *ngIf="loggedInUser">
+    <span class="header__opt" routerLink="'/pages/feed'">
       Feed
     </span>
   </nb-action>
   <nb-action>
-    <span class="header__opt">
-      Profile
-    </span>
-  </nb-action>
-  <nb-action>
-    <span class="header__opt">
+    <span class="header__opt" routerLink="'/pages/community'">
       Community
     </span>
   </nb-action>
-  <nb-action *ngIf="loggedInUser">
-    <span (click)="logout()" class="header__opt">
-      Log Out
-    </span>
+  <nb-action >
+    <nb-user
+      [nbContextMenu]="profileContextMenu"
+      nbContextMenuTag="profile"
+      size="medium"
+      [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
+      [picture]="loggedInUser.pictureUrl"
+    >
+    </nb-user>
   </nb-action>
-  <nb-action *ngIf="loggedInUser"
-  ><nb-user
-    size="medium"
-    [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
-    [picture]="loggedInUser.pictureUrl"
-  >
-  </nb-user
-></nb-action>
 </nb-actions>

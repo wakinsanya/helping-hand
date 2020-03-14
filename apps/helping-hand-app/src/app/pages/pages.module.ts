@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TabsetComponent } from './components/tabset/tabset.component';
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { PagesRoutingModule } from './pages-routing.module';
 import {
   NbCardModule,
   NbLayoutModule,
@@ -15,14 +14,11 @@ import {
   NbListModule,
   NbAccordionModule,
   NbIconModule,
-  NbWindowModule,
   NbDatepickerModule,
   NbActionsModule,
   NbDialogModule,
   NbPopoverModule,
-  NbChatModule,
-  NbToggleModule,
-  NbRouteTabsetModule
+  NbToggleModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -34,7 +30,6 @@ import { FeedComponent } from './components/feed/feed.component';
 
 @NgModule({
   declarations: [
-    TabsetComponent,
     FavorRequestListComponent,
     FavorListComponent,
     ProfileComponent,
@@ -44,12 +39,11 @@ import { FeedComponent } from './components/feed/feed.component';
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
+    PagesRoutingModule,
     FormsModule,
     NbLayoutModule,
     NbCardModule,
     NbSidebarModule,
-    NbRouteTabsetModule,
     NbStepperModule,
     NbButtonModule,
     NbInputModule,
@@ -63,11 +57,9 @@ import { FeedComponent } from './components/feed/feed.component';
     NbDatepickerModule,
     NbActionsModule,
     NbPopoverModule,
-    NbDialogModule,
-    NbChatModule,
-    NbToggleModule,
-    NbWindowModule.forChild()
+    NbDialogModule.forChild(),
+    NbToggleModule
   ],
   exports: [CustomShortDatePipe]
 })
-export class DashboardModule {}
+export class PagesModule {}

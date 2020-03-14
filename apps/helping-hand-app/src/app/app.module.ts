@@ -12,7 +12,6 @@ import {
   NbSidebarModule,
   NbWindowModule,
   NbDatepickerModule,
-  NbTabsetModule,
   NbMenuModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -29,7 +28,7 @@ import { JwtInterceptor } from '@helping-hand/core/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { PagesModule } from './pages/pages.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -38,12 +37,12 @@ import { DashboardModule } from './dashboard/dashboard.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    DashboardModule,
+    PagesModule,
     AuthModule,
     NbThemeModule.forRoot({ name: 'helping-hand' }),
     NbLayoutModule,
     NbEvaIconsModule,
-    NbMenuModule,
+    NbMenuModule.forRoot(),
     NbToastrModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),

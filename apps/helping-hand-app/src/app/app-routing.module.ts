@@ -8,11 +8,11 @@ const routes: Routes = [
     loadChildren: './auth/auth.module#AuthModule'
   },
   {
-    path: 'dashboard',
+    path: 'pages',
     canActivate: [AuthGuard],
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
+    loadChildren: './pages/pages.module#PagesModule'
   },
-  { path: '**', pathMatch: 'full', redirectTo: 'dashboard' }
+  { path: '**', pathMatch: 'full', redirectTo: 'pages/feed' }
 ];
 
 @NgModule({

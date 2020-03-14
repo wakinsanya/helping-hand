@@ -6,7 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CustomOverlayService } from './services/custom-overlay.service';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { NbActionsModule, NbUserModule, NbToastrModule, NbContextMenuModule } from '@nebular/theme';
+import {
+  NbActionsModule,
+  NbUserModule,
+  NbToastrModule,
+  NbContextMenuModule,
+  NbMenuModule
+} from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
 import { EventBusService } from './services/event-bus.service';
@@ -15,17 +21,18 @@ import { SubscriptionService } from './services/subscription.service';
 import { RouterModule } from '@angular/router';
 import { CommentService } from './services/comment.service';
 import { PostService } from './services/post.service';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-  declarations: [HeaderComponent],
+  declarations: [HeaderComponent, FooterComponent],
   imports: [
     CommonModule,
     FormsModule,
     NbEvaIconsModule,
     NbActionsModule,
     NbUserModule,
-    NbContextMenuModule,
     NbToastrModule,
+    NbContextMenuModule,
     RouterModule
   ],
   providers: [
@@ -39,7 +46,7 @@ import { PostService } from './services/post.service';
     PostService,
     SubscriptionService
   ],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent, FooterComponent]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

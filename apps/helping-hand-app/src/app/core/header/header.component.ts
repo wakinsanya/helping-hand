@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NbAuthService } from '@nebular/auth';
 import { tap, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { UserService } from '../services/user.service';
+import { UserService } from '@helping-hand/core/services/user.service';
 import { NbMenuService } from '@nebular/theme';
 
 @Component({
@@ -13,9 +13,19 @@ import { NbMenuService } from '@nebular/theme';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isOnMessages = false;
   loggedInUser: User;
   private destroy$: Subject<void> = new Subject<void>();
+  readonly profileContextMenu = [
+    {
+      title: 'Profile',
+      icon: 'person-outline',
+      link: 'pages/profile'
+    },
+    {
+      title: 'Log Out',
+      icon: 'unlock-outline'
+    }
+  ];
 
   constructor(
     private router: Router,
@@ -39,21 +49,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({
-        next: () => this.router.navigate(['/auth/login']),
+        next: () => window.location.reload(),
         error: e => console.error(e)
       });
   }
 
   goHome() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/pages/feed']);
   }
   setUpUserListener() {
     this.userService.loggedInUser$
       .pipe(
         takeUntil(this.destroy$),
-        tap((user: User) => {
-          this.loggedInUser = user;
-        })
+        tap(user => (this.loggedInUser = user))
       )
       .subscribe({ error: e => console.error(e) });
   }
@@ -63,7 +71,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .onItemClick()
       .pipe(
         takeUntil(this.destroy$),
-        filter(({ tag }) => tag === 'logout'),
+        filter(
+          ({ tag, item }) => tag === 'profile' && item.title === 'Log Out'
+        ),
         tap(() => this.logout())
       )
       .subscribe({ error: err => console.error(err) });
