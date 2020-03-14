@@ -1,24 +1,96 @@
-<p>feed works!</p>
 <div class="feed-list__container">
-  <div class="feed-list__new-favor__wrap">
+  <div class="feed-list__new-post__wrap">
     <button
       nbButton
       fullWidth
-      (
+      outline
+      (click)="startPostCreation(postCreateTemplate)"
     >
-      <nb-icon icon="plus-outline"></nb-icon>Ask for a Favour
+      <nb-icon icon="plus-outline"></nb-icon>Create Post
     </button>
   </div>
   <ng-container
     *ngTemplateOutlet="
-      favorList.length || favorQuery.skip
-        ? favorListTemplate
-        : noFavorListTemplate
+      postCommentList.length || postQuery.skip
+        ? postListTemplate
+        : noPostListTemplate
     "
   ></ng-container>
-  <ng-template #noFavorListTemplate>
-    <h4 class="feed_list__no-feed-placeholder">No Posts Yet</h4>
+  <ng-template #noPostListTemplate>
+    <h4 class="feed-list__no-feed-placeholder">No Posts Yet</h4>
   </ng-template>
-  <ng-template #favorListTemplate>
+  <ng-template #postListTemplate>
+    <nb-card *ngFor="let postComment of postCommentList" class="feed-list__post-card">
+      <nb-card-header><h2>{{ postComment?.post?.title }}</h2></nb-card-header>
+      <nb-card-body>
+        <p>
+          {{ postComment?.post?.text}}
+        </p>
+        <div *ngIf="postComment?.commentData?.isVisible">
+          <input nbInput placeholder="Leave a comment"><input>
+          <p *ngFor="let comment of postComment?.commentData?.comments">
+            {{ comment.text }}
+          </p>
+        </div>
+      </nb-card-body>
+      <nb-card-footer>
+        <nb-actions size="medium" accent="primary" responsive>
+          <nb-action
+            ><nb-user
+              size="medium"
+              [name]="postComment?.owner?.firstName + ' ' + postComment.owner?.lastName"
+              [picture]="postComment?.owner?.pictureUrl"
+            >
+            </nb-user
+          ></nb-action>
+          <nb-action icon="message-square-outline" (click)="toggleCommentVisibilty(i)">
+          </nb-action>
+          <!-- <nb-action icon="delete -outline">
+          </nb-action> -->
+        </nb-actions>
+
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+
+  <ng-template #postCreateTemplate>
+    <nb-card>
+      <nb-card-header>
+        Create a post
+      </nb-card-header>
+      <nb-card-body>
+        <div class="create-post-form__container">
+          <label for="postTitle">Title:</label>
+          <input
+            [(ngModel)]="createPostDto.title"
+            name="postTitle"
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Short title describing what your post is about"
+          />
+          <label for="description">Text:</label>
+          <textarea
+            [(ngModel)]="createPostDto.text"
+            name="description"
+            nbInput
+            fullWidth
+            placeholder="Add some more information here if you wish (optional)"
+          ></textarea>
+          <button nbButton outline fullWidth disabled>
+            <nb-icon icon="attach-outline"></nb-icon>
+            Add A Picture (coming soon)
+          </button>
+          <button
+            nbButton
+            fullWidth
+            (click)="createPost()"
+          >
+            Post
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
   </ng-template>
 </div>

@@ -58,7 +58,7 @@ export class UsersService {
         limit,
         sort,
         sortOrder: 'ascending',
-        sortField: 'createdAt',
+        sortField: 'firstName',
         entity: 'users'
       })
     ];

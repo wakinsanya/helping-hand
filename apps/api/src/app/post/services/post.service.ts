@@ -31,9 +31,9 @@ export class PostService {
   }
 
   updateById(_id: string, postDto: UpdatePostDto): Observable<Post> {
-    return from(
-      this.postModel.updateOne({ _id }, postDto, { new: true })
-    ).pipe(map((postDoc: PostDocument) => postDoc as Post));
+    return from(this.postModel.updateOne({ _id }, postDto, { new: true })).pipe(
+      map((postDoc: PostDocument) => postDoc as Post)
+    );
   }
 
   list(
@@ -43,9 +43,7 @@ export class PostService {
     limit: number
   ): Observable<PostQueryResult> {
     const matchStage: any = {
-      $match: {
-        owner: {}
-      }
+      $match: {}
     };
 
     if (owner) {
@@ -53,7 +51,7 @@ export class PostService {
     }
 
     const pipeline = [
-      matchStage,
+      // matchStage,
       ...paginationQuery({
         skip,
         limit,

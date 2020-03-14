@@ -4,7 +4,12 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Profile, User, CreateProfileDto, ProfileDataKey } from '@helping-hand/api-common';
+import {
+  Profile,
+  User,
+  CreateProfileDto,
+  ProfileDataKey
+} from '@helping-hand/api-common';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbDialogService } from '@nebular/theme';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
@@ -42,7 +47,7 @@ export class DashboardComponent implements AfterViewInit {
       this.profileService
         .createProfile(profileDto)
         .pipe(
-         switchMap((profile: Profile) => {
+          switchMap((profile: Profile) => {
             return this.userService.updateUser(loggedInUser._id, {
               profile: profile._id
             });

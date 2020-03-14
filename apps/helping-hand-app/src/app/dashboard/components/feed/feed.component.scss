@@ -1,0 +1,22 @@
+// .favor-list__new-favor__wrap {
+//   margin: 20px 0;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+.create-post-form__container {
+  & > input, textarea, button {
+    margin-bottom: 20px;
+  }
+
+  & > label {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+}
+
+.feed-list__post-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

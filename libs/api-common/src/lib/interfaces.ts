@@ -1,4 +1,9 @@
-import { UserProvider, UserRole, SubscriptionLabel, ProfileDataKey } from './enums';
+import {
+  UserProvider,
+  UserRole,
+  SubscriptionLabel,
+  ProfileDataKey
+} from './enums';
 
 export interface User {
   readonly _id: string;
@@ -31,7 +36,6 @@ export interface Post {
   readonly edited: boolean;
   readonly media: string;
   readonly comments: string[];
-
 }
 
 export interface Comment {

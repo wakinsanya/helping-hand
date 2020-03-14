@@ -45,7 +45,7 @@ export class CommentService {
   ): Observable<CommentQueryResult> {
     const matchStage: any = {
       $match: {
-        owner: {}
+
       }
     };
 
@@ -62,8 +62,10 @@ export class CommentService {
         entity: 'comments'
       })
     ];
+
     return from(this.commentModel.aggregate(pipeline)).pipe(
       map((data: CommentQueryAggregationResult[]) => {
+        console.log({ data });
         return data && data.length
           ? data[0]
           : {

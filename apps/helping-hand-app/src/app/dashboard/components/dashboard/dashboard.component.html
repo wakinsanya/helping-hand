@@ -8,9 +8,9 @@
         responsive
         [lazyLoad]="true"
       >
-        <helping-hand-favor-list></helping-hand-favor-list>
+        <helping-hand-feed></helping-hand-feed>
       </nb-tab>
-      <nb-tab
+      <!-- <nb-tab
         badgeStatus="success"
         [badgeText]="
           favorRequestCount && !hideFavorRequestCount ? favorRequestCount : ''
@@ -24,7 +24,7 @@
         <helping-hand-favor-request-list
           (favorRequestCount)="updateFavorRequestCount($event)"
         ></helping-hand-favor-request-list>
-      </nb-tab>
+      </nb-tab> -->
       <nb-tab
         tabTitle="Profile"
         tabIcon="person-outline"
