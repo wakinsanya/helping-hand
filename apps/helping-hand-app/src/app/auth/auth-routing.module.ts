@@ -13,6 +13,7 @@ export const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+        data: { animation: 'fade', state: 'login'}
       },
       {
         path: 'callback',

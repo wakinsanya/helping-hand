@@ -1,8 +1,10 @@
 <nb-layout>
-  <nb-layout-header fixed="true">
+  <nb-layout-header>
     <helping-hand-header></helping-hand-header>
   </nb-layout-header>
   <nb-layout-column>
-    <router-outlet></router-outlet>
+    <main [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </main>
   </nb-layout-column>
 </nb-layout>

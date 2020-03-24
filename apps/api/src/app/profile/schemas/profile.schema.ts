@@ -32,8 +32,10 @@ export const ProfileSchema = new Schema({
       type: Schema.Types.String
     }
   },
-  totalStars: {
-    type: Schema.Types.Number,
-    default: 0
+  metadata: {
+    totalStars: {
+      type: Schema.Types.Boolean,
+      default: 0
+    }
   }
 });

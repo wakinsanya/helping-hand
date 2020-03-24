@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CommunityComponent } from './components/community/community.component';
@@ -8,21 +8,25 @@ import { PostComponent } from './components/post/post.component';
 const routes: Routes = [
   {
     path: 'feed',
-    component: FeedComponent
+    component: FeedComponent,
+    data: { state: 'feed', animation: 'fade' }
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    data: { state: 'profile', animation: 'fade' }
   },
   {
     path: 'community',
-    component: CommunityComponent
+    component: CommunityComponent,
+    data: { state: 'community', animation: 'fade' }
   },
   {
     path: 'post/:postId',
-    component: PostComponent
+    component: PostComponent,
+    data: { state: 'post', animation: 'fade' }
   },
-  { path: '**', pathMatch: 'full', redirectTo: 'pages/feed' }
+  { path: '**', pathMatch: 'full', redirectTo: 'pages/feed',  data: { state: 'feed', animation: 'fade' } }
 ];
 
 @NgModule({
