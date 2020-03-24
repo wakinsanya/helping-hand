@@ -19,7 +19,6 @@ export class PostService {
   }
 
   getPosts(query: PostQuery): Observable<PostQueryResult> {
-    console.log('get req!')
     return this.httpClient.get<PostQueryResult>(
       `api/posts${queryString(query)}`
     );

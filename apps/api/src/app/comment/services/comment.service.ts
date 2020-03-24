@@ -65,7 +65,6 @@ export class CommentService {
 
     return from(this.commentModel.aggregate(pipeline)).pipe(
       map((data: CommentQueryAggregationResult[]) => {
-        console.log({ data });
         return data && data.length
           ? data[0]
           : {
