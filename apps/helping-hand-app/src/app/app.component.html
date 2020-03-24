@@ -3,7 +3,7 @@
     <helping-hand-header></helping-hand-header>
   </nb-layout-header>
   <nb-layout-column>
-    <main [@routeAnimations]="prepareRoute(outlet)">
+    <main [@fade]="prepareRoute(outlet)">
       <router-outlet #outlet="outlet"></router-outlet>
     </main>
   </nb-layout-column>
