@@ -19,42 +19,46 @@
           "
         ></ng-container>
         <ng-template #noPostListTemplate>
-        <h4 class="feed-list__no-feed-placeholder">No Posts Yet</h4>
+          <h4 class="feed-list__no-feed-placeholder">No Posts Yet</h4>
         </ng-template>
         <ng-template #postListTemplate>
-          <nb-card *ngFor="let postComment of postCommentList" class="feed-list__post-card">
-            <nb-card-header><h2>{{ postComment?.post?.title }}</h2></nb-card-header>
-            <nb-card-body>
-              <p>
-                {{ postComment?.post?.text}}
-              </p>
-              <div *ngIf="postComment?.commentData?.isVisible">
-                <input nbInput placeholder="Leave a comment"><input>
-                <p *ngFor="let comment of postComment?.commentData?.comments">
-                  {{ comment.text }}
+          <h3>Recent Posts</h3>
+          <div
+            class="feed-list__post__wrap"
+            *ngFor="let postComment of postCommentList"
+          >
+            <nb-card class="feed-list__post-card">
+              <nb-card-header>{{ postComment?.post?.title }}</nb-card-header>
+              <nb-card-body>
+                <p>
+                  {{ postComment?.post?.text }}
                 </p>
-              </div>
-            </nb-card-body>
-            <nb-card-footer>
-              <nb-actions size="medium" accent="primary" responsive>
-                <nb-action
-                  ><nb-user
-                    size="medium"
-                    [name]="postComment?.owner?.firstName + ' ' + postComment.owner?.lastName"
-                    [picture]="postComment?.owner?.pictureUrl"
-                  >
-                  </nb-user
-                ></nb-action>
-                <nb-action icon="message-square-outline">
-                </nb-action>
-                <!-- <nb-action icon="delete -outline">
-                </nb-action> -->
-              </nb-actions>
-
-            </nb-card-footer>
-          </nb-card>
+                <div *ngIf="postComment?.commentData?.isVisible">
+                  <input nbInput placeholder="Leave a comment" /><input />
+                  <p *ngFor="let comment of postComment?.commentData?.comments">
+                    {{ comment.text }}
+                  </p>
+                </div>
+              </nb-card-body>
+              <nb-card-footer>
+                <nb-actions size="small" accent="primary" responsive>
+                  <nb-action
+                    ><nb-user
+                      size="medium"
+                      [name]="
+                        postComment?.owner?.firstName +
+                        ' ' +
+                        postComment.owner?.lastName
+                      "
+                      [picture]="postComment?.owner?.pictureUrl"
+                    >
+                    </nb-user
+                  ></nb-action>
+                </nb-actions>
+              </nb-card-footer>
+            </nb-card>
+          </div>
         </ng-template>
-
 
         <ng-template #postCreateTemplate>
           <nb-card>
@@ -84,11 +88,7 @@
                   <nb-icon icon="attach-outline"></nb-icon>
                   Add A Picture (coming soon)
                 </button>
-                <button
-                  nbButton
-                  fullWidth
-                  (click)="createPost()"
-                >
+                <button nbButton fullWidth (click)="createPost()">
                   Post
                 </button>
               </div>
@@ -96,10 +96,6 @@
           </nb-card>
         </ng-template>
       </div>
-
     </div>
   </nb-layout-column>
-  <nb-sidebar>
-    <helping-hand-community></helping-hand-community>
-  </nb-sidebar>
 </nb-layout>

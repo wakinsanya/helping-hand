@@ -1,3 +1,7 @@
+@import '../../../themes';
+
+
+
 .header__heading {
   &:hover {
     cursor: pointer;
@@ -11,3 +15,33 @@
   }
 }
 
+.header__palm {
+  @media (max-width: 480px){
+    display: none;
+  }
+}
+
+.header__link {
+  text-decoration: none;
+  opacity: .6;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+    color: nb-theme(color-primary-400) !important;
+  }
+}
+
+.header__current-link {
+  opacity: 1 !important;
+  color: nb-theme(color-primary-400) !important;
+}
+
+.header__danger-link {
+  opacity: .6;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    color: nb-theme(color-danger-400) !important;
+  }
+}

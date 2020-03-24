@@ -11,7 +11,7 @@ import {
   NbUserModule,
   NbToastrModule,
   NbContextMenuModule,
-  NbMenuModule
+  NbIconModule,
 } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
@@ -33,6 +33,7 @@ import { FooterComponent } from './footer/footer.component';
     NbUserModule,
     NbToastrModule,
     NbContextMenuModule,
+    NbIconModule,
     RouterModule
   ],
   providers: [

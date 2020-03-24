@@ -1,26 +1,31 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { User } from '@helping-hand/api-common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { NbAuthService } from '@nebular/auth';
-import { tap, takeUntil, filter } from 'rxjs/operators';
+import { tap, takeUntil, filter, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbMenuService } from '@nebular/theme';
 
+enum PageRoute {
+  Feed = '/pages/feed',
+  Profile = '/pages/profile',
+  Community = '/pages/community'
+}
+
 @Component({
   selector: 'helping-hand-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   loggedInUser: User;
+  pageRoute = PageRoute;
+  currentPageRoute: PageRoute;
   private destroy$: Subject<void> = new Subject<void>();
-  readonly profileContextMenu = [
-    {
-      title: 'Profile',
-      icon: 'person-outline',
-      link: 'pages/profile'
-    },
+
+  readonly userContextMenu = [
     {
       title: 'Log Out',
       icon: 'unlock-outline'
@@ -37,6 +42,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setUpUserListener();
     this.setUpLogOutHandler();
+    this.router.events
+      .pipe(
+        filter(navEvent => navEvent instanceof NavigationEnd),
+        map((navEnd: NavigationEnd) => navEnd.url),
+        tap(url => (this.currentPageRoute = url as PageRoute))
+      )
+      .subscribe({ error: err => console.error(err) });
   }
 
   logout() {

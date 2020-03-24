@@ -1,27 +1,50 @@
-<nb-actions size="medium" accent="primary" *ngIf="loggedInUser">
+<nb-actions size="medium" accent="primary">
   <nb-action>
     <h5 class="header__heading" (click)="goHome()">
       Helping Hand
     </h5>
   </nb-action>
-  <nb-action *ngIf="loggedInUser">
-    <span class="header__opt" routerLink="'/pages/feed'">
-      Feed
-    </span>
-  </nb-action>
-  <nb-action>
-    <span class="header__opt" routerLink="'/pages/community'">
-      Community
-    </span>
-  </nb-action>
-  <nb-action >
+  <nb-action *ngIf="loggedInUser && loggedInUser._id">
     <nb-user
-      [nbContextMenu]="profileContextMenu"
+      [nbContextMenu]="userContextMenu"
       nbContextMenuTag="profile"
       size="medium"
       [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
       [picture]="loggedInUser.pictureUrl"
     >
     </nb-user>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser && loggedInUser._id">
+    <a
+      class="header__link"
+      routerLink="/pages/feed"
+      [ngClass]="{
+        'header__current-link': pageRoute.Feed === currentPageRoute
+      }"
+    >Feed</a>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser && loggedInUser._id">
+    <a
+      class="header__link"
+      routerLink="/pages/profile"
+      [ngClass]="{
+        'header__current-link': pageRoute.Profile === currentPageRoute
+      }"
+    >Profile</a>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser && loggedInUser._id">
+    <a
+      class="header__link"
+      routerLink="/pages/community"
+      [ngClass]="{
+        'header__current-link': pageRoute.Community === currentPageRoute
+      }"
+    >Community</a>
+  </nb-action>
+  <nb-action *ngIf="loggedInUser && loggedInUser._id">
+    <a
+      (click)="logout()"
+      class="header__danger-link"
+    >Log Out</a>
   </nb-action>
 </nb-actions>
