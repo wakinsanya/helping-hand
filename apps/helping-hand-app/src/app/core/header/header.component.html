@@ -6,8 +6,6 @@
   </nb-action>
   <nb-action *ngIf="loggedInUser && loggedInUser._id">
     <nb-user
-      [nbContextMenu]="userContextMenu"
-      nbContextMenuTag="profile"
       size="medium"
       [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
       [picture]="loggedInUser.pictureUrl"

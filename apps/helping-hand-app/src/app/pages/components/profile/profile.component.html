@@ -16,55 +16,70 @@
           comfortable with other users seeing.</span
         >
       </div>
-      <nb-list>
-        <nb-list-item *ngFor="let dataKey of profileDataKeys">
-          <div class="profile__pref-opts__wrap">
-            <nb-toggle
-              [status]="
-                profile?.publicDataKeys?.includes(dataKey)
-                  ? 'primary'
-                  : 'danger'
-              "
-              [ngModel]="profile?.publicDataKeys?.includes(dataKey)"
-              (checkedChange)="toggleDataKeyVisibility(dataKey)"
-              >{{ profileDataKeyDisplayMap[dataKey] }}</nb-toggle
+      <nb-card>
+        <nb-card-body>
+          <nb-list>
+            <nb-list-item *ngFor="let dataKey of profileDataKeys">
+              <div class="profile__pref-opts__wrap">
+                <nb-toggle
+                  [status]="
+                    profile?.publicDataKeys?.includes(dataKey)
+                      ? 'primary'
+                      : 'danger'
+                  "
+                  [ngModel]="profile?.publicDataKeys?.includes(dataKey)"
+                  (checkedChange)="toggleDataKeyVisibility(dataKey)"
+                  >{{ profileDataKeyDisplayMap[dataKey] }}</nb-toggle
+                >
+                <div *ngIf="profile?.publicDataKeys?.includes(dataKey)">
+                  <input
+                    nbInput
+                    fullWidth="true"
+                    [(ngModel)]="(profile?.data)[dataKey]"
+                    placeholder="enter your {{
+                      profileDataKeyDisplayMap[dataKey]
+                    }} here"
+                  />
+                </div>
+              </div>
+            </nb-list-item>
+          </nb-list>
+        </nb-card-body>
+        <nb-card-footer>
+
+          <button
+          nbButton
+          fullWidth
+          size="tiny"
+          class="profile__tiny-btn"
+          (click)="saveProfile()"
+        >
+          Update Contact Details
+        </button>
+        </nb-card-footer>
+      </nb-card>
+      <nb-card>
+        <nb-card-header>
+          <h5>Why not say a little about yourself?</h5>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="profile__tip__wrap">
+            <span
+              >Make your profile yours. The more you tell us, the more you stand out.</span
             >
-            <div *ngIf="profile?.publicDataKeys?.includes(dataKey)">
-              <input
-                nbInput
-                fullWidth="true"
-                [(ngModel)]="(profile?.data)[dataKey]"
-                placeholder="enter your {{
-                  profileDataKeyDisplayMap[dataKey]
-                }} here"
-              />
-            </div>
           </div>
-        </nb-list-item>
-      </nb-list>
-      <button
-        nbButton
-        fullWidth
-        size="tiny"
-        class="profile__tiny-btn"
-        (click)="saveProfile()"
-      >
-        Update Contact Details
-      </button>
-    </div>
-    <div>
-      <h5>Why not say a little about yourself?</h5>
-      <label for="bio"><h5>About</h5></label>
-      <textarea
-        nbInput
-        fieldSize="giant"
-        [(ngModel)]="newBio"
-        name="bio"
-        class="profile__bio__textarea"
-      ></textarea>
-      <div class="profile__actions-wrap">
-        <button nbButton (click)="saveProfile()">Save Bio</button>
-      </div>
+          <textarea
+            nbInput
+            [(ngModel)]="newBio"
+            fieldSize="giant"
+            name="bio"
+            class="profile__bio__textarea"
+          ></textarea>
+          <div class="profile__actions-wrap">
+            <button nbButton (click)="saveProfile()">Save Bio</button>
+          </div>
+        </nb-card-body>
+      </nb-card>
     </div>
   </div>
 </div>

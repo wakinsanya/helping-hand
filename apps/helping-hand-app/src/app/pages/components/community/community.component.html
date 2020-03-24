@@ -1,32 +1,62 @@
 <div class="community__container">
   <h5>Community</h5>
-  <nb-list>
-    <nb-list-item *ngFor="let user of userList">
-      <div>
-        <nb-user
-          [name]="user.firstName + ' ' + user.lastName"
-          size="giant"
-          [picture]="user.pictureUrl"
-        >
-        </nb-user>
-        <div class="community__profile-description__wrap">
-          <ng-container
-            *ngTemplateOutlet="
-              user?.profileBody?.bio.length > 200 ? partialBio : fullBio
-            "
-          ></ng-container>
-          <ng-template #fullBio>
-            <p>{{ user?.profileBody?.bio }}</p>
-          </ng-template>
-          <ng-template #partialBio>
-            <p [nbPopover]="user?.profileBody?.bio">
-              {{ user?.profileBody?.bio.substring(0, 200).concat('...') }}
-            </p>
-          </ng-template>
-        </div>
-      </div>
-    </nb-list-item>
-  </nb-list>
+  <nb-card>
+    <nb-card-body>
+      <nb-list>
+        <nb-list-item *ngFor="let user of userList">
+          <div>
+            <nb-user
+              [name]="user.firstName + ' ' + user.lastName"
+              size="giant"
+              [picture]="user.pictureUrl"
+            >
+            </nb-user>
+            <div class="community__profile-description__wrap">
+              <ng-container
+                *ngTemplateOutlet="
+                  user?.profileBody?.bio.length > 200 ? partialBio : fullBio
+                "
+              ></ng-container>
+              <ng-template #fullBio>
+                <p>{{ user?.profileBody?.bio }}</p>
+              </ng-template>
+              <ng-template #partialBio>
+                <p [nbPopover]="user?.profileBody?.bio">
+                  {{ user?.profileBody?.bio.substring(0, 200).concat('...') }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </nb-list-item>
+            <nb-list-item *ngFor="let user of userList">
+          <div>
+            <nb-user
+              [name]="user.firstName + ' ' + user.lastName"
+              size="giant"
+              [picture]="user.pictureUrl"
+            >
+            </nb-user>
+            <div class="community__profile-description__wrap">
+              <ng-container
+                *ngTemplateOutlet="
+                  user?.profileBody?.bio.length > 200 ? partialBio : fullBio
+                "
+              ></ng-container>
+              <ng-template #fullBio>
+                <p>{{ user?.profileBody?.bio }}</p>
+              </ng-template>
+              <ng-template #partialBio>
+                <p [nbPopover]="user?.profileBody?.bio">
+                  {{ user?.profileBody?.bio.substring(0, 200).concat('...') }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </nb-list-item>
+      </nb-list>
+    </nb-card-body>
+  </nb-card>
+
   <div class="user-list__pagin__wrap">
     <button
       nbButton
