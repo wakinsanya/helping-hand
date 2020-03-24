@@ -5,20 +5,18 @@ import { AuthGuard } from './core/helpers/auth.guard';
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule',
-    data: { animation: 'fade' }
+    loadChildren: './auth/auth.module#AuthModule'
   },
   {
     path: 'pages',
     canActivate: [AuthGuard],
-    loadChildren: './pages/pages.module#PagesModule',
-    data: { animation: 'fade' }
+    loadChildren: './pages/pages.module#PagesModule'
   },
   {
     path: '**',
     pathMatch: 'full',
     redirectTo: 'pages/feed',
-    data: { state: 'feed', animation: 'fade' }
+    data: { state: 'feed' }
   }
 ];
 

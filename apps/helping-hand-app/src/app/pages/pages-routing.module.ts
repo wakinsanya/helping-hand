@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: 'post/:postId',
     component: PostComponent,
-    data: { state: 'post', animation: 'fade' }
+    data: { state: 'feed' }
   },
   { path: '**', pathMatch: 'full', redirectTo: 'pages/feed',  data: { state: 'feed', animation: 'fade' } }
 ];
