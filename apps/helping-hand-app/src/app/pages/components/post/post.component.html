@@ -9,7 +9,24 @@
       </p>
     </nb-card-body>
     <nb-card-footer>
-
+      <nb-actions size="large" accent="primary" responsive>
+        <nb-action
+          ><nb-user
+            size="giant"
+            [name]="
+              postOwner?.firstName +
+              ' ' +
+              postOwner.lastName
+            "
+            [picture]="postOwner?.pictureUrl"
+            [title]="postOwner?.role"
+          >
+          </nb-user
+        ></nb-action>
+        <nb-action>
+          Comment
+        </nb-action>
+      </nb-actions>
     </nb-card-footer>
   </nb-card>
 </div>
