@@ -1,32 +1,37 @@
 <div>
   <nb-card>
     <nb-card-header>
-     <h3>{{ post?.title }}</h3>
+      <h3>{{ post?.title }}</h3>
     </nb-card-header>
     <nb-card-body>
       <p>
         {{ post?.text }}
       </p>
-    </nb-card-body>
-    <nb-card-footer>
-      <nb-actions size="large" accent="primary" responsive>
+      <nb-actions size="medium" accent="primary" responsive>
         <nb-action
           ><nb-user
-            size="giant"
-            [name]="
-              postOwner?.firstName +
-              ' ' +
-              postOwner.lastName
-            "
+            size="medium"
+            [name]="postOwner?.firstName + ' ' + postOwner.lastName"
             [picture]="postOwner?.pictureUrl"
             [title]="postOwner?.role"
           >
           </nb-user
         ></nb-action>
         <nb-action>
-          Comment
+          <button nbButton ghost status="basic">
+            <nb-icon icon="message-square-outline" status="basic"> </nb-icon>
+            Leave a comment
+          </button>
+        </nb-action>
+        <nb-action>
+          <button nbButton ghost status="basic">
+            <nb-icon icon="star-outline" status="basic"> </nb-icon>
+            Give a star
+          </button>
         </nb-action>
       </nb-actions>
-    </nb-card-footer>
+      <h5>Comments</h5>
+    </nb-card-body>
+    <nb-card-footer> </nb-card-footer>
   </nb-card>
 </div>

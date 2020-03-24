@@ -31,5 +31,9 @@ export const ProfileSchema = new Schema({
     twitterUsername: {
       type: Schema.Types.String
     }
+  },
+  totalStars: {
+    type: Schema.Types.Number,
+    default: 0
   }
 });
