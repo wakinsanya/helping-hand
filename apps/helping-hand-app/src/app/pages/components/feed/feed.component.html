@@ -25,7 +25,8 @@
           <h3>Recent Posts</h3>
           <div
             class="feed-list__post__wrap"
-            *ngFor="let postComment of postCommentList"
+            *ngFor="let postComment of postCommentList; let i = index"
+            (click)="navigateToPost(i)"
           >
             <nb-card class="feed-list__post-card">
               <nb-card-header>{{ postComment?.post?.title }}</nb-card-header>

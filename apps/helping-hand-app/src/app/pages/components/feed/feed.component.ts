@@ -19,6 +19,7 @@ import {
 import { from, Subject, Observable, of, forkJoin } from 'rxjs';
 import { NbDialogService, NbToastrService, NbDialogRef } from '@nebular/theme';
 import { UserService } from '@helping-hand/core/services/user.service';
+import { Router } from '@angular/router';
 
 interface PostComment {
   post: Post;
@@ -53,6 +54,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
+    private router: Router,
     private toastrService: NbToastrService,
     private userService: UserService,
     private postService: PostService,
@@ -167,6 +169,11 @@ export class FeedComponent implements OnInit, OnDestroy {
     } else {
       throw new Error('Post comment does not exist');
     }
+  }
+
+  navigateToPost(postIndex: number) {
+    const postId = this.postCommentList[postIndex].post._id;
+    this.router.navigate(['/pages/post', postId]);
   }
 
   ngOnDestroy() {

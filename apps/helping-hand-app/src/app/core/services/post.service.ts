@@ -24,6 +24,10 @@ export class PostService {
     );
   }
 
+  getPostById(postId: string): Observable<Post> {
+    return this.httpClient.get<Post>(`api/posts/${postId}`);
+  }
+
   updatePost(postId: string, postDto: UpdatePostDto): Observable<any> {
     return this.httpClient.patch(`api/posts/${postId}`, postDto);
   }
