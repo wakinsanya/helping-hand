@@ -6,6 +6,9 @@
         <nb-list-item *ngFor="let user of userList">
           <div>
             <nb-user
+              badgePosition="bottom end"
+              badgeStatus="success"
+              [badgeText]="(user.profileBody?.metadata?.totalStars || 0) + ' stars'"
               [name]="user?.firstName + ' ' + user?.lastName"
               size="giant"
               [picture]="user?.pictureUrl"

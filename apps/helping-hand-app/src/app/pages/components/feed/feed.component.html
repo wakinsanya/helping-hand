@@ -13,7 +13,7 @@
         </div>
         <ng-container
           *ngTemplateOutlet="
-            postCommentList.length || postQuery.skip
+            feedDataList?.length || postQuery.skip
               ? postListTemplate
               : noPostListTemplate
           "
@@ -25,21 +25,15 @@
           <h3>Recent Posts</h3>
           <div
             class="feed-list__post__wrap"
-            *ngFor="let postComment of postCommentList; let i = index"
+            *ngFor="let entry of feedDataList; let i = index"
             (click)="navigateToPost(i)"
           >
             <nb-card class="feed-list__post-card">
-              <nb-card-header>{{ postComment?.post?.title }}</nb-card-header>
+              <nb-card-header>{{ entry?.post?.title }}</nb-card-header>
               <nb-card-body>
                 <p>
-                  {{ postComment?.post?.text }}
+                  {{ entry?.post?.text }}
                 </p>
-                <div *ngIf="postComment?.commentData?.isVisible">
-                  <input nbInput placeholder="Leave a comment" /><input />
-                  <p *ngFor="let comment of postComment?.commentData?.comments">
-                    {{ comment.text }}
-                  </p>
-                </div>
               </nb-card-body>
               <nb-card-footer>
                 <nb-actions size="small" accent="primary" responsive>
@@ -47,13 +41,14 @@
                     ><nb-user
                       badgePosition="bottom end"
                       badgeStatus="success"
-                      size="medium"
+                      [badgeText]="(entry?.ownerProfile?.metadata?.totalStars || 0) + ' stars'"
+                      size="large"
                       [name]="
-                        postComment?.owner?.firstName +
+                        entry?.ownerFirstName +
                         ' ' +
-                        postComment.owner?.lastName
+                        entry?.ownerLastName
                       "
-                      [picture]="postComment?.owner?.pictureUrl"
+                      [picture]="entry.ownerPictureUrl"
                     >
                     </nb-user
                   ></nb-action>
@@ -85,7 +80,7 @@
                   name="description"
                   nbInput
                   fullWidth
-                  placeholder="Add some more information here if you wish (optional)"
+                  placeholder="Main body of your post"
                 ></textarea>
                 <button nbButton outline fullWidth disabled>
                   <nb-icon icon="attach-outline"></nb-icon>

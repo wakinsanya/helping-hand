@@ -22,6 +22,7 @@ import { from, Subject, Observable, of, forkJoin } from 'rxjs';
 import { NbDialogService, NbToastrService, NbDialogRef } from '@nebular/theme';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '@helping-hand/core/services/profile.service';
 
 interface PostComment {
   post: Post;
@@ -53,12 +54,20 @@ export class FeedComponent implements OnInit, OnDestroy {
     media: undefined
   };
   postList: Post[] = [];
+  feedDataList: {
+    post?: Post;
+    ownerFirstName?: string;
+    ownerLastName?: string;
+    ownerPictureUrl?: string;
+    ownerProfile?: Profile;
+  }[] = [];
   postCommentList: PostComment[] = [];
   private createPostDialogRef: NbDialogRef<any>;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
+    private profileService: ProfileService,
     private toastrService: NbToastrService,
     private userService: UserService,
     private postService: PostService,
@@ -78,18 +87,39 @@ export class FeedComponent implements OnInit, OnDestroy {
             media: undefined
           };
         }),
-        switchMap(() => this.updatePostCommentList())
+        switchMap(() => this.updateFeedDataList())
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
-  updatePostList(): Observable<{}> {
+  updateFeedDataList(): Observable<{}> {
     return this.postService.getPosts(this.postQuery).pipe(
-      tap((data: PostQueryResult) => {
-        this.postList = data.posts;
-        this.postsTotalCount = data.postsTotalCount'
-      })
-    )
+      tap(({ postsTotalCount }) => {
+        this.postsTotalCount = postsTotalCount;
+      }),
+      map(({ posts }) => posts.map(post => ({ post }))),
+      switchMap(posts => from(posts).pipe(filter(x => !!x))),
+      mergeMap(data => {
+        return forkJoin([
+          this.userService.getUserById(data.post.owner).pipe(
+            tap(({ firstName, lastName, pictureUrl }) => {
+              data['ownerFirstName'] = firstName;
+              data['ownerLastName'] = lastName;
+              data['ownerPictureUrl'] = pictureUrl;
+            }),
+          ),
+          this.profileService.getProfileByOwner(data.post.owner).pipe(
+            tap(profile => (data['profile'] = profile))
+          )
+        ]).pipe(map(() => data))
+      }),
+      toArray(),
+      tap(data => {
+        console.log({ data })
+      }),
+      tap(data => (this.feedDataList = data)),
+      switchMap(() => of({}))
+    );
   }
 
   updatePostCommentList(): Observable<{}> {
@@ -185,7 +215,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   navigateToPost(postIndex: number) {
-    const postId = this.postCommentList[postIndex].post._id;
+    const postId = this.feedDataList[postIndex].post._id;
     this.router.navigate(['/pages/post', postId]);
   }
 
