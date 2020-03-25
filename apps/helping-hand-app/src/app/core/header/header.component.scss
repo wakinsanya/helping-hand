@@ -6,6 +6,9 @@
   &:hover {
     cursor: pointer;
   }
+  @media only screen and (max-width: 768px){
+    font-size: 13px;
+  }
 }
 
 .header__opt {
@@ -15,9 +18,16 @@
   }
 }
 
-.header__palm {
-  @media (max-width: 480px){
+.header__lap {
+  @media only screen and (max-width: 768px){
     display: none;
+  }
+}
+
+.header__palm {
+  display: none;
+  @media only screen and (max-width: 768px) {
+    display: block;
   }
 }
 

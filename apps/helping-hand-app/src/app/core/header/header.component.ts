@@ -9,6 +9,7 @@ import { NbMenuService } from '@nebular/theme';
 
 enum PageRoute {
   Feed = '/pages/feed',
+  Post = '/pages/post',
   Profile = '/pages/profile',
   Community = '/pages/community'
 }

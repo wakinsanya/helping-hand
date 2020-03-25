@@ -3,7 +3,9 @@ import {
   Post,
   PostQuery,
   Comment,
-  CreatePostDto
+  CreatePostDto,
+  Profile,
+  PostQueryResult
 } from '@helping-hand/api-common';
 import { PostService } from '@helping-hand/core/services/post.service';
 import { CommentService } from '@helping-hand/core/services/comment.service';
@@ -29,6 +31,7 @@ interface PostComment {
     comments: Comment[];
     commentsTotalCount: number;
   };
+  ownerProfile: Profile;
 }
 
 @Component({
@@ -49,6 +52,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     text: undefined,
     media: undefined
   };
+  postList: Post[] = [];
   postCommentList: PostComment[] = [];
   private createPostDialogRef: NbDialogRef<any>;
   private destroy$: Subject<void> = new Subject<void>();
@@ -77,6 +81,15 @@ export class FeedComponent implements OnInit, OnDestroy {
         switchMap(() => this.updatePostCommentList())
       )
       .subscribe({ error: e => console.error(e) });
+  }
+
+  updatePostList(): Observable<{}> {
+    return this.postService.getPosts(this.postQuery).pipe(
+      tap((data: PostQueryResult) => {
+        this.postList = data.posts;
+        this.postsTotalCount = data.postsTotalCount'
+      })
+    )
   }
 
   updatePostCommentList(): Observable<{}> {

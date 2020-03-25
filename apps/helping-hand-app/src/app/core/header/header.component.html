@@ -1,48 +1,93 @@
-<nb-actions size="medium" accent="primary">
-  <nb-action>
-    <h5 class="header__heading" (click)="goHome()">
-      Helping Hand
-    </h5>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser && loggedInUser._id">
-    <nb-user
-      size="medium"
-      [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
-      [picture]="loggedInUser.pictureUrl"
-    >
-    </nb-user>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser && loggedInUser._id">
-    <a
-      class="header__link"
-      routerLink="/pages/feed"
-      [ngClass]="{
-        'header__current-link': pageRoute.Feed === currentPageRoute
-      }"
-    >Feed</a>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser && loggedInUser._id">
-    <a
-      class="header__link"
-      routerLink="/pages/profile"
-      [ngClass]="{
-        'header__current-link': pageRoute.Profile === currentPageRoute
-      }"
-    >Profile</a>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser && loggedInUser._id">
-    <a
-      class="header__link"
-      routerLink="/pages/community"
-      [ngClass]="{
-        'header__current-link': pageRoute.Community === currentPageRoute
-      }"
-    >Community</a>
-  </nb-action>
-  <nb-action *ngIf="loggedInUser && loggedInUser._id">
-    <a
-      (click)="logout()"
-      class="header__danger-link"
-    >Log Out</a>
-  </nb-action>
-</nb-actions>
+<div class="header__lap">
+  <nb-actions size="medium" accent="primary">
+    <nb-action>
+      <h5 class="header__heading" (click)="goHome()">
+        Helping Hand
+      </h5>
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <nb-user
+        size="medium"
+        [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
+        [picture]="loggedInUser.pictureUrl"
+      >
+      </nb-user>
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/feed"
+        [ngClass]="{
+          'header__current-link': pageRoute.Feed === currentPageRoute
+        }"
+        >Feed</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/profile"
+        [ngClass]="{
+          'header__current-link': pageRoute.Profile === currentPageRoute
+        }"
+        >Profile</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/community"
+        [ngClass]="{
+          'header__current-link': pageRoute.Community === currentPageRoute
+        }"
+        >Community</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a (click)="logout()" class="header__danger-link">Log Out</a>
+    </nb-action>
+  </nb-actions>
+</div>
+
+<div class="header__palm">
+  <nb-actions size="tiny" accent="primary">
+    <nb-action *ngIf="!(loggedInUser && loggedInUser._id)">
+      <h5 class="header__heading" (click)="goHome()">
+        Helping Hand
+      </h5>
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/feed"
+        [ngClass]="{
+          'header__current-link': pageRoute.Feed === currentPageRoute
+        }"
+        >Feed</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/profile"
+        [ngClass]="{
+          'header__current-link': pageRoute.Profile === currentPageRoute
+        }"
+        >Profile</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/community"
+        [ngClass]="{
+          'header__current-link': pageRoute.Community === currentPageRoute
+        }"
+        >Community</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a (click)="logout()" class="header__danger-link">Log Out</a>
+    </nb-action>
+  </nb-actions>
+</div>

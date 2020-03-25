@@ -1,5 +1,8 @@
 <div>
   <nb-user
+    badgePosition="bottom end"
+    badgeStatus="success"
+    [badgeText]="(profile?.metadata?.totalStars || 0) + ' stars'"
     size="giant"
     [title]="loggedInUser?.role"
     [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"

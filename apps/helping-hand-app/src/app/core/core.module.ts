@@ -12,6 +12,7 @@ import {
   NbToastrModule,
   NbContextMenuModule,
   NbIconModule,
+  NbSelectModule,
 } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
@@ -34,6 +35,7 @@ import { FooterComponent } from './footer/footer.component';
     NbToastrModule,
     NbContextMenuModule,
     NbIconModule,
+    NbSelectModule,
     RouterModule
   ],
   providers: [
