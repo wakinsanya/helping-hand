@@ -13,7 +13,7 @@ import {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    trigger('fade', [
+    trigger('fadeIn', [
       transition('* <=> *', [
         query(
           ':enter, :leave',
@@ -32,7 +32,7 @@ import {
           ':enter',
           [
             animate(
-              '300ms ease',
+              '500ms ease',
               style({ opacity: 1, transform: 'scale(1) translateY(0)' })
             )
           ],
