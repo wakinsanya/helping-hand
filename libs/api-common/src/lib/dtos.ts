@@ -28,6 +28,11 @@ export class UpdateProfileDto {
   readonly bio?: string;
   readonly publicDataKeys?: string[];
   readonly data?: ProfileData;
+  readonly metadata?: {
+    totalStars?: number,
+    totalFavorites?: number,
+    favoritePosts?: string[]
+  }
 }
 
 export class CreateFavorDto {
@@ -59,6 +64,10 @@ export class UpdatePostDto {
   readonly title?: string;
   readonly media?: string;
   readonly text?: string;
+  readonly metadata: {
+    stars?: number,
+    favorites?: number
+  }
 }
 
 export class CreateCommentDto {
@@ -74,7 +83,7 @@ export class UpdateCommentDto {
   readonly text: string;
   readonly media: string;
   readonly metadata: {
-    votes: number;
-    isFavorite: boolean
+    votes?: number;
+    isFavorite?: boolean
   }
 }

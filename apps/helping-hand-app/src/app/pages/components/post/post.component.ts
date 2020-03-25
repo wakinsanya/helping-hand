@@ -33,8 +33,15 @@ export class PostComponent implements OnInit {
         switchMap(() => {
           return this.userService.getUserById(this.post.owner)
         }),
-        tap(user => (this.postOwner = user))
+        tap(user => (this.postOwner = user)),
+        tap(() => {
+          console.log({ post: this.post, owner: this.postOwner });
+        })
       )
       .subscribe({ error: err => console.error(err) });
+  }
+
+  starPost() {
+
   }
 }

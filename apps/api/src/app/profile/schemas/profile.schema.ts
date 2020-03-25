@@ -9,14 +9,18 @@ export const ProfileSchema = new Schema({
     type: Schema.Types.String,
     default: ''
   },
-  subscriptions: [{
-    type: Schema.Types.ObjectId,
-    default: []
-  }],
-  publicDataKeys: [{
-    type: Schema.Types.String,
-    default: []
-  }],
+  subscriptions: [
+    {
+      type: Schema.Types.ObjectId,
+      default: []
+    }
+  ],
+  publicDataKeys: [
+    {
+      type: Schema.Types.String,
+      default: []
+    }
+  ],
   data: {
     email: {
       type: Schema.Types.String,
@@ -36,6 +40,15 @@ export const ProfileSchema = new Schema({
     totalStars: {
       type: Schema.Types.Boolean,
       default: 0
-    }
+    },
+    totalFavorites: {
+      type: Schema.Types.Boolean,
+      default: 0
+    },
+    favoritePosts: [
+      {
+        type: Schema.Types.ObjectId
+      }
+    ]
   }
 });

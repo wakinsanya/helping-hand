@@ -26,6 +26,11 @@ export interface Profile {
   readonly subscriptions: Subscription[];
   readonly publicDataKeys: ProfileDataKey[];
   readonly data: ProfileData;
+  readonly metadata?: {
+    totalStars: number;
+    totalFavorites: number,
+    favoritePosts: string[]
+  }
 }
 
 export interface Post {

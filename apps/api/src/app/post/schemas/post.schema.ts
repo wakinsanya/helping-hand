@@ -22,7 +22,7 @@ export const PostSchema = new Schema(
       default: false
     },
     metadata: {
-      votes: {
+      stars: {
         type: Schema.Types.Number,
         default: 0
       },
