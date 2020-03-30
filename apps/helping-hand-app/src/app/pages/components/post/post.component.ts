@@ -82,8 +82,12 @@ export class PostComponent implements OnInit {
         }
       } as UpdatePostDto;
     }
+    console.log({
+      POST_DTO: updatePostDto
+    })
     this.isPostStarred = !this.isPostStarred;
-    this.postService.updatePost(this.post._id, updatePostDto)
+    this.postService
+      .updatePost(this.post._id, updatePostDto)
       .subscribe({ error: err => console.error(err) });
   }
 
@@ -103,10 +107,14 @@ export class PostComponent implements OnInit {
       this.loggedInUserProfile.metadata &&
       this.loggedInUserProfile.metadata.favoritePosts
     ) {
-      this.isPostStarred =
+      this.isPostFavorited =
         this.loggedInUserProfile.metadata.favoritePosts.includes(
           this.post._id
         ) || false;
     }
+    console.log({
+      isFav: this.isPostFavorited,
+      isStar: this.isPostStarred
+    })
   }
 }

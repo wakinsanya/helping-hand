@@ -37,6 +37,7 @@
                 <div *ngIf="profile?.publicDataKeys?.includes(dataKey)">
                   <input
                     nbInput
+                    [disabled]="dataKey === 'email'"
                     fullWidth="true"
                     [(ngModel)]="(profile?.data)[dataKey]"
                     placeholder="enter your {{

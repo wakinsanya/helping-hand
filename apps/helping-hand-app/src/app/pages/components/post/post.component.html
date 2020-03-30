@@ -30,20 +30,41 @@
           </button>
         </nb-action>
         <nb-action>
-          <button nbButton ghost [status]="isPostStarred ? 'basic' : 'primary'">
-            <nb-icon icon="star-outline" [status]="isPostStarred ? 'basic' : 'primary'"> </nb-icon>
-            Give a star
+          <button
+            (click)="togglePostStarStatus()"
+            nbButton
+            ghost
+            [status]="isPostStarred ? 'danger' : 'primary'"
+          >
+            <nb-icon
+              icon="star-outline"
+              [status]="isPostStarred ? 'danger' : 'primary'"
+            >
+            </nb-icon>
+            {{ isPostStarred ? 'Unstar' : 'Give A Star' }}
           </button>
         </nb-action>
         <nb-action>
-          <button nbButton ghost [status]="isPostFavorited ? 'basic' : 'primary'">
-            <nb-icon icon="heart-outline" status="basic"> </nb-icon>
-            Favourite
+          <button
+            (click)="togglePostFavoriteStatus()"
+            nbButton
+            ghost
+            [status]="isPostFavorited ? 'danger' : 'primary'"
+          >
+            <nb-icon
+              icon="heart-outline"
+              [status]="isPostFavorited ? 'danger' : 'primary'"
+            >
+            </nb-icon>
+            {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}
           </button>
         </nb-action>
       </nb-actions>
       <h5>Comments</h5>
-      <div *ngIf="post?.comments?.length === 0" class="comment-list__placeholder">
+      <div
+        *ngIf="post?.comments?.length === 0"
+        class="comment-list__placeholder"
+      >
         <span>Be the first one to leave a comment!</span>
       </div>
     </nb-card-body>
