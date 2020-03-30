@@ -42,6 +42,10 @@ export interface Post {
   readonly edited: boolean;
   readonly media: string;
   readonly comments: string[];
+  readonly metadata: {
+    stars: number,
+    favorites: number;
+  }
 }
 
 export interface Comment {
