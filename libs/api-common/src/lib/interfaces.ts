@@ -29,7 +29,8 @@ export interface Profile {
   readonly metadata?: {
     totalStars: number;
     totalFavorites: number,
-    favoritePosts: string[]
+    favoritePosts: string[],
+    starredPosts: string[]
   }
 }
 

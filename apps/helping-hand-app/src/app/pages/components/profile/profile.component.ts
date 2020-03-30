@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           );
         })
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
   toggleDataKeyVisibility(key: string) {
@@ -74,11 +74,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.profile = profile;
           if (this.profile.publicDataKeys.includes(key as ProfileDataKey)) {
             this.toastrService.success(
-              `Helping Hand will now share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
+              `Helping Hand will now share your
+                ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
             );
           } else {
             this.toastrService.info(
-              `Helping Hand will no longer share your ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
+              `Helping Hand will no longer share your ${this.profileDataKeyDisplayMap[key]}
+                with potential helpers.`
             );
           }
         })

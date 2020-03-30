@@ -30,13 +30,13 @@
           </button>
         </nb-action>
         <nb-action>
-          <button nbButton ghost status="basic">
-            <nb-icon icon="star-outline" status="basic"> </nb-icon>
+          <button nbButton ghost [status]="isPostStarred ? 'basic' : 'primary'">
+            <nb-icon icon="star-outline" [status]="isPostStarred ? 'basic' : 'primary'"> </nb-icon>
             Give a star
           </button>
         </nb-action>
         <nb-action>
-          <button nbButton ghost status="basic">
+          <button nbButton ghost [status]="isPostFavorited ? 'basic' : 'primary'">
             <nb-icon icon="heart-outline" status="basic"> </nb-icon>
             Favourite
           </button>

@@ -45,6 +45,11 @@ export const ProfileSchema = new Schema({
       type: Schema.Types.Boolean,
       default: 0
     },
+    starredPosts: [
+      {
+        type: Schema.Types.ObjectId
+      }
+    ],
     favoritePosts: [
       {
         type: Schema.Types.ObjectId
