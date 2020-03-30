@@ -43,9 +43,10 @@ interface PostComment {
 export class FeedComponent implements OnInit, OnDestroy {
   postQuery: PostQuery = {
     skip: 0,
-    limit: 10,
+    limit: 5,
     orderByVotes: true
   };
+  currentPage = 1;
   postsTotalCount = 0;
   createPostDto: CreatePostDto = {
     owner: undefined,
@@ -218,6 +219,20 @@ export class FeedComponent implements OnInit, OnDestroy {
     const postId = this.feedDataList[postIndex].post._id;
     this.router.navigate(['/pages/post', postId]);
   }
+
+
+  onPageNav(direction: 'next' | 'prev') {
+    if (direction === 'next') {
+      this.postQuery.skip += this.postQuery.limit;
+      this.currentPage++;
+    } else {
+      this.postQuery.skip -= this.postQuery.limit;
+      this.currentPage--;
+    }
+    this.updateFeedDataList().subscribe({ error: e => console.error(e) });
+  }
+
+
 
   ngOnDestroy() {
     this.destroy$.next();

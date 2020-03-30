@@ -34,22 +34,27 @@
         </nb-list-item>
       </nb-list>
     </nb-card-body>
+    <nb-card-footer>
+      <div class="user-list__pagin__wrap">
+        <button
+          size="small"
+          nbButton
+          [disabled]="userQuery.skip === 0"
+          (click)="onPageNav('prev')"
+        >
+          <nb-icon icon="chevron-left-outline"></nb-icon>
+          Previous Page
+        </button>
+        <button
+          size="small"
+          nbButton
+          (click)="onPageNav('next')"
+          [disabled]="currentPage * userQuery.limit >= usersTotalCount"
+        >
+        <nb-icon icon="chevron-right-outline"></nb-icon>
+          Next Page
+        </button>
+      </div>
+    </nb-card-footer>
   </nb-card>
-
-  <div class="user-list__pagin__wrap">
-    <button
-      nbButton
-      [disabled]="userQuery.skip === 0"
-      (click)="onPageNav('prev')"
-    >
-      Previous Page
-    </button>
-    <button
-      nbButton
-      (click)="onPageNav('next')"
-      [disabled]="currentPage * userQuery.limit >= usersTotalCount"
-    >
-      Next Page
-    </button>
-  </div>
 </div>
