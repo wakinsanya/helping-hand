@@ -31,9 +31,21 @@
             <nb-card class="feed-list__post-card">
               <nb-card-header>{{ entry?.post?.title }}</nb-card-header>
               <nb-card-body>
-                <p>
-                  {{ entry?.post?.text }}
-                </p>
+                <ng-container
+                  *ngTemplateOutlet="
+                    entry?.post?.text?.length > 2000 ? partialText : fullText
+                  "
+                ></ng-container>
+                <ng-template #fullText>
+                  <p>
+                    {{ entry?.post?.text }}
+                  </p>
+                </ng-template>
+                <ng-template #partialText>
+                  <p>
+                    {{ entry?.post?.text?.substring(0, 2000).concat('...') }}
+                  </p>
+                </ng-template>
               </nb-card-body>
               <nb-card-footer>
                 <nb-actions size="small" accent="primary" responsive>
@@ -41,12 +53,13 @@
                     ><nb-user
                       badgePosition="bottom end"
                       badgeStatus="success"
-                      [badgeText]="(entry?.ownerProfile?.metadata?.totalStars || 0) + ' stars'"
+                      [badgeText]="
+                        (entry?.ownerProfile?.metadata?.totalStars || 0) +
+                        ' stars'
+                      "
                       size="large"
                       [name]="
-                        entry?.ownerFirstName +
-                        ' ' +
-                        entry?.ownerLastName
+                        entry?.ownerFirstName + ' ' + entry?.ownerLastName
                       "
                       [picture]="entry.ownerPictureUrl"
                     >
@@ -72,7 +85,7 @@
               (click)="onPageNav('next')"
               [disabled]="currentPage * postQuery.limit >= postsTotalCount"
             >
-            <nb-icon icon="chevron-right-outline"></nb-icon>
+              <nb-icon icon="chevron-right-outline"></nb-icon>
               Next Page
             </button>
           </div>
