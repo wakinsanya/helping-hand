@@ -102,7 +102,6 @@ export class PostComponent implements OnInit {
       }
     } as UpdateProfileDto;
 
-    // Base operations for post metadata update, and user profile metadata update
     const ops = [
       this.postService.updatePost(this.post._id, updatePostDto),
       this.profileService.updateProfile(

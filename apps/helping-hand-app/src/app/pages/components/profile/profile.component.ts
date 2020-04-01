@@ -6,11 +6,10 @@ import {
   ProfileDataKey
 } from '@helping-hand/api-common';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { tap, takeUntil, map, switchMap, first, filter } from 'rxjs/operators';
+import { tap, map, switchMap, filter } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'helping-hand-profile',

@@ -115,9 +115,6 @@ export class FeedComponent implements OnInit, OnDestroy {
         ]).pipe(map(() => data))
       }),
       toArray(),
-      tap(data => {
-        console.log({ data })
-      }),
       tap(data => (this.feedDataList = data)),
       switchMap(() => of({}))
     );

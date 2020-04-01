@@ -54,10 +54,11 @@
           <button
           nbButton
           fullWidth
-          size="tiny"
+          size="small"
           class="profile__tiny-btn"
           (click)="saveProfile()"
         >
+          <nb-icon icon="person-done-outline"></nb-icon>
           Update Contact Details
         </button>
         </nb-card-footer>
@@ -80,7 +81,10 @@
             class="profile__bio__textarea"
           ></textarea>
           <div class="profile__actions-wrap">
-            <button nbButton (click)="saveProfile()">Save Bio</button>
+            <button nbButton (click)="saveProfile()">
+              <nb-icon icon="save-outline"></nb-icon>
+              Save Bio
+            </button>
           </div>
         </nb-card-body>
       </nb-card>
