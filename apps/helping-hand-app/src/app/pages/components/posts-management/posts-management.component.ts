@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '@helping-hand/core/services/user.service';
+import { PostService } from '@helping-hand/core/services/post.service';
+import { NbToastrService } from '@nebular/theme';
+import { User, PostQuery, Post } from '@helping-hand/api-common';
+import { first, tap, switchMap } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 
 @Component({
   selector: 'helping-hand-posts-management',
@@ -6,10 +12,54 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./posts-management.component.scss']
 })
 export class PostsManagementComponent implements OnInit {
+  loggedInUser: User;
+  posts: Post[] = [];
+  postsTotalCount: number;
+  postQuery: PostQuery = {
+    skip: 0,
+    limit: 5,
+    orderByVotes: true
+  };
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private postService: PostService,
+    private toastrService: NbToastrService
+  ) {}
 
   ngOnInit() {
+    this.userService.loggedInUser$
+      .pipe(
+        first(),
+        tap(user => {
+          this.loggedInUser = user;
+          this.postQuery.owner = user._id;
+        }),
+        switchMap(() => {
+          if (this.postQuery.owner) {
+            return of({});
+          } else {
+            this.toastrService.warning(
+              'Something went wrong, please refresh the page.'
+            );
+            return throwError(new Error('Current user could not be resolved'));
+          }
+        }),
+        switchMap(() => this.getUserPosts())
+      )
+      .subscribe({ error: err => console.error(err) });
   }
 
+  getUserPosts() {
+    return this.postService.getPosts(this.postQuery).pipe(
+      tap(({ postsTotalCount, posts }) => {
+        this.postsTotalCount = postsTotalCount;
+        this.posts = posts;
+      })
+    );
+  }
+
+  deleteUserPost() {
+
+  }
 }

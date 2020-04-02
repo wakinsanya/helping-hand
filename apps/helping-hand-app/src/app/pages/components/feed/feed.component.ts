@@ -4,8 +4,7 @@ import {
   PostQuery,
   Comment,
   CreatePostDto,
-  Profile,
-  PostQueryResult
+  Profile
 } from '@helping-hand/api-common';
 import { PostService } from '@helping-hand/core/services/post.service';
 import { CommentService } from '@helping-hand/core/services/comment.service';

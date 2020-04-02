@@ -39,13 +39,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.loggedInUser$
       .pipe(
         first(),
-        tap((user: User) => (this.loggedInUser = user)),
-        map((user: User) => user.profile),
+        tap(user => (this.loggedInUser = user)),
+        map(user => user.profile),
         filter(x => !!x),
-        switchMap((profile: string) => {
-          return this.profileService.getProfileById(profile);
-        }),
-        tap((profile: Profile) => {
+        switchMap(profile => this.profileService.getProfileById(profile)),
+        tap(profile => {
           this.newBio = profile.bio;
           this.profile = profile;
           this.profileDataKeys = Object.keys(ProfileDataKey).map(

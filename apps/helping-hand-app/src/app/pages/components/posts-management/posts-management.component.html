@@ -1,1 +1,9 @@
-<p>posts-management works!</p>
+<nb-card>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let post of posts; let i = index;">
+        {{ post?.title }}
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>
