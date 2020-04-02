@@ -59,7 +59,16 @@ export class PostsManagementComponent implements OnInit {
     );
   }
 
-  deleteUserPost() {
-
+  deleteUserPost(postIndex: number) {
+    const postId = this.posts[postIndex]._id;
+    this.postService
+      .deletePost(postId)
+      .pipe(
+        tap(() => {
+          this.toastrService.success(`We've deleted your post.`);
+          this.posts = this.posts.filter(({ _id }) => _id !== postId);
+        })
+      )
+      .subscribe({ error: err => console.error(err) });
   }
 }

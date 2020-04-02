@@ -8,7 +8,7 @@
   </button>
 </div>
 <h3>Your Posts</h3>
-<div>
+<div *ngIf="posts?.length > 0">
   <nb-accordion>
     <nb-accordion-item *ngFor="let post of posts; let i = index;">
      <nb-accordion-item-header>
@@ -21,7 +21,11 @@
           <nb-icon icon="edit-outline"></nb-icon>
            Edit
          </button>
-         <button nbButton ghost status="danger">
+         <button
+          (click)="deleteUserPost(i)"
+          nbButton
+          ghost
+          status="danger">
           <nb-icon icon="trash-2-outline"></nb-icon>
            Delete
          </button>
@@ -30,4 +34,6 @@
     </nb-accordion-item>
    </nb-accordion>
 </div>
-
+<div>
+  <h4 class="no-posts-placeholder">No posts yet.</h4>
+</div>

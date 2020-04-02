@@ -141,7 +141,6 @@ export class PostComponent implements OnInit {
   }
 
   setupPostMetadata() {
-    console.log({ loggedInUserProfile: this.loggedInUserProfile });
     if (
       this.loggedInUserProfile.metadata &&
       this.loggedInUserProfile.metadata.starredPosts
