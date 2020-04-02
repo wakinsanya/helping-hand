@@ -28,6 +28,7 @@ import { CommunityComponent } from './components/community/community.component';
 import { CustomShortDatePipe } from './pipes/custom-short-date.pipe';
 import { FeedComponent } from './components/feed/feed.component';
 import { PostComponent } from './components/post/post.component';
+import { PostsManagementComponent } from './components/posts-management/posts-management.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PostComponent } from './components/post/post.component';
     CommunityComponent,
     CustomShortDatePipe,
     FeedComponent,
-    PostComponent
+    PostComponent,
+    PostsManagementComponent
   ],
   imports: [
     CommonModule,
