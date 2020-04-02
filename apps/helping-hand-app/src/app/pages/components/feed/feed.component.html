@@ -9,6 +9,16 @@
         <nb-icon icon="plus-outline"></nb-icon>Create Post
       </button>
     </div>
+    <button
+      nbButton
+      ghost
+      fullWidth
+      status="basic"
+      routerLink="/pages/posts/manage"
+    >
+      <nb-icon icon="options-outline"></nb-icon>
+      Manage Your Posts
+    </button>
     <ng-container
       *ngTemplateOutlet="
         feedDataList?.length || postQuery.skip

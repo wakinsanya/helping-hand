@@ -217,7 +217,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   navigateToPost(postIndex: number) {
     const postId = this.feedDataList[postIndex].post._id;
-    this.router.navigate(['/pages/post', postId]);
+    this.router.navigate(['/pages/posts', postId]);
   }
 
 

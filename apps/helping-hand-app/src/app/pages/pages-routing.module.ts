@@ -4,6 +4,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CommunityComponent } from './components/community/community.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { PostComponent } from './components/post/post.component';
+import { PostsManagementComponent } from './components/posts-management/posts-management.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,12 @@ const routes: Routes = [
     data: { state: 'community', animation: 'fade' }
   },
   {
-    path: 'post/:postId',
+    path: 'posts/manage',
+    component: PostsManagementComponent,
+    data: { state: 'posts-manage' }
+  },
+  {
+    path: 'posts/:postId',
     component: PostComponent,
     data: { state: 'feed' }
   },
