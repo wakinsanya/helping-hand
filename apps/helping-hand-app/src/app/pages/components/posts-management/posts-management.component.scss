@@ -5,3 +5,13 @@
 .no-posts-placeholder {
   opacity: .6;
 }
+
+.post-list__pagin__wrap {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  & > button {
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+}

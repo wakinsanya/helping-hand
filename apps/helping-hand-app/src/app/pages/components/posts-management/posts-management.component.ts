@@ -14,6 +14,7 @@ import { of, throwError } from 'rxjs';
 export class PostsManagementComponent implements OnInit {
   loggedInUser: User;
   posts: Post[] = [];
+  currentPage = 1;
   postsTotalCount: number;
   postQuery: PostQuery = {
     skip: 0,
@@ -57,6 +58,17 @@ export class PostsManagementComponent implements OnInit {
         this.posts = posts;
       })
     );
+  }
+
+  onPageNav(direction: 'prev' | 'next') {
+    if (direction === 'next') {
+      this.postQuery.skip += this.postQuery.limit;
+      this.currentPage++;
+    } else {
+      this.postQuery.skip -= this.postQuery.limit;
+      this.currentPage--;
+    }
+    this.getUserPosts().subscribe({ error: err => console.error(err) });
   }
 
   deleteUserPost(postIndex: number) {
