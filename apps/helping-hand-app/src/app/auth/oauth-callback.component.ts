@@ -24,10 +24,10 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
       .authenticate(this.userService.userProvider)
       .pipe(
         takeUntil(this.destroy$),
-        tap((authResult: NbAuthResult) => {
+        tap(authResult => {
           this.redirectUrl = authResult.getRedirect();
         }),
-        switchMap((authResult: NbAuthResult) => {
+        switchMap(authResult => {
           if (authResult.isSuccess() && this.redirectUrl) {
             const token = authResult.getToken();
             return this.userService
@@ -42,7 +42,7 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
                     payload
                   );
                 }),
-                tap((user: User) => {
+                tap(user => {
                   this.userService.setLoggedInUser(user);
                 })
               );

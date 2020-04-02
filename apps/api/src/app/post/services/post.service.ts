@@ -51,7 +51,7 @@ export class PostService {
     }
 
     const pipeline = [
-      // matchStage,
+      matchStage,
       ...paginationQuery({
         skip,
         limit,

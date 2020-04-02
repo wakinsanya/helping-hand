@@ -1,9 +1,33 @@
-<nb-card>
-  <nb-card-body>
-    <nb-list>
-      <nb-list-item *ngFor="let post of posts; let i = index;">
-        {{ post?.title }}
-      </nb-list-item>
-    </nb-list>
-  </nb-card-body>
-</nb-card>
+<div class="back-btn__wrap">
+  <button
+    ghost
+    nbButton
+    routerLink="pages/feed">
+    <nb-icon icon="chevron-left-outline"></nb-icon>
+    Back
+  </button>
+</div>
+<h3>Your Posts</h3>
+<div>
+  <nb-accordion>
+    <nb-accordion-item *ngFor="let post of posts; let i = index;">
+     <nb-accordion-item-header>
+        {{ post?.title}}
+     </nb-accordion-item-header>
+     <nb-accordion-item-body>
+       <p>{{ post?.text }}</p>
+       <div>
+        <button nbButton ghost status="info">
+          <nb-icon icon="edit-outline"></nb-icon>
+           Edit
+         </button>
+         <button nbButton ghost status="danger">
+          <nb-icon icon="trash-2-outline"></nb-icon>
+           Delete
+         </button>
+       </div>
+     </nb-accordion-item-body>
+    </nb-accordion-item>
+   </nb-accordion>
+</div>
+
