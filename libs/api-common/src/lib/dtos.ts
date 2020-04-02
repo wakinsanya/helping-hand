@@ -31,6 +31,7 @@ export class UpdateProfileDto {
   readonly metadata?: {
     totalStars?: number,
     totalFavorites?: number,
+    starredPosts: string[],
     favoritePosts?: string[]
   }
 }

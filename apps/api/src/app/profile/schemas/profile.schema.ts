@@ -38,11 +38,11 @@ export const ProfileSchema = new Schema({
   },
   metadata: {
     totalStars: {
-      type: Schema.Types.Boolean,
+      type: Schema.Types.Number,
       default: 0
     },
     totalFavorites: {
-      type: Schema.Types.Boolean,
+      type: Schema.Types.Number,
       default: 0
     },
     starredPosts: [

@@ -6,7 +6,7 @@ import {
   ProfileDataKey
 } from '@helping-hand/api-common';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { tap, map, switchMap, filter } from 'rxjs/operators';
+import { tap, map, switchMap, filter, first } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userService.loggedInUser$
       .pipe(
+        first(),
         tap((user: User) => (this.loggedInUser = user)),
         map((user: User) => user.profile),
         filter(x => !!x),

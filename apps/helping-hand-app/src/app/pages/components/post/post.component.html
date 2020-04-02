@@ -31,7 +31,7 @@
         </nb-action>
         <nb-action>
           <button
-            (click)="togglePostStarStatus()"
+            (click)="toggleMetadataByKey('star')"
             nbButton
             ghost
             [status]="isPostStarred ? 'danger' : 'primary'"
@@ -46,7 +46,7 @@
         </nb-action>
         <nb-action>
           <button
-            (click)="togglePostFavoriteStatus()"
+            (click)="toggleMetadataByKey('favorite')"
             nbButton
             ghost
             [status]="isPostFavorited ? 'danger' : 'primary'"

@@ -8,7 +8,7 @@ import {
   UpdateProfileDto
 } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
-import { tap, switchMap, map, filter } from 'rxjs/operators';
+import { tap, switchMap, map, filter, first } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { Observable, of, forkJoin } from 'rxjs';
@@ -37,19 +37,20 @@ export class PostComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getPost();
-    this.userService.loggedInUser$
-      .pipe(
+    forkJoin([
+      this.getPost(),
+      this.userService.loggedInUser$.pipe(
+        first(),
         tap(user => (this.loggedInUser = user)),
         map(({ profile }) => profile),
         filter(x => !!x),
         switchMap(profileId => this.profileService.getProfileById(profileId)),
-        tap(profile => (this.loggedInUserProfile = profile)),
-        tap(() => {
-          this.setupPostMetadata();
-        })
+        tap(profile => (this.loggedInUserProfile = profile))
       )
-      .subscribe({ error: err => console.error(err) });
+    ]).subscribe({
+      next: () => this.setupPostMetadata(),
+      error: err => console.error(err)
+    });
   }
 
   getPost(): Observable<{}> {
@@ -96,7 +97,7 @@ export class PostComponent implements OnInit {
     const updateProfileDto = {
       metadata: {
         ...profileMetadata,
-        starredPosts: this.isPostStarred
+        [updateKey]: this[localKey]
           ? [...profileMetadata[updateKey], this.post._id]
           : profileMetadata[updateKey].filter(x => x !== this.post._id)
       }
@@ -126,12 +127,12 @@ export class PostComponent implements OnInit {
     forkJoin(ops)
       .pipe(
         tap(() => {
-          if (this.isPostStarred) {
+          if (this.isPostStarred && key === 'star') {
             this.toastrService.success(
               `We're sending ${this.postOwner.firstName} ` +
                 `${this.postOwner.lastName} their star!`
             );
-          } else if (this.isPostFavorited) {
+          } else if (this.isPostFavorited && key === 'favorite') {
             this.toastrService.success(`Added post to your favourites!`);
           }
         })
@@ -139,26 +140,23 @@ export class PostComponent implements OnInit {
       .subscribe({ error: err => console.error(err) });
   }
 
-  togglePostFavoriteStatus() {}
-
   setupPostMetadata() {
+    console.log({ loggedInUserProfile: this.loggedInUserProfile });
     if (
       this.loggedInUserProfile.metadata &&
       this.loggedInUserProfile.metadata.starredPosts
     ) {
-      this.isPostStarred =
-        this.loggedInUserProfile.metadata.starredPosts.includes(
-          this.post._id
-        ) || false;
+      this.isPostStarred = this.loggedInUserProfile.metadata.starredPosts.includes(
+        this.post._id
+      );
     }
     if (
       this.loggedInUserProfile.metadata &&
       this.loggedInUserProfile.metadata.favoritePosts
     ) {
-      this.isPostFavorited =
-        this.loggedInUserProfile.metadata.favoritePosts.includes(
-          this.post._id
-        ) || false;
+      this.isPostFavorited = this.loggedInUserProfile.metadata.favoritePosts.includes(
+        this.post._id
+      );
     }
   }
 }
