@@ -88,7 +88,10 @@ export class FeedComponent implements OnInit, OnDestroy {
             media: undefined
           };
         }),
-        switchMap(() => this.updateFeedDataList())
+        switchMap(() => this.updateFeedDataList()),
+        tap(() => {
+          console.log(this.feedDataList);
+        })
       )
       .subscribe({ error: err => console.error(err) });
   }
@@ -110,7 +113,7 @@ export class FeedComponent implements OnInit, OnDestroy {
             }),
           ),
           this.profileService.getProfileByOwner(data.post.owner).pipe(
-            tap(profile => (data['profile'] = profile))
+            tap(profile => (data['ownerProfile'] = profile))
           )
         ]).pipe(map(() => data))
       }),
