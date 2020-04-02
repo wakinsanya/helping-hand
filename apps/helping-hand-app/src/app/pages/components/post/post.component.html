@@ -1,9 +1,6 @@
 <div>
   <div class="post__back-btn__wrap">
-    <button
-      ghost
-      nbButton
-      routerLink="pages/feed">
+    <button ghost nbButton routerLink="pages/feed">
       <nb-icon icon="chevron-left-outline"></nb-icon>
       Back
     </button>
@@ -16,53 +13,53 @@
       <p>
         {{ post?.text }}
       </p>
-      <nb-actions size="medium" accent="primary" responsive>
-        <nb-action
-          ><nb-user
-            size="medium"
-            [name]="postOwner?.firstName + ' ' + postOwner?.lastName"
-            [picture]="postOwner?.pictureUrl"
-            [title]="postOwner?.role"
+      <div class="post-author__wrap">
+        <h5>Written By</h5>
+        <nb-user
+          size="giant"
+          [name]="postOwner?.firstName + ' ' + postOwner?.lastName"
+          [picture]="postOwner?.pictureUrl"
+          [title]="postOwner?.role"
+          badgePosition="bottom end"
+          badgeStatus="success"
+          [badgeText]="
+            (postOwnerProfile?.metadata?.totalStars || 0) +
+            ' stars'
+          "
+        >
+        </nb-user>
+      </div>
+      <div class="post-opts__wrap">
+        <button
+          size="small"
+          status="success"
+          hero
+          (click)="toggleMetadataByKey('star')"
+          nbButton
+          [status]="isPostStarred ? 'danger' : 'primary'"
+        >
+          <nb-icon
+            icon="star-outline"
           >
-          </nb-user
-        ></nb-action>
-        <nb-action>
-          <button nbButton ghost status="basic">
-            <nb-icon icon="message-square-outline" status="basic"> </nb-icon>
-            Leave a comment
-          </button>
-        </nb-action>
-        <nb-action>
-          <button
-            (click)="toggleMetadataByKey('star')"
-            nbButton
-            ghost
-            [status]="isPostStarred ? 'danger' : 'primary'"
+          </nb-icon>
+          {{ isPostStarred ? 'Unstar' : 'Give A Star' }}
+        </button>
+        <button
+          size="small"
+          status="success"
+          hero
+          (click)="toggleMetadataByKey('favorite')"
+          nbButton
+
+          [status]="isPostFavorited ? 'danger' : 'primary'"
+        >
+          <nb-icon
+            icon="heart-outline"
           >
-            <nb-icon
-              icon="star-outline"
-              [status]="isPostStarred ? 'danger' : 'primary'"
-            >
-            </nb-icon>
-            {{ isPostStarred ? 'Unstar' : 'Give A Star' }}
-          </button>
-        </nb-action>
-        <nb-action>
-          <button
-            (click)="toggleMetadataByKey('favorite')"
-            nbButton
-            ghost
-            [status]="isPostFavorited ? 'danger' : 'primary'"
-          >
-            <nb-icon
-              icon="heart-outline"
-              [status]="isPostFavorited ? 'danger' : 'primary'"
-            >
-            </nb-icon>
-            {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}
-          </button>
-        </nb-action>
-      </nb-actions>
+          </nb-icon>
+          {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}
+        </button>
+      </div>
       <h5>Comments</h5>
       <div
         *ngIf="post?.comments?.length === 0"
@@ -72,12 +69,16 @@
       </div>
       <div class="new-comment-input__wrap">
         <input
-        fullWidth
-        type="text"
-        nbInput
-        [placeholder]="'Tell ' + postOwner.firstName + ' what you think!'"
-      >
+          fullWidth
+          type="text"
+          nbInput
+          [placeholder]="'Tell ' + postOwner.firstName + ' what you think!'"
+        />
       </div>
+      <button nbButton fullWidth ghost status="basic">
+        <nb-icon icon="message-square-outline"></nb-icon>
+        Leave Comment
+      </button>
     </nb-card-body>
     <nb-card-footer> </nb-card-footer>
   </nb-card>
