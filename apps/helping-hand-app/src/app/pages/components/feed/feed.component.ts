@@ -1,4 +1,10 @@
-import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import {
   Post,
   PostQuery,
@@ -45,6 +51,8 @@ export class FeedComponent implements OnInit, OnDestroy {
     limit: 5,
     orderByVotes: true
   };
+  today = new Date();
+  userFirstName = '';
   currentPage = 1;
   postsTotalCount = 0;
   createPostDto: CreatePostDto = {
@@ -65,6 +73,11 @@ export class FeedComponent implements OnInit, OnDestroy {
   private createPostDialogRef: NbDialogRef<any>;
   private destroy$: Subject<void> = new Subject<void>();
 
+  @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
+  @ViewChild('welcomeBackCard', { static: true }) welcomeBackCard: TemplateRef<
+    any
+  >;
+
   constructor(
     private router: Router,
     private profileService: ProfileService,
@@ -80,6 +93,14 @@ export class FeedComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap(user => {
+          const isLoggingIn = JSON.parse(localStorage.getItem('isLoggingIn'));
+          if (isLoggingIn) {
+          this.dialogService.open(
+              user.profile ? this.welcomeBackCard : this.welcomeCard
+            );
+            localStorage.removeItem('isLoggingIn');
+          }
+          this.userFirstName = user.firstName;
           this.createPostDto = {
             owner: user._id,
             title: undefined,
@@ -199,7 +220,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   startPostCreation(template: TemplateRef<any>) {
-  this.createPostDialogRef = this.dialogService.open(template);
+    this.createPostDialogRef = this.dialogService.open(template);
   }
 
   toggleCommentVisibility(postCommentIndex: number) {

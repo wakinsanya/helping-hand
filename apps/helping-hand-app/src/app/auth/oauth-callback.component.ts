@@ -18,7 +18,7 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: NbAuthService,
     private userService: UserService
-  ) {
+) {
     this.authService
       .authenticate(this.userService.userProvider)
       .pipe(

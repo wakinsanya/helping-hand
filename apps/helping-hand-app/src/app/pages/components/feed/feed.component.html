@@ -62,13 +62,10 @@
                   badgePosition="bottom end"
                   badgeStatus="warning"
                   [badgeText]="
-                    (entry?.ownerProfile?.metadata?.totalStars || 0) +
-                    ' stars'
+                    (entry?.ownerProfile?.metadata?.totalStars || 0) + ' stars'
                   "
                   size="large"
-                  [name]="
-                    entry?.ownerFirstName + ' ' + entry?.ownerLastName
-                  "
+                  [name]="entry?.ownerFirstName + ' ' + entry?.ownerLastName"
                   [picture]="entry.ownerPictureUrl"
                 >
                 </nb-user
@@ -136,3 +133,45 @@
     </ng-template>
   </div>
 </div>
+
+<ng-template #welcomeCard let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header><h4>Welcome to Helping Hand</h4></nb-card-header>
+    <nb-card-body>
+      <p>
+        Helping Hand helps you get that little bit of help when you need it and
+        gives you a chance to help others out as well.
+      </p>
+      <p>
+        <b>Important:</b> by default Helping Hand shares your email with other
+        memebers of the community so that they're able to respond to your favour
+        requests. We recommend that you go to the profile tab and customize how
+        you prefer for other users to contact you e.g provide your instagram
+        username instead.
+      </p>
+      <p>Thank you for checking out Helping Hand!</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #welcomeBackCard let-ref="dialogRef">
+  <nb-card status="success">
+    <nb-card-header>
+      {{ today | customShortDate}}
+    </nb-card-header>
+    <nb-card-body>
+      <h3>Welcome back to Helping Hand {{ userFirstName }} 👋</h3>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="success"
+        (click)="ref.close()">
+        Close
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -12,8 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  token: NbAuthOAuth2Token;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -49,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           return this.authService.authenticate(userProvider);
         })
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
   ngOnDestroy() {

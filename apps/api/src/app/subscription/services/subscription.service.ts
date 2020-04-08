@@ -29,11 +29,9 @@ export class SubscriptionService {
   list(owner: string, labels: string[]): Observable<Subscription[]> {
     return from(
       this.subscriptionModel.find({
-        owner,
+        owner
       })
-    ).pipe(
-      map((subDocs: Subscription[]) => subDocs as Subscription[])
-    );
+    ).pipe(map((subDocs: Subscription[]) => subDocs as Subscription[]));
   }
 
   delete(_id: string): Observable<any> {
@@ -41,10 +39,8 @@ export class SubscriptionService {
   }
 
   getByLabel(label: SubscriptionLabel): Observable<Subscription[]> {
-    return from(
-      this.subscriptionModel.find({ label })
-    ).pipe(
+    return from(this.subscriptionModel.find({ label })).pipe(
       map((subDocs: Subscription[]) => subDocs as Subscription[])
-    )
+    );
   }
 }

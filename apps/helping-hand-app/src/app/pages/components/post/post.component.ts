@@ -140,6 +140,40 @@ export class PostComponent implements OnInit {
       .subscribe({ error: err => console.error(err) });
   }
 
+  starPost(): Observable<{}> {
+    return of({});
+  }
+
+  favoritePost(): Observable<{}> {
+    return of({});
+  }
+
+  giveProfileStar(): Observable<{}> {
+    return of({});
+  }
+
+  updatePostMetadata(
+    postId: string,
+    metadata: {
+      stars: number;
+      favorites: number;
+    }
+  ): Observable<{}> {
+    return of({});
+  }
+
+  updateProfileMetadata(
+    profile: Profile,
+    metadata: {
+      totalStars: number;
+      totalFavorites: number;
+      favoritePosts: string[];
+      starredPosts: string[];
+    }
+  ): Observable<{}> {
+    return of({});
+  }
+
   setupPostMetadata() {
     if (
       this.loggedInUserProfile.metadata &&
