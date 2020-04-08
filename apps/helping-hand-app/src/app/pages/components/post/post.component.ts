@@ -14,6 +14,13 @@ import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { Observable, of, forkJoin } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
 
+enum PostActionType {
+  Star = 'star',
+  Favorite = 'favorite',
+  Unstar = 'unstar',
+  Unfavorite = 'unfavorite'
+}
+
 @Component({
   selector: 'helping-hand-post',
   templateUrl: './post.component.html',
@@ -25,8 +32,9 @@ export class PostComponent implements OnInit {
   loggedInUser: User;
   postOwnerProfile: Profile;
   loggedInUserProfile: Profile;
-  isPostStarred: boolean;
-  isPostFavorited: boolean;
+  isPostStarred = false;
+  isPostFavorited = false;
+  postActionType = PostActionType;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,7 +46,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     forkJoin([
-      this.getPost(),
+      this.getPostAndOwner(),
       this.userService.loggedInUser$.pipe(
         first(),
         tap(user => (this.loggedInUser = user)),
@@ -47,13 +55,12 @@ export class PostComponent implements OnInit {
         switchMap(profileId => this.profileService.getProfileById(profileId)),
         tap(profile => (this.loggedInUserProfile = profile))
       )
-    ]).subscribe({
-      next: () => this.setupPostMetadata(),
-      error: err => console.error(err)
-    });
+    ])
+      .pipe(tap(() => this.setupPostMetadata()))
+      .subscribe({ error: err => console.error(err) });
   }
 
-  getPost(): Observable<{}> {
+  getPostAndOwner(): Observable<{}> {
     const postId = this.activatedRoute.snapshot.paramMap.get('postId');
     return this.postService.getPostById(postId).pipe(
       tap(post => (this.post = post)),
@@ -67,89 +74,113 @@ export class PostComponent implements OnInit {
     );
   }
 
-  toggleMetadataByKey(key: 'star' | 'favorite') {
-    // key is used to handle any post update interaction
-    const localKey = key === 'star' ? 'isPostStarred' : 'isPostFavorited';
-    const updateKey = key === 'star' ? 'starredPosts' : 'favoritePosts';
-    const ownerUpdateKey = key === 'star' ? 'totalStars' : 'totalFavorites';
-    this[localKey] = !this[localKey];
-    const postMetadata = this.post.metadata || { stars: 0, favorites: 0 };
-
+  toggleMetadataByKey(action: PostActionType) {
+    const jobs: Observable<any>[] = [];
     const defaultProfileMetadata = {
       totalStars: 0,
       totalFavorites: 0,
-      favoritePosts: [],
-      starredPosts: []
+      favoritePosts: new Array<string>(),
+      starredPosts: new Array<string>()
+    };
+    const defaultPostMetadata = {
+      stars: 0,
+      favorites: 0
     };
 
-    const updatePostDto = {
-      metadata: {
-        ...postMetadata,
-        [`${key}s`]: this[localKey]
-          ? postMetadata[`${key}s`] + 1
-          : Math.max(postMetadata[`${key}s`] - 1, 0)
-      }
-    } as UpdatePostDto;
-
-    const profileMetadata =
+    const postMetadata = this.post.metadata || defaultPostMetadata;
+    const userProfileMetadata =
       this.loggedInUserProfile.metadata || defaultProfileMetadata;
-
-    const updateProfileDto = {
-      metadata: {
-        ...profileMetadata,
-        [updateKey]: this[localKey]
-          ? [...profileMetadata[updateKey], this.post._id]
-          : profileMetadata[updateKey].filter(x => x !== this.post._id)
-      }
-    } as UpdateProfileDto;
-
-    const ops = [
-      this.postService.updatePost(this.post._id, updatePostDto),
-      this.profileService.updateProfile(
-        this.loggedInUser.profile,
-        updateProfileDto
-      )
-    ];
-
     const ownerProfileMetadata =
       this.postOwnerProfile.metadata || defaultProfileMetadata;
-    ops.push(
-      this.profileService.updateProfile(this.postOwnerProfile._id, {
-        metadata: {
-          ...ownerProfileMetadata,
-          [ownerUpdateKey]: this[localKey]
-            ? ownerProfileMetadata[ownerUpdateKey] + 1
-            : Math.max(ownerProfileMetadata[ownerUpdateKey] - 1, 0)
-        }
-      })
-    );
 
-    forkJoin(ops)
+    switch (action) {
+      case PostActionType.Star:
+        jobs.push(
+          this.updatePostMetadata(this.post._id, {
+            ...postMetadata,
+            stars: postMetadata.stars + 1
+          }),
+          this.updateProfileMetadata(this.loggedInUserProfile._id, {
+            ...userProfileMetadata,
+            starredPosts: [...userProfileMetadata.starredPosts, this.post._id]
+          }),
+          this.updateProfileMetadata(this.postOwnerProfile._id, {
+            ...ownerProfileMetadata,
+            totalStars: ownerProfileMetadata.totalStars + 1
+          })
+        );
+        break;
+      case PostActionType.Unstar:
+        jobs.push(
+          this.updatePostMetadata(this.post._id, {
+            ...postMetadata,
+            stars: Math.max(postMetadata.stars - 1, 0)
+          }),
+          this.updateProfileMetadata(this.loggedInUserProfile._id, {
+            ...userProfileMetadata,
+            starredPosts: userProfileMetadata.starredPosts.filter(
+              post => post !== this.post._id
+            )
+          }),
+          this.updateProfileMetadata(this.postOwnerProfile._id, {
+            ...ownerProfileMetadata,
+            totalStars: Math.max(ownerProfileMetadata.totalStars - 1, 0)
+          })
+        );
+        break;
+      case PostActionType.Favorite:
+        jobs.push(
+          this.updatePostMetadata(this.post._id, {
+            ...postMetadata,
+            favorites: postMetadata.favorites + 1
+          }),
+          this.updateProfileMetadata(this.loggedInUserProfile._id, {
+            ...userProfileMetadata,
+            favoritePosts: [...userProfileMetadata.favoritePosts, this.post._id]
+          }),
+          this.updateProfileMetadata(this.postOwnerProfile._id, {
+            ...ownerProfileMetadata,
+            totalFavorites: ownerProfileMetadata.totalFavorites + 1
+          })
+        );
+        break;
+      case PostActionType.Unfavorite:
+        jobs.push(
+          this.updatePostMetadata(this.post._id, {
+            ...postMetadata,
+            favorites: Math.max(postMetadata.favorites - 1, 0)
+          }),
+          this.updateProfileMetadata(this.loggedInUserProfile._id, {
+            ...userProfileMetadata,
+            favoritePosts: userProfileMetadata.favoritePosts.filter(
+              post => post !== this.post._id
+            )
+          }),
+          this.updateProfileMetadata(this.postOwnerProfile._id, {
+            ...ownerProfileMetadata,
+            totalFavorites: Math.max(ownerProfileMetadata.totalFavorites - 1, 0)
+          })
+        );
+        break;
+      default:
+        throw new Error('Unknown action type');
+    }
+
+    forkJoin(jobs)
       .pipe(
-        tap(() => {
-          if (this.isPostStarred && key === 'star') {
-            this.toastrService.success(
-              `We're sending ${this.postOwner.firstName} ` +
-                `${this.postOwner.lastName} their star!`
-            );
-          } else if (this.isPostFavorited && key === 'favorite') {
-            this.toastrService.success(`Added post to your favourites!`);
-          }
-        })
+        switchMap(() => {
+          return forkJoin([
+            this.profileService
+              .getProfileById(this.loggedInUserProfile._id)
+              .pipe(tap(profile => (this.loggedInUserProfile = profile))),
+            this.profileService
+              .getProfileById(this.postOwnerProfile._id)
+              .pipe(tap(profile => (this.postOwnerProfile = profile)))
+          ]);
+        }),
+        tap(() => this.setupPostMetadata())
       )
       .subscribe({ error: err => console.error(err) });
-  }
-
-  starPost(): Observable<{}> {
-    return of({});
-  }
-
-  favoritePost(): Observable<{}> {
-    return of({});
-  }
-
-  giveProfileStar(): Observable<{}> {
-    return of({});
   }
 
   updatePostMetadata(
@@ -163,15 +194,19 @@ export class PostComponent implements OnInit {
   }
 
   updateProfileMetadata(
-    profile: Profile,
+    profileId: string,
     metadata: {
       totalStars: number;
       totalFavorites: number;
       favoritePosts: string[];
       starredPosts: string[];
     }
-  ): Observable<{}> {
-    return of({});
+  ): Observable<Profile> {
+    return this.profileService.updateProfile(profileId, { metadata }).pipe(
+      switchMap(() => {
+        return this.profileService.getProfileById(profileId);
+      })
+    );
   }
 
   setupPostMetadata() {

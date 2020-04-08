@@ -42,6 +42,9 @@ export class ProfileController {
     @Param('profileId') profileId: string,
     @Body() profileDto: UpdateProfileDto
   ): Observable<Profile> {
+    console.log(
+      JSON.stringify(profileDto, null, 4)
+    );
     return this.profileService.updateById(profileId, profileDto);
   }
 

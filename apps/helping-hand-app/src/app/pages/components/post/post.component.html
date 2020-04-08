@@ -22,10 +22,7 @@
           [title]="postOwner?.role"
           badgePosition="bottom end"
           badgeStatus="warning"
-          [badgeText]="
-            (postOwnerProfile?.metadata?.totalStars || 0) +
-            ' stars'
-          "
+          [badgeText]="(postOwnerProfile?.metadata?.totalStars || 0) + ' stars'"
         >
         </nb-user>
       </div>
@@ -34,29 +31,32 @@
           size="small"
           status="success"
           hero
-          (click)="toggleMetadataByKey('star')"
+          (click)="
+            toggleMetadataByKey(
+              isPostStarred ? postActionType.Unstar : postActionType.Star
+            )
+          "
           nbButton
           [status]="isPostStarred ? 'danger' : 'primary'"
         >
-          <nb-icon
-            icon="star-outline"
-          >
-          </nb-icon>
+          <nb-icon icon="star-outline"> </nb-icon>
           {{ isPostStarred ? 'Unstar' : 'Give A Star' }}
         </button>
         <button
           size="small"
           status="success"
           hero
-          (click)="toggleMetadataByKey('favorite')"
+          (click)="
+            toggleMetadataByKey(
+              isPostFavorited
+                ? postActionType.Unfavorite
+                : postActionType.Favorite
+            )
+          "
           nbButton
-
           [status]="isPostFavorited ? 'danger' : 'primary'"
         >
-          <nb-icon
-            icon="heart-outline"
-          >
-          </nb-icon>
+          <nb-icon icon="heart-outline"> </nb-icon>
           {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}
         </button>
       </div>

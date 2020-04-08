@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: 'posts/:postId',
     component: PostComponent,
-    data: { state: 'feed' }
+    data: { state: 'post' }
   },
   { path: '**', pathMatch: 'full', redirectTo: 'pages/feed',  data: { state: 'feed', animation: 'fade' } }
 ];
