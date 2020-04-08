@@ -29,11 +29,13 @@ import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PagesModule } from './pages/pages.module';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    RouterModule.forRoot([]),
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,

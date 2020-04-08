@@ -87,10 +87,7 @@ export class FeedComponent implements OnInit, OnDestroy {
             media: undefined
           };
         }),
-        switchMap(() => this.updateFeedDataList()),
-        tap(() => {
-          console.log(this.feedDataList);
-        })
+        switchMap(() => this.updateFeedDataList())
       )
       .subscribe({ error: err => console.error(err) });
   }
@@ -109,12 +106,12 @@ export class FeedComponent implements OnInit, OnDestroy {
               data['ownerFirstName'] = firstName;
               data['ownerLastName'] = lastName;
               data['ownerPictureUrl'] = pictureUrl;
-            }),
+            })
           ),
-          this.profileService.getProfileByOwner(data.post.owner).pipe(
-            tap(profile => (data['ownerProfile'] = profile))
-          )
-        ]).pipe(map(() => data))
+          this.profileService
+            .getProfileByOwner(data.post.owner)
+            .pipe(tap(profile => (data['ownerProfile'] = profile)))
+        ]).pipe(map(() => data));
       }),
       toArray(),
       tap(data => (this.feedDataList = data)),
@@ -219,7 +216,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.router.navigate(['/pages/posts', postId]);
   }
 
-
   onPageNav(direction: 'next' | 'prev') {
     if (direction === 'next') {
       this.postQuery.skip += this.postQuery.limit;
@@ -230,8 +226,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
     this.updateFeedDataList().subscribe({ error: e => console.error(e) });
   }
-
-
 
   ngOnDestroy() {
     this.destroy$.next();
