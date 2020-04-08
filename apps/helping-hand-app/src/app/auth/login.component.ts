@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserProvider } from '@helping-hand/api-common';
-import { takeUntil, map, switchMap, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, switchMap, first } from 'rxjs/operators';
 import { Subject, of } from 'rxjs';
 import { NbAuthService, NbAuthOAuth2Token } from '@nebular/auth';
 import { UserService } from '@helping-hand/core/services/user.service';
@@ -22,14 +22,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.authService.isAuthenticated().subscribe({
-      next: (isAuthenticated: boolean) => {
-        if (isAuthenticated) {
-          this.router.navigateByUrl('/dashboard');
-        }
-      },
-      error: e => console.error(e)
-    });
+    this.authService
+      .isAuthenticated()
+      .pipe(first())
+      .subscribe({
+        next: isAuthenticated => {
+          if (isAuthenticated) {
+            this.router.navigateByUrl('/pages/feed');
+          }
+        },
+        error: err => console.error(err)
+      });
   }
 
   login(provider: string) {
@@ -37,12 +40,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map(userProvider => userProvider as UserProvider),
-        mergeMap(userProvider => {
+        switchMap(userProvider => {
           localStorage.setItem('isLoggingIn', JSON.stringify(true));
           this.userService.setUserProvider(userProvider);
           return of(userProvider);
         }),
-        mergeMap(userProvider => {
+        switchMap(userProvider => {
           return this.authService.authenticate(userProvider);
         })
       )

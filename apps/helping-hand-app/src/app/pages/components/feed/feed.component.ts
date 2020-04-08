@@ -199,7 +199,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   startPostCreation(template: TemplateRef<any>) {
-    this.createPostDialogRef = this.dialogService.open(template);
+  this.createPostDialogRef = this.dialogService.open(template);
   }
 
   toggleCommentVisibility(postCommentIndex: number) {

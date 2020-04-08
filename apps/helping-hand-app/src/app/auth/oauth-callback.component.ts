@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbAuthService, NbAuthResult } from '@nebular/auth';
+import { NbAuthService } from '@nebular/auth';
 import { Router } from '@angular/router';
 import { Subject, throwError } from 'rxjs';
 import { takeUntil, tap, switchMap } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { User } from '@helping-hand/api-common';
 
 @Component({
   selector: 'helping-hand-oauth2-callback',
@@ -52,10 +51,8 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({
-        next: () => {
-          this.router.navigateByUrl(this.redirectUrl);
-        },
-        error: e => console.error(e)
+        next: () => this.router.navigateByUrl(this.redirectUrl),
+        error: err => console.error(err)
       });
   }
 

@@ -25,11 +25,11 @@ export class SubscriptionService {
     );
   }
 
+  // #TBT
   list(owner: string, labels: string[]): Observable<Subscription[]> {
     return from(
       this.subscriptionModel.find({
         owner,
-        label: { $in: labels }
       })
     ).pipe(
       map((subDocs: Subscription[]) => subDocs as Subscription[])
