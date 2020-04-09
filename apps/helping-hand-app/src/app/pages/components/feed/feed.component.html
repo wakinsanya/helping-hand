@@ -30,7 +30,7 @@
       <h4 class="feed-list__no-feed-placeholder">No Posts Yet</h4>
     </ng-template>
     <ng-template #postListTemplate>
-      <h3>Recent Posts</h3>
+      <h1>Recent Posts</h1>
       <div
         class="feed-list__post__wrap"
         *ngFor="let entry of feedDataList; let i = index"
@@ -70,6 +70,9 @@
                 >
                 </nb-user
               ></nb-action>
+              <nb-action>
+                {{ entry?.post?.createdAt | customShortDate }}
+              </nb-action>
             </nb-actions>
           </nb-card-footer>
         </nb-card>

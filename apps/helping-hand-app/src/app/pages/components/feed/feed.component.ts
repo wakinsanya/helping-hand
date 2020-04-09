@@ -95,7 +95,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         tap(user => {
           const isLoggingIn = JSON.parse(localStorage.getItem('isLoggingIn'));
           if (isLoggingIn) {
-          this.dialogService.open(
+            this.dialogService.open(
               user.profile ? this.welcomeBackCard : this.welcomeCard
             );
             localStorage.removeItem('isLoggingIn');
@@ -118,7 +118,13 @@ export class FeedComponent implements OnInit, OnDestroy {
       tap(({ postsTotalCount }) => {
         this.postsTotalCount = postsTotalCount;
       }),
-      map(({ posts }) => posts.map(post => ({ post }))),
+      map(({ posts }) => posts.map(post => ({
+         post: {
+           ...post,
+           createdAt: new Date(post.createdAt),
+           updatedAt: new Date(post.updatedAt)
+         }
+        }))),
       switchMap(posts => from(posts).pipe(filter(x => !!x))),
       mergeMap(data => {
         return forkJoin([
@@ -136,6 +142,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       }),
       toArray(),
       tap(data => (this.feedDataList = data)),
+      tap(x => console.log(x)),
       switchMap(() => of({}))
     );
   }
@@ -145,7 +152,11 @@ export class FeedComponent implements OnInit, OnDestroy {
       tap(({ postsTotalCount }) => {
         this.postsTotalCount = postsTotalCount;
       }),
-      map(({ posts }) => posts.map(x => ({ post: x }))),
+      map(({ posts }) => {
+        return posts.map(entry => ({
+          post: { ...entry }
+        }));
+      }),
       switchMap(postCommentList =>
         from(postCommentList).pipe(filter(x => !!x && !!x.post))
       ),
@@ -195,7 +206,7 @@ export class FeedComponent implements OnInit, OnDestroy {
             this.createPostDialogRef.close();
             this.toastrService.success('Your post has been created!');
           }),
-          switchMap(() => this.updatePostCommentList())
+          switchMap(() => this.updateFeedDataList())
         )
         .subscribe({
           error: e => {

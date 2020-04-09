@@ -5,13 +5,18 @@ import { NbAuthService } from '@nebular/auth';
 import { tap, takeUntil, filter, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { NbMenuService } from '@nebular/theme';
+import { NbMenuService, NbThemeService } from '@nebular/theme';
 
 enum PageRoute {
   Feed = '/pages/feed',
   Post = '/pages/post',
   Profile = '/pages/profile',
   Community = '/pages/community'
+}
+
+enum AppTheme {
+  Light = 'light',
+  Dark = 'dark'
 }
 
 @Component({
@@ -23,6 +28,8 @@ enum PageRoute {
 export class HeaderComponent implements OnInit, OnDestroy {
   loggedInUser: User;
   pageRoute = PageRoute;
+  appTheme = AppTheme;
+  currentAppTheme = AppTheme.Light;
   currentPageRoute: PageRoute;
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -37,10 +44,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private authService: NbAuthService,
-    private nbMenuService: NbMenuService
+    private nbMenuService: NbMenuService,
+    private themeService: NbThemeService
   ) {}
 
   ngOnInit() {
+    this.resolveAppTheme();
     this.setUpUserListener();
     this.setUpLogOutHandler();
     this.router.events
@@ -63,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: () => window.location.reload(),
-        error: e => console.error(e)
+        error: err => console.error(err)
       });
   }
 
@@ -95,5 +104,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  resolveAppTheme() {
+    const preExistingTheme = JSON.parse(localStorage.getItem('appTheme'));
+    if (preExistingTheme) {
+      this.currentAppTheme = preExistingTheme as AppTheme;
+      switch (this.currentAppTheme) {
+        case AppTheme.Dark:
+          this.themeService.changeTheme('helping-hand-dark');
+          break;
+        case AppTheme.Light:
+          this.themeService.changeTheme('helping-hand');
+          break;
+        default:
+          this.themeService.changeTheme('helping-hand');
+          console.warn('Attempted to set unknown application theme.');
+      }
+    }
+  }
+
+  toggleAppTheme() {
+    switch (this.currentAppTheme) {
+      case AppTheme.Light:
+        this.themeService.changeTheme('helping-hand-dark');
+        this.currentAppTheme = AppTheme.Dark;
+        break;
+      case AppTheme.Dark:
+        this.themeService.changeTheme('helping-hand');
+        this.currentAppTheme = AppTheme.Light;
+        break;
+      default:
+        throw new Error('Unknown theme');
+    }
+    localStorage.setItem('appTheme', JSON.stringify(this.currentAppTheme));
   }
 }

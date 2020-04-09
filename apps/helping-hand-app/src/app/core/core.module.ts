@@ -13,6 +13,8 @@ import {
   NbContextMenuModule,
   NbIconModule,
   NbSelectModule,
+  NbButtonModule,
+  NbTooltipModule
 } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
@@ -36,6 +38,8 @@ import { FooterComponent } from './footer/footer.component';
     NbContextMenuModule,
     NbIconModule,
     NbSelectModule,
+    NbButtonModule,
+    NbTooltipModule,
     RouterModule
   ],
   providers: [

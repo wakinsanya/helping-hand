@@ -1,9 +1,9 @@
 <div class="header__lap">
-  <nb-actions size="medium" accent="primary">
+  <nb-actions size="small" accent="primary">
     <nb-action>
-      <h5 class="header__heading" (click)="goHome()">
+      <h3 class="header__heading" (click)="goHome()">
         Helping Hand
-      </h5>
+      </h3>
     </nb-action>
     <nb-action *ngIf="loggedInUser && loggedInUser._id">
       <nb-user
@@ -45,6 +45,22 @@
     </nb-action>
     <nb-action *ngIf="loggedInUser && loggedInUser._id">
       <a (click)="logout()" class="header__danger-link">Log Out</a>
+    </nb-action>
+    <nb-action>
+      <button
+        nbButton
+        ghost
+        (click)="toggleAppTheme()"
+        nbTooltip="Toggle application theme"
+        nbTooltipIcon="color-palette-outline"
+      >
+        <nb-icon
+          [icon]="currentAppTheme === appTheme.Dark
+          ? 'sun-outline'
+          : 'moon-outline'"
+        >
+        </nb-icon>
+      </button>
     </nb-action>
   </nb-actions>
 </div>

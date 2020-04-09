@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { environment } from '@helping-hand-environments/environment';
 import { queryString } from '../helpers/query-string';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {

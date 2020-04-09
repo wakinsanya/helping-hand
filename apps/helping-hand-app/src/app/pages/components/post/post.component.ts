@@ -163,7 +163,7 @@ export class PostComponent implements OnInit {
         );
         break;
       default:
-        throw new Error('Unknown action type');
+      throw new Error('Unknown action type');
     }
 
     forkJoin(jobs)

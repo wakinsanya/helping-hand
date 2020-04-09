@@ -28,10 +28,10 @@ export interface Profile {
   readonly data: ProfileData;
   readonly metadata?: {
     totalStars: number;
-    totalFavorites: number,
-    favoritePosts: string[],
-    starredPosts: string[]
-  }
+    totalFavorites: number;
+    favoritePosts: string[];
+    starredPosts: string[];
+  };
 }
 
 export interface Post {
@@ -42,10 +42,12 @@ export interface Post {
   readonly edited: boolean;
   readonly media: string;
   readonly comments: string[];
+  readonly createdAt: string | Date;
+  readonly updatedAt: string | Date;
   readonly metadata: {
-    stars: number,
+    stars: number;
     favorites: number;
-  }
+  };
 }
 
 export interface Comment {
