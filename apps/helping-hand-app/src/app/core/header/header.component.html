@@ -46,9 +46,9 @@
     <nb-action *ngIf="loggedInUser && loggedInUser._id">
       <a (click)="logout()" class="header__danger-link">Log Out</a>
     </nb-action>
-    <nb-action badgeText="new" badgeStatus="primary" badgePosition="top right">
+    <nb-action badgeText="new" badgeStatus="info" badgePosition="top right">
       <button
-        nbButton
+        nbButton shape="round"
         ghost
         (click)="toggleAppTheme()"
         [nbTooltip]="
@@ -117,7 +117,7 @@
     <nb-actions fullWidth="true">
       <nb-action>
         <button
-          nbButton
+          nbButton shape="round"
           ghost
           (click)="toggleAppTheme()"
         >

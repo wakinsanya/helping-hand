@@ -1,6 +1,6 @@
 <div>
   <div class="post__back-btn__wrap">
-    <button ghost nbButton routerLink="pages/feed">
+    <button ghost nbButton shape="round" routerLink="pages/feed">
       <nb-icon icon="chevron-left-outline"></nb-icon>
       Back
     </button>
@@ -36,7 +36,7 @@
               isPostStarred ? postActionType.Unstar : postActionType.Star
             )
           "
-          nbButton
+          nbButton shape="round"
           [status]="isPostStarred ? 'danger' : 'primary'"
         >
           <nb-icon icon="star-outline"> </nb-icon>
@@ -53,7 +53,7 @@
                 : postActionType.Favorite
             )
           "
-          nbButton
+          nbButton shape="round"
           [status]="isPostFavorited ? 'danger' : 'primary'"
         >
           <nb-icon icon="heart-outline"> </nb-icon>
@@ -77,7 +77,7 @@
         />
       </div>
       <button
-        nbButton
+        nbButton shape="round"
         fullWidth
         (click)="postComment()"
         [disabled]="!commentBody.text"
@@ -109,7 +109,7 @@
       <div class="comments-pagin__wrap">
         <button
         size="small"
-        nbButton
+        nbButton shape="round"
         [disabled]="commentsQuery.skip === 0"
         (click)="onPageNav(pageDirection.Left)"
       >
@@ -118,12 +118,12 @@
       </button>
       <button
         size="small"
-        nbButton
+        nbButton shape="round"
         (click)="onPageNav(pageDirection.Right)"
         [disabled]="currentCommentsPage * commentsQuery.limit >= commentsTotalCount"
       >
-      <nb-icon icon="chevron-right-outline"></nb-icon>
         Next Page
+        <nb-icon icon="chevron-right-outline"></nb-icon>
       </button>
       </div>
     </nb-card-body>

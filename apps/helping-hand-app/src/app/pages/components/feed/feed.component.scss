@@ -36,3 +36,17 @@
 .feed-list__new-post__wrap {
   margin-bottom: 20px;
 }
+
+.create-post__btn {
+  animation: pulsate 2s infinite;
+}
+
+@keyframes pulsate
+{
+     0% {
+          box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1);
+     }
+     100% {
+          box-shadow: 0 0 0 16px rgba(0, 0, 0, 0);
+     }
+}

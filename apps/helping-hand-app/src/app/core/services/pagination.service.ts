@@ -6,6 +6,7 @@ import {
   ProfileQuery,
   SubscriptionQuery
 } from '@helping-hand/api-common';
+import { CommentService } from './comment.service';
 
 declare type AppQuery = UserQuery | CommentQuery | PostQuery | ProfileQuery;
 
@@ -16,7 +17,7 @@ export enum PageDirection {
 
 @Injectable({ providedIn: 'root' })
 export class PaginationService {
-  constructor() {}
+  constructor(private commentService: CommentService) {}
 
   resolve(data: {
     direction: PageDirection;

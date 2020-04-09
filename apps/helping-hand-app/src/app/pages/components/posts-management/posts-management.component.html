@@ -1,7 +1,7 @@
 <div class="back-btn__wrap">
   <button
     ghost
-    nbButton
+    nbButton shape="round"
     routerLink="pages/feed">
     <nb-icon icon="chevron-left-outline"></nb-icon>
     Back
@@ -17,15 +17,15 @@
       <p>{{ post?.text }}</p>
     </nb-card-body>
     <nb-card-footer>
-      <div>
-        <button nbButton ghost status="info">
+      <div class="post-opts__wrap">
+        <button nbButton shape="round" hero status="info">
           <nb-icon icon="edit-outline"></nb-icon>
            Edit
          </button>
          <button
           (click)="deleteUserPost(i)"
-          nbButton
-          ghost
+          nbButton shape="round"
+          hero
           status="danger">
           <nb-icon icon="trash-2-outline"></nb-icon>
            Delete
@@ -36,7 +36,7 @@
   <div class="post-list__pagin__wrap">
     <button
       size="small"
-      nbButton
+      nbButton shape="round"
       [disabled]="postQuery.skip === 0"
       (click)="onPageNav('prev')"
     >
@@ -45,7 +45,7 @@
     </button>
     <button
       size="small"
-      nbButton
+      nbButton shape="round"
       (click)="onPageNav('next')"
       [disabled]="currentPage * postQuery.limit >= postsTotalCount"
     >

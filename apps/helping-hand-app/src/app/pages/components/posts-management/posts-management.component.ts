@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { PostService } from '@helping-hand/core/services/post.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { User, PostQuery, Post } from '@helping-hand/api-common';
 import { first, tap, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
@@ -25,7 +25,8 @@ export class PostsManagementComponent implements OnInit {
   constructor(
     private userService: UserService,
     private postService: PostService,
-    private toastrService: NbToastrService
+    private toastrService: NbToastrService,
+    private dialogService: NbDialogService
   ) {}
 
   ngOnInit() {

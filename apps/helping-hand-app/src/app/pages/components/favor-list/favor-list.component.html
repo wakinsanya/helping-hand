@@ -2,7 +2,7 @@
 <!-- <div class="favor-list__container">
   <div class="favor-list__new-favor__wrap">
     <button
-      nbButton
+      nbButton shape="round"
       fullWidth
       (click)="
         openFavorFormWindow(favorForm, 'What kind of help are you looking for?')
@@ -39,19 +39,19 @@
           <p>Fufilled: {{ favor.isFufilled ? 'Yes' : 'Not yet' }}</p>
           <p>Expires: {{ favor.deadline | date: 'fullDate' }}</p>
           <div class="favor-list__favor-opts">
-            <button nbButton outline (click)="fufillFavor(i)">
+            <button nbButton shape="round" outline (click)="fufillFavor(i)">
               <nb-icon icon="checkmark-circle-outline"></nb-icon>Mark as
               Compelete
             </button>
             <button
-              nbButton
+              nbButton shape="round"
               outline
               status="info"
               (click)="openFavorEditWindow(favorForm, i)"
             >
               <nb-icon icon="edit-outline"></nb-icon>Edit
             </button>
-            <button nbButton outline status="danger" (click)="deleteFavor(i)">
+            <button nbButton shape="round" outline status="danger" (click)="deleteFavor(i)">
               <nb-icon icon="trash-2-outline"></nb-icon>Delete
             </button>
           </div>
@@ -60,14 +60,14 @@
     </nb-accordion>
     <div class="favor-list__pagin__wrap">
       <button
-        nbButton
+        nbButton shape="round"
         [disabled]="favorQuery.skip === 0"
         (click)="onPageNav('prev')"
       >
         Previous Page
       </button>
       <button
-        nbButton
+        nbButton shape="round"
         (click)="onPageNav('next')"
         [disabled]="currentPage * favorQuery.limit >= favorsTotalCount"
       >
@@ -105,7 +105,7 @@
         [nbDatepicker]="datePicker"
       />
       <nb-datepicker #datePicker [min]="today"></nb-datepicker>
-      <button nbButton outline fullWidth disabled>
+      <button nbButton shape="round" outline fullWidth disabled>
         <nb-icon icon="attach-outline"></nb-icon>
         Add A Picture (coming soon)
       </button>
@@ -116,7 +116,7 @@
         >
       </div>
       <button
-        nbButton
+        nbButton shape="round"
         fullWidth
         (click)="context.isEditing ? updateFavor() : createFavor()"
       >

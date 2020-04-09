@@ -31,6 +31,7 @@ export class CommentController {
 
   @Get()
   list(
+    @Query('post') post: string,
     @Query('owner') owner: string,
     @Query('sort') sort: string,
     @Query('skip') skip: string,

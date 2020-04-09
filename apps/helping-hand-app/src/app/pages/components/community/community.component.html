@@ -38,7 +38,7 @@
       <div class="user-list__pagin__wrap">
         <button
           size="small"
-          nbButton
+          nbButton shape="round"
           [disabled]="userQuery.skip === 0"
           (click)="onPageNav('prev')"
         >
@@ -47,12 +47,12 @@
         </button>
         <button
           size="small"
-          nbButton
+          nbButton shape="round"
           (click)="onPageNav('next')"
           [disabled]="currentPage * userQuery.limit >= usersTotalCount"
         >
-        <nb-icon icon="chevron-right-outline"></nb-icon>
           Next Page
+          <nb-icon icon="chevron-right-outline"></nb-icon>
         </button>
       </div>
     </nb-card-footer>

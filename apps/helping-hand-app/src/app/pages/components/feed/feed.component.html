@@ -2,7 +2,9 @@
   <div class="feed-list__inner-container">
     <div class="feed-list__new-post__wrap">
       <button
-        nbButton
+        class="create-post__btn"
+        nbButton shape="round"
+        hero
         fullWidth
         (click)="startPostCreation(postCreateTemplate)"
       >
@@ -10,7 +12,7 @@
       </button>
     </div>
     <button
-      nbButton
+      nbButton shape="round"
       ghost
       fullWidth
       status="basic"
@@ -80,7 +82,7 @@
       <div class="feed-list__pagin__wrap">
         <button
           size="small"
-          nbButton
+          nbButton shape="round"
           [disabled]="postQuery.skip === 0"
           (click)="onPageNav('prev')"
         >
@@ -89,12 +91,12 @@
         </button>
         <button
           size="small"
-          nbButton
+          nbButton shape="round"
           (click)="onPageNav('next')"
           [disabled]="currentPage * postQuery.limit >= postsTotalCount"
         >
-          <nb-icon icon="chevron-right-outline"></nb-icon>
           Next Page
+          <nb-icon icon="chevron-right-outline"></nb-icon>
         </button>
       </div>
     </ng-template>
@@ -123,11 +125,11 @@
               fullWidth
               placeholder="Main body of your post"
             ></textarea>
-            <button nbButton outline fullWidth disabled>
+            <button nbButton shape="round" outline fullWidth disabled>
               <nb-icon icon="attach-outline"></nb-icon>
               Add A Picture (coming soon)
             </button>
-            <button nbButton fullWidth (click)="createPost()">
+            <button nbButton shape="round" fullWidth (click)="createPost()">
               Post
             </button>
           </div>
@@ -155,7 +157,7 @@
       <p>Thank you for checking out Helping Hand!</p>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton (click)="ref.close()">Close</button>
+      <button nbButton shape="round" (click)="ref.close()">Close</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>
@@ -170,7 +172,7 @@
     </nb-card-body>
     <nb-card-footer>
       <button
-        nbButton
+        nbButton shape="round"
         status="success"
         (click)="ref.close()">
         Close

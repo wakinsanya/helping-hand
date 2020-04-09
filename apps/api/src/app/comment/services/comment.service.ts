@@ -38,6 +38,7 @@ export class CommentService {
   }
 
   list(
+    post: string,
     owner: string,
     sort: boolean,
     skip: number,
@@ -51,6 +52,10 @@ export class CommentService {
 
     if (owner) {
       matchStage.$match.owner = Types.ObjectId(owner);
+    }
+
+    if (post) {
+      matchStage.$match.post = Types.ObjectId(post);
     }
 
     const pipeline = [

@@ -107,6 +107,7 @@ export class PostComponent implements OnInit {
   getPostAndOwner(): Observable<{}> {
     const postId = this.activatedRoute.snapshot.paramMap.get('postId');
     this.commentBody.post = postId;
+    this.commentsQuery.post = postId;
     return this.postService.getPostById(postId).pipe(
       tap(post => (this.post = post)),
       switchMap(() => {
@@ -274,6 +275,7 @@ export class PostComponent implements OnInit {
   }
 
   getPostComments(): Observable<{}> {
+    console.log({ query: this.commentsQuery });
     return this.commentService.getComments(this.commentsQuery).pipe(
       tap(({ commentsTotalCount }) => {
         this.commentsTotalCount = commentsTotalCount;
@@ -332,6 +334,4 @@ export class PostComponent implements OnInit {
 
     this.getPostComments().subscribe({ error: err => console.error(err) });
   }
-
-
 }
