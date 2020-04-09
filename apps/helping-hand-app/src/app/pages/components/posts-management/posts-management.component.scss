@@ -22,3 +22,9 @@
   }
 }
 
+
+.delete-post-opts__wrap {
+  & > button {
+    margin-right: 20px;
+  }
+}

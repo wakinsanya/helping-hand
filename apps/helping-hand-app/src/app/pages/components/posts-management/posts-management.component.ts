@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { PostService } from '@helping-hand/core/services/post.service';
-import { NbToastrService, NbDialogService } from '@nebular/theme';
+import { NbToastrService, NbDialogService, NbDialogRef } from '@nebular/theme';
 import { User, PostQuery, Post } from '@helping-hand/api-common';
 import { first, tap, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
@@ -73,19 +73,28 @@ export class PostsManagementComponent implements OnInit {
   }
 
   confirmPostDeletion(postIndex: number, tempalate: TemplateRef<any>) {
-    this.dialogService.open(tempalate);
+    this.dialogService.open(tempalate, { context: { postIndex } });
   }
 
-  deleteUserPost(postIndex: number) {
+  deleteUserPost(postIndex: number, dialogRef: NbDialogRef<any>) {
     const postId = this.posts[postIndex]._id;
     this.postService
       .deletePost(postId)
       .pipe(
         tap(() => {
+          dialogRef.close();
           this.toastrService.success(`We've deleted your post.`);
           this.posts = this.posts.filter(({ _id }) => _id !== postId);
         })
       )
-      .subscribe({ error: err => console.error(err) });
+      .subscribe({
+        error: err => {
+          dialogRef.close();
+          this.toastrService.warning(
+            'Something went wrong and we could not delete your post, please try again.'
+          );
+          console.error(err);
+        }
+      });
   }
 }

@@ -58,14 +58,32 @@
   <h4 class="no-posts-placeholder">No posts yet.</h4>
 </div>
 
-<ng-template #deletionDialog let-ref="dialogRef">
+<ng-template #deletionDialog let-ref="dialogRef" let-context>
   <nb-card>
     <nb-card-body>
-      <h3>Are you sure you want to delete this post?</h3>
+      <h4>Are you sure you want to delete this post?</h4>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton shape="round" (click)="ref.close()">Cancel</button>
-      <button nbButton shape="round" (click)="ref.close()">Confirm</button>
+      <div class="delete-post-opts__wrap">
+        <button
+          nbButton
+          shape="round"
+          ghost
+          status="danger"
+          (click)="ref.close()"
+        >
+          <nb-icon icon="close-outline"></nb-icon>
+          Cancel
+        </button>
+        <button
+          nbButton
+          shape="round"
+          ghost (click)="deleteUserPost(context.postIndex, ref)"
+        >
+          <nb-icon icon="checkmark-outline"></nb-icon>
+          Confirm
+        </button>
+      </div>
     </nb-card-footer>
   </nb-card>
 </ng-template>
