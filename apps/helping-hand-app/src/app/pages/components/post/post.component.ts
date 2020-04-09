@@ -23,6 +23,10 @@ import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { Observable, of, forkJoin, from } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
 import { CommentService } from '@helping-hand/core/services/comment.service';
+import {
+  PaginationService,
+  PageDirection
+} from '@helping-hand/core/services/pagination.service';
 
 enum PostActionType {
   Star = 'star',
@@ -57,7 +61,7 @@ export class PostComponent implements OnInit {
     post: undefined,
     orderByDate: true,
     skip: 0,
-    limit: 5
+    limit: 1
   };
   commentUserList: {
     comment: AppComment;
@@ -66,6 +70,7 @@ export class PostComponent implements OnInit {
   }[] = [];
   commentsTotalCount: number;
   currentCommentsPage = 1;
+  pageDirection = PageDirection;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -73,7 +78,8 @@ export class PostComponent implements OnInit {
     private profileService: ProfileService,
     private userService: UserService,
     private toastrService: NbToastrService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private paginationService: PaginationService
   ) {}
 
   ngOnInit() {
@@ -294,9 +300,8 @@ export class PostComponent implements OnInit {
       }),
       toArray(),
       tap(
-        (
-          data: { comment: AppComment; profile: Profile; user: User }[]
-        ) => (this.commentUserList = data)
+        (data: { comment: AppComment; profile: Profile; user: User }[]) =>
+          (this.commentUserList = data)
       )
     );
   }
@@ -316,14 +321,17 @@ export class PostComponent implements OnInit {
     }
   }
 
-  onPageNav(direction: 'next' | 'prev') {
-    if (direction === 'next') {
-      this.commentsQuery.skip += this.commentsQuery.limit;
-      this.currentCommentsPage++;
-    } else {
-      this.commentsQuery.skip -= this.commentsQuery.limit;
-      this.currentCommentsPage--;
-    }
+  onPageNav(direction: PageDirection) {
+    const { query, currentPage } = this.paginationService.resolve({
+      direction,
+      query: this.commentsQuery,
+      currentPage: this.currentCommentsPage
+    });
+    this.commentsQuery = query as CommentQuery;
+    this.currentCommentsPage = currentPage;
+
     this.getPostComments().subscribe({ error: err => console.error(err) });
   }
+
+
 }

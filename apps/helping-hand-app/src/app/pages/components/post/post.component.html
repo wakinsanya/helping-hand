@@ -111,7 +111,7 @@
         size="small"
         nbButton
         [disabled]="commentsQuery.skip === 0"
-        (click)="onPageNav('prev')"
+        (click)="onPageNav(pageDirection.Left)"
       >
         <nb-icon icon="chevron-left-outline"></nb-icon>
         Previous Page
@@ -119,7 +119,7 @@
       <button
         size="small"
         nbButton
-        (click)="onPageNav('next')"
+        (click)="onPageNav(pageDirection.Right)"
         [disabled]="currentCommentsPage * commentsQuery.limit >= commentsTotalCount"
       >
       <nb-icon icon="chevron-right-outline"></nb-icon>
