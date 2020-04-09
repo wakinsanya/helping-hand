@@ -1,6 +1,9 @@
 @import '../../../themes';
 
 
+.helping-hand-header {
+  width: 100%;
+}
 
 .header__heading {
   &:hover {
@@ -28,6 +31,7 @@
   display: none;
   @media only screen and (max-width: 768px) {
     display: block;
+    width: 100%;
   }
 }
 
@@ -54,4 +58,9 @@
     opacity: 1;
     color: nb-theme(color-danger-400) !important;
   }
+}
+
+.palm-theme-toggle__wrap {
+  margin-top: 10px;
+  width: 100%;
 }

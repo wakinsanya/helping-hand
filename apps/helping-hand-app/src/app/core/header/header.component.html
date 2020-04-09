@@ -46,18 +46,23 @@
     <nb-action *ngIf="loggedInUser && loggedInUser._id">
       <a (click)="logout()" class="header__danger-link">Log Out</a>
     </nb-action>
-    <nb-action>
+    <nb-action badgeText="new" badgeStatus="primary" badgePosition="top right">
       <button
         nbButton
         ghost
         (click)="toggleAppTheme()"
-        nbTooltip="Toggle application theme"
+        [nbTooltip]="
+          currentAppTheme === appTheme.Light
+            ? 'switch to dark theme'
+            : 'switch to light theme'
+        "
         nbTooltipIcon="color-palette-outline"
+        nbTooltipPlacement="bottom"
       >
         <nb-icon
-          [icon]="currentAppTheme === appTheme.Dark
-          ? 'sun-outline'
-          : 'moon-outline'"
+          [icon]="
+            currentAppTheme === appTheme.Dark ? 'sun-outline' : 'moon-outline'
+          "
         >
         </nb-icon>
       </button>
@@ -66,44 +71,64 @@
 </div>
 
 <div class="header__palm">
-  <nb-actions size="tiny" accent="primary">
-    <nb-action *ngIf="!(loggedInUser && loggedInUser._id)">
-      <h5 class="header__heading" (click)="goHome()">
-        Helping Hand
-      </h5>
-    </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
-      <a
-        class="header__link"
-        routerLink="/pages/feed"
-        [ngClass]="{
-          'header__current-link': pageRoute.Feed === currentPageRoute
-        }"
-        >Feed</a
-      >
-    </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
-      <a
-        class="header__link"
-        routerLink="/pages/profile"
-        [ngClass]="{
-          'header__current-link': pageRoute.Profile === currentPageRoute
-        }"
-        >Profile</a
-      >
-    </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
-      <a
-        class="header__link"
-        routerLink="/pages/community"
-        [ngClass]="{
-          'header__current-link': pageRoute.Community === currentPageRoute
-        }"
-        >Community</a
-      >
-    </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
-      <a (click)="logout()" class="header__danger-link">Log Out</a>
-    </nb-action>
-  </nb-actions>
+  <div>
+    <nb-actions size="tiny" accent="primary">
+      <nb-action *ngIf="!(loggedInUser && loggedInUser._id)">
+        <h5 class="header__heading" (click)="goHome()">
+          Helping Hand
+        </h5>
+      </nb-action>
+      <nb-action *ngIf="loggedInUser && loggedInUser._id">
+        <a
+          class="header__link"
+          routerLink="/pages/feed"
+          [ngClass]="{
+            'header__current-link': pageRoute.Feed === currentPageRoute
+          }"
+          >Feed</a
+        >
+      </nb-action>
+      <nb-action *ngIf="loggedInUser && loggedInUser._id">
+        <a
+          class="header__link"
+          routerLink="/pages/profile"
+          [ngClass]="{
+            'header__current-link': pageRoute.Profile === currentPageRoute
+          }"
+          >Profile</a
+        >
+      </nb-action>
+      <nb-action *ngIf="loggedInUser && loggedInUser._id">
+        <a
+          class="header__link"
+          routerLink="/pages/community"
+          [ngClass]="{
+            'header__current-link': pageRoute.Community === currentPageRoute
+          }"
+          >Community</a
+        >
+      </nb-action>
+      <nb-action *ngIf="loggedInUser && loggedInUser._id">
+        <a (click)="logout()" class="header__danger-link">Log Out</a>
+      </nb-action>
+    </nb-actions>
+  </div>
+  <div class="palm-theme-toggle__wrap">
+    <nb-actions fullWidth="true">
+      <nb-action>
+        <button
+          nbButton
+          ghost
+          (click)="toggleAppTheme()"
+        >
+          <nb-icon
+            [icon]="
+              currentAppTheme === appTheme.Dark ? 'sun-outline' : 'moon-outline'
+            "
+          >
+          </nb-icon>
+        </button>
+      </nb-action>
+    </nb-actions>
+  </div>
 </div>
