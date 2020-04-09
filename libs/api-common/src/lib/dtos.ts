@@ -74,11 +74,12 @@ export class UpdatePostDto {
 }
 
 export class CreateCommentDto {
+  readonly post: string;
   readonly text: string;
-  readonly media: string;
+  readonly owner: string;
+  readonly media?: string;
   readonly metadata: {
-    votes: number;
-    isFavorite: boolean
+    stars: number;
   }
 }
 
@@ -86,7 +87,6 @@ export class UpdateCommentDto {
   readonly text: string;
   readonly media: string;
   readonly metadata: {
-    votes?: number;
-    isFavorite?: boolean
+    stars: number;
   }
 }

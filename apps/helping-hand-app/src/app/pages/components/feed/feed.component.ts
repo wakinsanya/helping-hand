@@ -142,59 +142,59 @@ export class FeedComponent implements OnInit, OnDestroy {
       }),
       toArray(),
       tap(data => (this.feedDataList = data)),
-      tap(x => console.log(x)),
       switchMap(() => of({}))
     );
   }
 
-  updatePostCommentList(): Observable<{}> {
-    return this.postService.getPosts(this.postQuery).pipe(
-      tap(({ postsTotalCount }) => {
-        this.postsTotalCount = postsTotalCount;
-      }),
-      map(({ posts }) => {
-        return posts.map(entry => ({
-          post: { ...entry }
-        }));
-      }),
-      switchMap(postCommentList =>
-        from(postCommentList).pipe(filter(x => !!x && !!x.post))
-      ),
-      mergeMap((postComment: PostComment) => {
-        return forkJoin([
-          this.userService.getUserById(postComment.post.owner).pipe(
-            tap(({ firstName, lastName, pictureUrl }) => {
-              postComment.owner = {
-                firstName,
-                lastName,
-                pictureUrl
-              };
-            })
-          ),
-          this.commentService
-            .getComments({
-              ids: postComment.post.comments,
-              orderByDate: true,
-              skip: 0,
-              limit: 10
-            })
-            .pipe(
-              tap(({ comments, commentsTotalCount }) => {
-                postComment.commentData = {
-                  comments,
-                  isVisible: false,
-                  commentsTotalCount: commentsTotalCount || 0
-                };
-              }),
-              map(() => postComment)
-            )
-        ]).pipe(map(() => postComment));
-      }),
-      toArray(),
-      tap(postComments => (this.postCommentList = postComments)),
-      switchMap(() => of({}))
-    );
-  }
+  // legacy
+  // updatePostCommentList(): Observable<{}> {
+  //   return this.postService.getPosts(this.postQuery).pipe(
+  //     tap(({ postsTotalCount }) => {
+  //       this.postsTotalCount = postsTotalCount;
+  //     }),
+  //     map(({ posts }) => {
+  //       return posts.map(entry => ({
+  //         post: { ...entry }
+  //       }));
+  //     }),
+  //     switchMap(postCommentList =>
+  //       from(postCommentList).pipe(filter(x => !!x && !!x.post))
+  //     ),
+  //     mergeMap((postComment: PostComment) => {
+  //       return forkJoin([
+  //         this.userService.getUserById(postComment.post.owner).pipe(
+  //           tap(({ firstName, lastName, pictureUrl }) => {
+  //             postComment.owner = {
+  //               firstName,
+  //               lastName,
+  //               pictureUrl
+  //             };
+  //           })
+  //         ),
+  //         this.commentService
+  //           .getComments({
+  //             ids: postComment.post.comments,
+  //             orderByDate: true,
+  //             skip: 0,
+  //             limit: 10
+  //           })
+  //           .pipe(
+  //             tap(({ comments, commentsTotalCount }) => {
+  //               postComment.commentData = {
+  //                 comments,
+  //                 isVisible: false,
+  //                 commentsTotalCount: commentsTotalCount || 0
+  //               };
+  //             }),
+  //             map(() => postComment)
+  //           )
+  //       ]).pipe(map(() => postComment));
+  //     }),
+  //     toArray(),
+  //     tap(postComments => (this.postCommentList = postComments)),
+  //     switchMap(() => of({}))
+  //   );
+  // }
 
   createPost() {
     if (this.createPostDto.owner && this.createPostDto.title) {

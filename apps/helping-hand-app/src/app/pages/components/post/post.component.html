@@ -72,13 +72,40 @@
           fullWidth
           type="text"
           nbInput
+          [(ngModel)]="commentBody.text"
           [placeholder]="'Tell ' + postOwner?.firstName + ' what you think!'"
         />
       </div>
-      <button nbButton fullWidth ghost status="basic">
+      <button
+        nbButton
+        fullWidth
+        (click)="postComment()"
+        [disabled]="!commentBody.text"
+      >
         <nb-icon icon="message-square-outline"></nb-icon>
         Leave Comment
       </button>
+      <nb-list>
+        <nb-list-item *ngFor="let entry of commentUserList">
+          <div>
+            <nb-user
+              badgePosition="bottom end"
+              badgeStatus="warning"
+              [badgeText]="
+                (entry.profile?.metadata?.totalStars || 0) + ' stars'
+              "
+              [name]="entry?.user?.firstName + ' ' + entry?.user?.lastName"
+              size="giant"
+              [picture]="entry?.user?.pictureUrl"
+              [title]="entry?.user?.role"
+            >
+            </nb-user>
+            <div>
+              <h6>{{ entry?.comment?.text }}</h6>
+            </div>
+          </div>
+        </nb-list-item>
+      </nb-list>
     </nb-card-body>
     <nb-card-footer> </nb-card-footer>
   </nb-card>

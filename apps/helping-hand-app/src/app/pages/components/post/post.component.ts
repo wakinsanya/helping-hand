@@ -4,15 +4,25 @@ import {
   Post,
   User,
   Profile,
-  UpdatePostDto,
-  UpdateProfileDto
+  CommentQuery,
+  Comment as AppComment,
+  CommentQueryResult
 } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
-import { tap, switchMap, map, filter, first } from 'rxjs/operators';
+import {
+  tap,
+  switchMap,
+  map,
+  filter,
+  first,
+  mergeMap,
+  toArray
+} from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, from } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
+import { CommentService } from '@helping-hand/core/services/comment.service';
 
 enum PostActionType {
   Star = 'star',
@@ -35,13 +45,34 @@ export class PostComponent implements OnInit {
   isPostStarred = false;
   isPostFavorited = false;
   postActionType = PostActionType;
+  commentBody = {
+    post: undefined,
+    text: '',
+    owner: undefined,
+    metadata: {
+      stars: 0
+    }
+  };
+  commentsQuery: CommentQuery = {
+    post: undefined,
+    orderByDate: true,
+    skip: 0,
+    limit: 10
+  };
+  commentUserList: {
+    comment: AppComment;
+    profile: Profile;
+    user: User;
+  }[] = [];
+  commentsTotalCount: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private postService: PostService,
     private profileService: ProfileService,
     private userService: UserService,
-    private toastrService: NbToastrService
+    private toastrService: NbToastrService,
+    private commentService: CommentService
   ) {}
 
   ngOnInit() {
@@ -49,19 +80,26 @@ export class PostComponent implements OnInit {
       this.getPostAndOwner(),
       this.userService.loggedInUser$.pipe(
         first(),
-        tap(user => (this.loggedInUser = user)),
+        tap(user => {
+          this.loggedInUser = user;
+          this.commentBody.owner = user._id;
+        }),
         map(({ profile }) => profile),
         filter(x => !!x),
         switchMap(profileId => this.profileService.getProfileById(profileId)),
         tap(profile => (this.loggedInUserProfile = profile))
       )
     ])
-      .pipe(tap(() => this.setupPostMetadata()))
+      .pipe(
+        tap(() => this.setupPostMetadata()),
+        switchMap(() => this.getPostComments())
+      )
       .subscribe({ error: err => console.error(err) });
   }
 
   getPostAndOwner(): Observable<{}> {
     const postId = this.activatedRoute.snapshot.paramMap.get('postId');
+    this.commentBody.post = postId;
     return this.postService.getPostById(postId).pipe(
       tap(post => (this.post = post)),
       switchMap(() => {
@@ -163,7 +201,7 @@ export class PostComponent implements OnInit {
         );
         break;
       default:
-      throw new Error('Unknown action type');
+        throw new Error('Unknown action type');
     }
 
     forkJoin(jobs)
@@ -225,6 +263,55 @@ export class PostComponent implements OnInit {
       this.isPostFavorited = this.loggedInUserProfile.metadata.favoritePosts.includes(
         this.post._id
       );
+    }
+  }
+
+  getPostComments(): Observable<{}> {
+    return this.commentService.getComments(this.commentsQuery).pipe(
+      tap(({ commentsTotalCount }) => {
+        this.commentsTotalCount = commentsTotalCount;
+      }),
+      map(({ comments }) => comments.map(comment => ({ comment }))),
+      switchMap(
+        (
+          commentList: {
+            comment: AppComment;
+            profile: Profile;
+            user: User;
+          }[]
+        ) => from(commentList).pipe(filter(x => !!x))
+      ),
+      mergeMap(data => {
+        return forkJoin([
+          this.profileService
+            .getProfileByOwner(data.comment.owner)
+            .pipe(tap(profile => (data.profile = profile))),
+          this.userService
+            .getUserById(data.comment.owner)
+            .pipe(tap(user => (data.user = user)))
+        ]).pipe(map(() => data));
+      }),
+      toArray(),
+      tap(
+        (
+          data: { comment: AppComment; profile: Profile; user: User }[]
+        ) => (this.commentUserList = data)
+      )
+    );
+  }
+
+  postComment() {
+    if (this.commentBody.text && this.commentBody.owner) {
+      this.commentService
+        .createComment(this.commentBody)
+        .pipe(
+          switchMap(() => this.getPostComments()),
+          tap(() => {
+            this.commentBody.text = '';
+            this.toastrService.show('Comment posted!');
+          })
+        )
+        .subscribe({ error: err => console.error(err) });
     }
   }
 }

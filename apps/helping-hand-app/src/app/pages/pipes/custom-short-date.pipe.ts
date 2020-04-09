@@ -18,7 +18,6 @@ export class CustomShortDatePipe implements PipeTransform {
   ];
 
   transform(date: Date): string {
-    console.log({ date });
     return `${this.shortMonths[date.getMonth()]} ${date.getDate()}`;
   }
 }

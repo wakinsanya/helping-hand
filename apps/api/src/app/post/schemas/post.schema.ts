@@ -30,14 +30,7 @@ export const PostSchema = new Schema(
         type: Schema.Types.Number,
         default: 0
       }
-    },
-    comments: [
-      {
-        _id: false,
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-      }
-    ]
+    }
   },
   { timestamps: true }
 );

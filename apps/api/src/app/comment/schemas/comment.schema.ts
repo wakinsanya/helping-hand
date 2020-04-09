@@ -2,13 +2,17 @@ import { Schema } from 'mongoose';
 
 export const CommentSchema = new Schema(
   {
+    post: {
+      type: Schema.Types.ObjectId,
+      required: 'comment must belong to a post'
+    },
     text: {
       type: Schema.Types.String,
       required: 'comment must not be empty'
     },
     owner: {
       type: Schema.Types.ObjectId,
-      required: 'comment must have owner'
+      required: 'comment mu st have owner'
     },
     edited: {
       type: Schema.Types.Boolean,
@@ -19,11 +23,7 @@ export const CommentSchema = new Schema(
       ref: 'Media'
     },
     metadata: {
-      isFavorite: {
-        type: Schema.Types.Boolean,
-        default: false
-      },
-      votes: {
+      stars: {
         type: Schema.Types.Number,
         default: 0
       }

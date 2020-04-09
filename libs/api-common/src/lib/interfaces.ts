@@ -56,8 +56,7 @@ export interface Comment {
   readonly text: string;
   readonly edited: boolean;
   readonly metadata: {
-    votes: number;
-    favorites: number;
+    stars: number;
   };
 }
 
@@ -145,7 +144,8 @@ export interface PostQuery extends PaginationQuery {
 }
 
 export interface CommentQuery extends PaginationQuery {
-  ids: string[];
+  ids?: string[];
+  post: string;
   orderByDate?: boolean;
 }
 
