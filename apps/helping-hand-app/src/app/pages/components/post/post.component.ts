@@ -57,7 +57,7 @@ export class PostComponent implements OnInit {
     post: undefined,
     orderByDate: true,
     skip: 0,
-    limit: 10
+    limit: 5
   };
   commentUserList: {
     comment: AppComment;
@@ -65,6 +65,7 @@ export class PostComponent implements OnInit {
     user: User;
   }[] = [];
   commentsTotalCount: number;
+  currentCommentsPage = 1;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -313,5 +314,16 @@ export class PostComponent implements OnInit {
         )
         .subscribe({ error: err => console.error(err) });
     }
+  }
+
+  onPageNav(direction: 'next' | 'prev') {
+    if (direction === 'next') {
+      this.commentsQuery.skip += this.commentsQuery.limit;
+      this.currentCommentsPage++;
+    } else {
+      this.commentsQuery.skip -= this.commentsQuery.limit;
+      this.currentCommentsPage--;
+    }
+    this.getPostComments().subscribe({ error: err => console.error(err) });
   }
 }
