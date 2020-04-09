@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { PostService } from '@helping-hand/core/services/post.service';
 import { NbToastrService, NbDialogService } from '@nebular/theme';
@@ -70,6 +70,10 @@ export class PostsManagementComponent implements OnInit {
       this.currentPage--;
     }
     this.getUserPosts().subscribe({ error: err => console.error(err) });
+  }
+
+  confirmPostDeletion(postIndex: number, tempalate: TemplateRef<any>) {
+    this.dialogService.open(tempalate);
   }
 
   deleteUserPost(postIndex: number) {

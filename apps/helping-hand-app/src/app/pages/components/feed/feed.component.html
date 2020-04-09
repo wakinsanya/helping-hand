@@ -119,6 +119,7 @@
             />
             <label for="description">Text:</label>
             <textarea
+              class="post-body__textarea"
               [(ngModel)]="createPostDto.text"
               name="description"
               nbInput
@@ -126,14 +127,17 @@
               placeholder="Main body of your post"
             ></textarea>
             <button nbButton shape="round" outline fullWidth disabled>
-              <nb-icon icon="attach-outline"></nb-icon>
+              <nb-icon icon="image-outline"></nb-icon>
               Add A Picture (coming soon)
-            </button>
-            <button nbButton shape="round" fullWidth (click)="createPost()">
-              Post
             </button>
           </div>
         </nb-card-body>
+        <nb-card-footer>
+          <button nbButton shape="round" fullWidth (click)="createPost()">
+            <nb-icon icon="checkmark-circle-outline"></nb-icon>
+            Post
+          </button>
+        </nb-card-footer>
       </nb-card>
     </ng-template>
   </div>

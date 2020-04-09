@@ -38,6 +38,7 @@ export class CommentController {
     @Query('limit') limit: string
   ): Observable<CommentQueryResult> {
     return this.commentService.list(
+      post,
       owner,
       sort === 'true',
       parseInt(skip, 10),
