@@ -126,14 +126,14 @@
               fullWidth
               placeholder="Main body of your post"
             ></textarea>
-            <button nbButton shape="round" outline fullWidth disabled>
+            <button nbButton shape="round" outline fullWidth hero status="info">
               <nb-icon icon="image-outline"></nb-icon>
               Add A Picture (coming soon)
             </button>
           </div>
         </nb-card-body>
         <nb-card-footer>
-          <button nbButton shape="round" fullWidth (click)="createPost()">
+          <button nbButton shape="round" fullWidth (click)="createPost()" hero>
             <nb-icon icon="checkmark-circle-outline"></nb-icon>
             Post
           </button>

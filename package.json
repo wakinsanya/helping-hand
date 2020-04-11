@@ -60,6 +60,7 @@
     "eva-icons": "^1.1.3",
     "hammerjs": "^2.0.8",
     "mongoose": "^5.9.7",
+    "ngx-quill": "^8.1.3",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",

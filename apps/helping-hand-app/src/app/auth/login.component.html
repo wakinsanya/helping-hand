@@ -2,21 +2,29 @@
   <nb-card-body>
     <div class="login__container">
       <div>
-        <h1 class="login-heading">Favour doing and favour asking communities</h1>
+        <h1 class="login-heading">
+          Favour doing and favour asking communities
+        </h1>
         <h4>Log in to Helping Hand</h4>
       </div>
       <div>
-        <button nbButton shape="round" (click)="login('google')" fullWidth>
+        <button
+          nbButton
+          shape="round"
+          (click)="login('google')"
+          fullWidth
+          size="large"
+        >
           <nb-icon icon="google-outline"></nb-icon> Log in with Google
         </button>
       </div>
       <div>
-        <button nbButton shape="round" disabled fullWidth>
+        <button nbButton shape="round" disabled fullWidth size="large">
           <nb-icon icon="facebook-outline"></nb-icon> Log in with Facebook
         </button>
       </div>
       <div>
-        <button nbButton shape="round" disabled fullWidth>
+        <button nbButton shape="round" disabled fullWidth size="large">
           <nb-icon icon="twitter-outline"></nb-icon> Log in with Twitter
         </button>
       </div>
