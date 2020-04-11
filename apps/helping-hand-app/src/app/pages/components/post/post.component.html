@@ -10,9 +10,7 @@
       <h3>{{ post?.title }}</h3>
     </nb-card-header>
     <nb-card-body>
-      <p>
-        {{ post?.text }}
-      </p>
+      <div [innerHTML]="post?.text"></div>
       <div class="post-author__wrap">
         <h5>Written By</h5>
         <nb-user

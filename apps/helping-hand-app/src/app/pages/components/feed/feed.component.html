@@ -3,7 +3,8 @@
     <div class="feed-list__new-post__wrap">
       <button
         class="create-post__btn"
-        nbButton shape="round"
+        nbButton
+        shape="round"
         hero
         fullWidth
         (click)="startPostCreation(postCreateTemplate)"
@@ -12,7 +13,8 @@
       </button>
     </div>
     <button
-      nbButton shape="round"
+      nbButton
+      shape="round"
       ghost
       fullWidth
       status="basic"
@@ -41,11 +43,15 @@
         <nb-card class="feed-list__post-card">
           <nb-card-header>{{ entry?.post?.title }}</nb-card-header>
           <nb-card-body>
-            <ng-container
+            <div
+              class="post__wrap"
+              [innerHTML]="entry?.post?.text"
+            ></div>
+            <!-- <ng-container
               *ngTemplateOutlet="
                 entry?.post?.text?.length > 2000 ? partialText : fullText
               "
-            ></ng-container>
+            ></ng-container> -->
             <ng-template #fullText>
               <p>
                 {{ entry?.post?.text }}
@@ -82,7 +88,8 @@
       <div class="feed-list__pagin__wrap">
         <button
           size="small"
-          nbButton shape="round"
+          nbButton
+          shape="round"
           [disabled]="postQuery.skip === 0"
           (click)="onPageNav('prev')"
         >
@@ -91,7 +98,8 @@
         </button>
         <button
           size="small"
-          nbButton shape="round"
+          nbButton
+          shape="round"
           (click)="onPageNav('next')"
           [disabled]="currentPage * postQuery.limit >= postsTotalCount"
         >
@@ -118,18 +126,11 @@
               placeholder="Short title describing what your post is about"
             />
             <label for="description">Text:</label>
-            <textarea
-              class="post-body__textarea"
+            <quill-editor
               [(ngModel)]="createPostDto.text"
-              name="description"
-              nbInput
-              fullWidth
-              placeholder="Main body of your post"
-            ></textarea>
-            <button nbButton shape="round" outline fullWidth hero status="info">
-              <nb-icon icon="image-outline"></nb-icon>
-              Add A Picture (coming soon)
-            </button>
+              (ngModelChange)="foo()"
+              placeholder="What do you want to say?">
+            </quill-editor>
           </div>
         </nb-card-body>
         <nb-card-footer>
@@ -169,16 +170,13 @@
 <ng-template #welcomeBackCard let-ref="dialogRef">
   <nb-card status="success">
     <nb-card-header>
-      {{ today | customShortDate}}
+      {{ today | customShortDate }}
     </nb-card-header>
     <nb-card-body>
       <h3>Welcome back to Helping Hand {{ userFirstName }} 👋</h3>
     </nb-card-body>
     <nb-card-footer>
-      <button
-        nbButton shape="round"
-        status="success"
-        (click)="ref.close()">
+      <button nbButton shape="round" status="success" (click)="ref.close()">
         Close
       </button>
     </nb-card-footer>

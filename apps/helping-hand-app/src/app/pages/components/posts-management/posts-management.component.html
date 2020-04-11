@@ -14,7 +14,7 @@
       {{ post?.title }}
     </nb-card-header>
     <nb-card-body>
-      <p>{{ post?.text }}</p>
+      <div [innerHTML]="post?.text"></div>
     </nb-card-body>
     <nb-card-footer>
       <div class="post-opts__wrap">
@@ -86,4 +86,8 @@
       </div>
     </nb-card-footer>
   </nb-card>
+</ng-template>
+
+<ng-template>
+
 </ng-template>

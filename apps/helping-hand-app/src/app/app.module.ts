@@ -29,6 +29,7 @@ import { ErrorInterceptor } from '@helping-hand/core/helpers/error.interceptor';
 import { environment } from '@helping-hand-environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PagesModule } from './pages/pages.module';
+import { QuillModule } from 'ngx-quill'
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -39,6 +40,7 @@ import { PagesModule } from './pages/pages.module';
     CoreModule,
     PagesModule,
     AuthModule,
+    QuillModule.forRoot(),
     NbThemeModule.forRoot({ name: 'helping-hand' }),
     NbLayoutModule,
     NbEvaIconsModule,

@@ -1,5 +1,8 @@
 .create-post-form__container {
-  & > input, textarea, button {
+  & > input,
+  textarea,
+  button {
+    margin-top: 20px;
     margin-bottom: 20px;
   }
 
@@ -15,7 +18,6 @@
 }
 
 .feed-list__post__wrap {
-
   &:hover {
     cursor: pointer;
     transition: all 250ms ease-in-out;
@@ -41,16 +43,19 @@
   animation: pulsate 2s infinite;
 }
 
-@keyframes pulsate
-{
-     0% {
-          box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1);
-     }
-     100% {
-          box-shadow: 0 0 0 16px rgba(0, 0, 0, 0);
-     }
+@keyframes pulsate {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(0, 0, 0, 0);
+  }
 }
 
 .post-body__textarea {
   resize: none;
+}
+
+.post__wrap {
+  max-height: 40vh;
 }

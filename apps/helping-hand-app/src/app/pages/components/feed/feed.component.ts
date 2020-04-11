@@ -259,6 +259,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.updateFeedDataList().subscribe({ error: e => console.error(e) });
   }
 
+  foo() {
+    console.log(this.createPostDto.text);
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
