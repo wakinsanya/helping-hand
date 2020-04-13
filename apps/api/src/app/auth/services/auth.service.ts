@@ -28,8 +28,4 @@ export class AuthService {
       })
     );
   }
-
-  private validateUserClaims(): boolean {
-    return false;
-  }
 }

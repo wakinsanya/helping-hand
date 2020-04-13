@@ -48,7 +48,8 @@ export class ConfigService {
       GOOGLE_REDIRECT_URL_FAILURE: Joi.string().uri(),
       VAPID_PUBLIC_KEY: Joi.string(),
       VAPID_PRIVATE_KEY: Joi.string(),
-      APP_EMAIL: Joi.string()
+      APP_EMAIL: Joi.string(),
+      MONGO_DB_NAME: Joi.string().default('helping-hand-dev')
     });
 
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
