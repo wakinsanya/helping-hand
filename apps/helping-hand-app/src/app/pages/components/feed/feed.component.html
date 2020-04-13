@@ -127,6 +127,7 @@
             />
             <label for="description">Text:</label>
             <quill-editor
+              [styles]="{height: '20vh'}"
               [(ngModel)]="createPostDto.text"
               (ngModelChange)="foo()"
               placeholder="What do you want to say?">
