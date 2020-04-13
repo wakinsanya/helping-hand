@@ -24,7 +24,7 @@
         >
         </nb-user>
       </div>
-      <div class="post-opts__wrap">
+      <div class="post-opts__wrap" *ngIf="loggedInUser?._id !== postOwner?._id">
         <button
           size="small"
           hero

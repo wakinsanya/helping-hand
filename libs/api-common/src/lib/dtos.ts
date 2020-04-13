@@ -1,11 +1,21 @@
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+
 import { UserProvider, UserRole } from './enums';
 import { ProfileData } from './interfaces';
 
 export class CreateUserDto {
+  @IsEmail()
   readonly email: string;
+
+  @IsString()
   readonly firstName: string;
+
+  @IsString()
   readonly lastName: string;
+
+  @IsString() @IsNotEmpty()
   readonly thirdPartyId?: string;
+
   readonly provider: UserProvider;
   readonly pictureUrl: string;
 }
