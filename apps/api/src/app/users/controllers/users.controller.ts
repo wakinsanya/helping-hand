@@ -7,7 +7,8 @@ import {
   Delete,
   Patch,
   Query,
-  UseGuards
+  UseGuards,
+  // ParseArrayPipe
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import {

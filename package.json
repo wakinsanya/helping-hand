@@ -57,6 +57,7 @@
     "@types/helmet": "0.0.45",
     "@types/mongoose": "^5.7.8",
     "@types/web-push": "^3.3.0",
+    "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
     "compression": "^1.7.4",
     "core-js": "^2.6.11",
