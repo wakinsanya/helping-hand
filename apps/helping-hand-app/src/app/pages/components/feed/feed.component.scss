@@ -18,9 +18,10 @@
 }
 
 .feed-list__post__wrap {
+  transition: all 200ms ease-in-out;
   &:hover {
     cursor: pointer;
-    transition: all 250ms ease-in-out;
+    transition: all 200ms ease-in-out;
     transform: scale(1.025);
   }
 }
