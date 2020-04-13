@@ -118,13 +118,15 @@ export class FeedComponent implements OnInit, OnDestroy {
       tap(({ postsTotalCount }) => {
         this.postsTotalCount = postsTotalCount;
       }),
-      map(({ posts }) => posts.map(post => ({
-         post: {
-           ...post,
-           createdAt: new Date(post.createdAt),
-           updatedAt: new Date(post.updatedAt)
-         }
-        }))),
+      map(({ posts }) =>
+        posts.map(post => ({
+          post: {
+            ...post,
+            createdAt: new Date(post.createdAt),
+            updatedAt: new Date(post.updatedAt)
+          }
+        }))
+      ),
       switchMap(posts => from(posts).pipe(filter(x => !!x))),
       mergeMap(data => {
         return forkJoin([
@@ -145,56 +147,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       switchMap(() => of({}))
     );
   }
-
-  // legacy
-  // updatePostCommentList(): Observable<{}> {
-  //   return this.postService.getPosts(this.postQuery).pipe(
-  //     tap(({ postsTotalCount }) => {
-  //       this.postsTotalCount = postsTotalCount;
-  //     }),
-  //     map(({ posts }) => {
-  //       return posts.map(entry => ({
-  //         post: { ...entry }
-  //       }));
-  //     }),
-  //     switchMap(postCommentList =>
-  //       from(postCommentList).pipe(filter(x => !!x && !!x.post))
-  //     ),
-  //     mergeMap((postComment: PostComment) => {
-  //       return forkJoin([
-  //         this.userService.getUserById(postComment.post.owner).pipe(
-  //           tap(({ firstName, lastName, pictureUrl }) => {
-  //             postComment.owner = {
-  //               firstName,
-  //               lastName,
-  //               pictureUrl
-  //             };
-  //           })
-  //         ),
-  //         this.commentService
-  //           .getComments({
-  //             ids: postComment.post.comments,
-  //             orderByDate: true,
-  //             skip: 0,
-  //             limit: 10
-  //           })
-  //           .pipe(
-  //             tap(({ comments, commentsTotalCount }) => {
-  //               postComment.commentData = {
-  //                 comments,
-  //                 isVisible: false,
-  //                 commentsTotalCount: commentsTotalCount || 0
-  //               };
-  //             }),
-  //             map(() => postComment)
-  //           )
-  //       ]).pipe(map(() => postComment));
-  //     }),
-  //     toArray(),
-  //     tap(postComments => (this.postCommentList = postComments)),
-  //     switchMap(() => of({}))
-  //   );
-  // }
 
   createPost() {
     if (this.createPostDto.owner && this.createPostDto.title) {
@@ -234,15 +186,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.createPostDialogRef = this.dialogService.open(template);
   }
 
-  toggleCommentVisibility(postCommentIndex: number) {
-    if (this.postCommentList[postCommentIndex]) {
-      this.postCommentList[postCommentIndex].commentData.isVisible = !this
-        .postCommentList[postCommentIndex].commentData.isVisible;
-    } else {
-      throw new Error('Post comment does not exist');
-    }
-  }
-
   navigateToPost(postIndex: number) {
     const postId = this.feedDataList[postIndex].post._id;
     this.router.navigate(['/pages/posts', postId]);
@@ -256,11 +199,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       this.postQuery.skip -= this.postQuery.limit;
       this.currentPage--;
     }
-    this.updateFeedDataList().subscribe({ error: e => console.error(e) });
-  }
-
-  foo() {
-    console.log(this.createPostDto.text);
+    this.updateFeedDataList().subscribe({ error: err => console.error(err) });
   }
 
   ngOnDestroy() {

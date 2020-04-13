@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { PostService } from '@helping-hand/core/services/post.service';
 import { NbToastrService, NbDialogService, NbDialogRef } from '@nebular/theme';
-import { User, PostQuery, Post } from '@helping-hand/api-common';
+import { User, PostQuery, Post, UpdatePostDto } from '@helping-hand/api-common';
 import { first, tap, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 
@@ -94,6 +94,35 @@ export class PostsManagementComponent implements OnInit {
             'Something went wrong and we could not delete your post, please try again.'
           );
           console.error(err);
+        }
+      });
+  }
+
+  openPostEditDialog(template: TemplateRef<any>, postIndex: number) {
+    const editablePost = { ...this.posts[postIndex] };
+    this.dialogService.open(template, {
+      context: { post: editablePost, postIndex }
+    });
+  }
+
+  commitPostEdit(post: Post, postIndex: number, dialogRef: NbDialogRef<any>) {
+    const { _id, title, text } = post;
+    this.postService
+      .updatePost(_id, { title, text })
+      .pipe(
+        tap(() => {
+          this.posts[postIndex] = post;
+          this.toastrService.success('Your post has been successfully updated');
+          dialogRef.close();
+        })
+      )
+      .subscribe({
+        error: err => {
+          console.error(err);
+          dialogRef.close();
+          this.toastrService.danger(
+            'We were unable to save your changes, please try agian.'
+          );
         }
       });
   }

@@ -18,7 +18,13 @@
     </nb-card-body>
     <nb-card-footer>
       <div class="post-opts__wrap">
-        <button nbButton shape="round" hero status="info">
+        <button
+          nbButton
+          shape="round"
+          hero
+          status="info"
+          (click)="openPostEditDialog(postEditor, i)"
+        >
           <nb-icon icon="edit-outline"></nb-icon>
            Edit
          </button>
@@ -88,6 +94,47 @@
   </nb-card>
 </ng-template>
 
-<ng-template>
-
+<ng-template #postEditor let-ref="dialogRef" let-context>
+  <nb-card>
+    <nb-card-body>
+      <label for="postTitle">Title:</label>
+      <input
+        [(ngModel)]="context.post.title"
+        name="postTitle"
+        type="text"
+        nbInput
+        fullWidth
+        placeholder="Short title describing what your post is about"
+      />
+      <label for="description">Text:</label>
+      <quill-editor
+        [styles]="{ height: '20vh' }"
+        [(ngModel)]="context.post.text"
+        placeholder="What do you want to say?">
+      </quill-editor>
+    </nb-card-body>
+    <nb-card-footer>
+      <nb-actions>
+        <nb-action>
+          <button
+            nbButton
+            status="warning"
+            shape="round"
+            (click)="ref.close()"
+          >
+            cancel
+          </button>
+        </nb-action>
+        <nb-action>
+          <button
+            nbButton
+            shape="round"
+            (click)="commitPostEdit(context.post, context.postIndex, ref)"
+          >
+            save
+          </button>
+        </nb-action>
+      </nb-actions>
+    </nb-card-footer>
+  </nb-card>
 </ng-template>

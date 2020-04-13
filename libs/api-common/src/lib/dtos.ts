@@ -65,11 +65,11 @@ export class UpdatePostDto {
   readonly title?: string;
   readonly media?: string;
   readonly text?: string;
-  readonly metadata: {
+  readonly metadata?: {
     stars?: number,
     favorites?: number,
-    favoritePosts: string[],
-    starredPosts: string[]
+    favoritePosts?: string[],
+    starredPosts?: string[]
   }
 }
 
