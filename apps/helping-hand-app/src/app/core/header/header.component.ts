@@ -85,7 +85,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         tap(user => (this.loggedInUser = user))
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
   setUpLogOutHandler() {

@@ -5,7 +5,7 @@
         Helping Hand
       </h3>
     </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+    <nb-action *ngIf="loggedInUser && loggedInUser._id" routerLink="/pages/profile" class="user__action">
       <nb-user
         size="medium"
         [name]="loggedInUser?.firstName + ' ' + loggedInUser?.lastName"
@@ -21,16 +21,6 @@
           'header__current-link': pageRoute.Feed === currentPageRoute
         }"
         >Feed</a
-      >
-    </nb-action>
-    <nb-action *ngIf="loggedInUser && loggedInUser._id">
-      <a
-        class="header__link"
-        routerLink="/pages/profile"
-        [ngClass]="{
-          'header__current-link': pageRoute.Profile === currentPageRoute
-        }"
-        >Profile</a
       >
     </nb-action>
     <nb-action *ngIf="loggedInUser && loggedInUser._id">

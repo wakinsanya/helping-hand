@@ -18,8 +18,7 @@ export class PostsManagementComponent implements OnInit {
   postsTotalCount: number;
   postQuery: PostQuery = {
     skip: 0,
-    limit: 5,
-    orderByVotes: true
+    limit: 5
   };
 
   constructor(
