@@ -11,7 +11,11 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
-  app.useGlobalPipes(new ValidationPipe()); // validate all data for api endpoints
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true // transform incoming request payloads to match dtos
+    })
+  ); // validate all data for api endpoints
   app.enableCors();
   app.setGlobalPrefix(globalPrefix);
   app.use(compression());
