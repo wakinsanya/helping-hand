@@ -18,7 +18,6 @@ import {
   UserQueryResult
 } from '@helping-hand/api-common';
 import { UsersService } from '@api/users/services/users.service';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from '@api/auth/guards/jwt-auth.guard';
 
 @Controller('users')
