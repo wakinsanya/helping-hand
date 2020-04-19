@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 
 @Component({
@@ -18,16 +17,12 @@ export class AuthCallbackComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.userService.grantApiAcess(this.userService.loggedInUser).subscribe({
-      next: () => {
-        localStorage.removeItem('isLogginIn');
-        this.router.navigateByUrl('/dashboard');
-      },
-      error: e => {
-        localStorage.removeItem('isLogginIn');
+      next: () => this.router.navigateByUrl('/pages/feed'),
+      error: err => {
         this.toastrService.danger(
           'We were unable to complete your login, please try again.'
         );
-        console.error(e);
+        console.error(err);
       }
     });
   }

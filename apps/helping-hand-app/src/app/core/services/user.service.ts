@@ -61,9 +61,10 @@ export class UserService {
 
   grantApiAcess(user: User): Observable<{}> {
     return this.httpClient
-      .post<{ access_token: string }>('/api/auth/login', { user: user })
+      .post<{ access_token: string }>('/api/auth/login', { user })
       .pipe(
         tap(({ access_token }) => {
+          console.log({ ACCESS_TOKEN: access_token });
           user.access_token = access_token;
           this.setLoggedInUser(user);
         }),

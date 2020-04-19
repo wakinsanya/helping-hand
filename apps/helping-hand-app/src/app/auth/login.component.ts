@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         map(userProvider => userProvider as UserProvider),
         tap(userProvider => {
-          localStorage.setItem('isLoggingIn', JSON.stringify(true));
           this.userService.setUserProvider(userProvider);
         }),
         switchMap(userProvider => this.authService.authenticate(userProvider))

@@ -18,8 +18,8 @@ import { NbToastrService } from '@nebular/theme';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   newBio = '';
-  loggedInUser: User;
   profile: Profile;
+  loggedInUser: User;
   profileDataKeys: string[];
   profileDataKeyDisplayMap = {
     [ProfileDataKey.Email]: 'email',
@@ -41,14 +41,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         first(),
         tap(user => (this.loggedInUser = user)),
         map(user => user.profile),
-        filter(x => !!x),
-        switchMap(profile => this.profileService.getProfileById(profile)),
+        filter(profileId => !!profileId),
+        switchMap(profileId => this.profileService.getProfileById(profileId)),
         tap(profile => {
           this.newBio = profile.bio;
           this.profile = profile;
-          this.profileDataKeys = Object.keys(ProfileDataKey).map(
-            x => ProfileDataKey[x]
-          );
+          this.profileDataKeys = Object.values(ProfileDataKey)
         })
       )
       .subscribe({ error: err => console.error(err) });
@@ -59,7 +57,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       key as ProfileDataKey
     )
       ? {
-          publicDataKeys: this.profile.publicDataKeys.filter(x => x !== key)
+          publicDataKeys: this.profile.publicDataKeys.filter(
+            data => data !== key
+          )
         }
       : {
           publicDataKeys: [...this.profile.publicDataKeys, key]
@@ -68,22 +68,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .updateProfile(this.profile._id, profileDto)
       .pipe(
         switchMap(() => this.profileService.getProfileById(this.profile._id)),
-        tap((profile: Profile) => {
+        tap(profile => {
           this.profile = profile;
           if (this.profile.publicDataKeys.includes(key as ProfileDataKey)) {
             this.toastrService.success(
               `Helping Hand will now share your
-                ${this.profileDataKeyDisplayMap[key]} with potential helpers.`
+                ${this.profileDataKeyDisplayMap[key]}
+                  with members of the community.`
             );
           } else {
             this.toastrService.info(
-              `Helping Hand will no longer share your ${this.profileDataKeyDisplayMap[key]}
-                with potential helpers.`
+              `Helping Hand will no longer share your
+                ${this.profileDataKeyDisplayMap[key]}
+                 with members of the community.`
             );
           }
         })
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
   saveProfile() {
@@ -95,12 +97,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       })
       .pipe(
         switchMap(() => this.profileService.getProfileById(this.profile._id)),
-        tap((profile: Profile) => {
+        tap(profile => {
           this.profile = profile;
           this.toastrService.success('Your profile has been updated');
         })
       )
-      .subscribe({ error: e => console.error(e) });
+      .subscribe({ error: err => console.error(err) });
   }
 
   ngOnDestroy() {

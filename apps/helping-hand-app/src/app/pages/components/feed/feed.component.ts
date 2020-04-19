@@ -72,10 +72,12 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.welcomeUser().subscribe({ error: err => console.error(err) });
+    this.welcomeUser()
+      .pipe(switchMap(() => this.updateFeedDataList()))
+      .subscribe({ error: err => console.error(err) });
   }
 
-  // setup the user profile if this is first login
+  // setup the user profile if this is the first login
   welcomeUser(): Observable<any> {
     const loggedInUser = this.userService.loggedInUser;
     if (loggedInUser && !loggedInUser.profile) {
@@ -96,7 +98,10 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
         }),
         switchMap(() => this.userService.getUserById(loggedInUser._id)),
         tap(user => {
-          this.userService.setLoggedInUser(user);
+          this.userService.setLoggedInUser({
+            ...user,
+            access_token: loggedInUser.access_token
+          });
           this.isLoading = false;
         }),
         switchMap(() => this.dialogService.open(this.welcomeCard).onClose)
