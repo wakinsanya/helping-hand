@@ -30,6 +30,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { PostComponent } from './components/post/post.component';
 import { PostsManagementComponent } from './components/posts-management/posts-management.component';
 import { QuillModule } from 'ngx-quill';
+import { PostEditorComponent } from './components/post-editor/post-editor.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { QuillModule } from 'ngx-quill';
     CustomShortDatePipe,
     FeedComponent,
     PostComponent,
+    PostEditorComponent,
     PostsManagementComponent
   ],
   imports: [

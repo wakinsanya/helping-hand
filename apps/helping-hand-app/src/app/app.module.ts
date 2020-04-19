@@ -10,7 +10,6 @@ import {
   NbToastrModule,
   NbDialogModule,
   NbSidebarModule,
-  NbWindowModule,
   NbDatepickerModule,
   NbMenuModule
 } from '@nebular/theme';

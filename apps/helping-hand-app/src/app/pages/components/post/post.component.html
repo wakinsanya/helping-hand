@@ -87,11 +87,6 @@
           <div>
             <nb-user
               size="giant"
-              badgePosition="bottom end"
-              badgeStatus="warning"
-              [badgeText]="
-                (entry.profile?.metadata?.totalStars || 0) + ' stars'
-              "
               [name]="entry?.user?.firstName + ' ' + entry?.user?.lastName"
               [picture]="entry?.user?.pictureUrl"
               [title]="entry?.user?.role"

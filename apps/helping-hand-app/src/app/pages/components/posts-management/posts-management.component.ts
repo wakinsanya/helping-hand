@@ -5,7 +5,6 @@ import { NbToastrService, NbDialogService, NbDialogRef } from '@nebular/theme';
 import { User, PostQuery, Post, UpdatePostDto } from '@helping-hand/api-common';
 import { first, tap, switchMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
-
 @Component({
   selector: 'helping-hand-posts-management',
   templateUrl: './posts-management.component.html',
@@ -15,6 +14,7 @@ export class PostsManagementComponent implements OnInit {
   loggedInUser: User;
   posts: Post[] = [];
   currentPage = 1;
+  quillModuleConfig = {};
   postsTotalCount: number;
   postQuery: PostQuery = {
     skip: 0,

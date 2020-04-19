@@ -99,6 +99,7 @@
     "@types/passport-google-oauth20": "^2.0.3",
     "@types/passport-jwt": "^3.0.3",
     "@types/passport-local": "^1.0.33",
+    "@types/quill": "^2.0.3",
     "codelyzer": "~5.0.1",
     "cypress": "3.4.1",
     "dotenv": "^6.2.0",

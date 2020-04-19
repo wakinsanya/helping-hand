@@ -3,17 +3,20 @@ import {
   OnInit,
   TemplateRef,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import {
   Post,
   PostQuery,
   Comment,
   CreatePostDto,
-  Profile
+  Profile,
+  CreateProfileDto,
+  ProfileDataKey,
+  User
 } from '@helping-hand/api-common';
 import { PostService } from '@helping-hand/core/services/post.service';
-import { CommentService } from '@helping-hand/core/services/comment.service';
 import {
   tap,
   map,
@@ -45,7 +48,7 @@ interface PostComment {
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements OnInit, OnDestroy {
+export class FeedComponent implements AfterViewInit, OnDestroy {
   postQuery: PostQuery = {
     skip: 0,
     limit: 5,
@@ -55,12 +58,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   userFirstName = '';
   currentPage = 1;
   postsTotalCount = 0;
-  createPostDto: CreatePostDto = {
-    owner: undefined,
-    title: undefined,
-    text: undefined,
-    media: undefined
-  };
+  createPostDto: CreatePostDto;
   postList: Post[] = [];
   feedDataList: {
     post?: Post;
@@ -69,6 +67,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     ownerPictureUrl?: string;
     ownerProfile?: Profile;
   }[] = [];
+  isLoading = false;
   postCommentList: PostComment[] = [];
   private createPostDialogRef: NbDialogRef<any>;
   private destroy$: Subject<void> = new Subject<void>();
@@ -84,33 +83,52 @@ export class FeedComponent implements OnInit, OnDestroy {
     private toastrService: NbToastrService,
     private userService: UserService,
     private postService: PostService,
-    private commentService: CommentService,
     private dialogService: NbDialogService
-  ) {}
+  ) {
+    this.createPostDto = {
+      title: '',
+      text: '',
+      owner: (this.userService.loggedInUser || { _id: undefined })._id
+    };
+  }
 
-  ngOnInit() {
-    this.userService.loggedInUser$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap(user => {
-          const isLoggingIn = JSON.parse(localStorage.getItem('isLoggingIn'));
-          if (isLoggingIn) {
-            this.dialogService.open(
-              user.profile ? this.welcomeBackCard : this.welcomeCard
-            );
-            localStorage.removeItem('isLoggingIn');
-          }
-          this.userFirstName = user.firstName;
-          this.createPostDto = {
-            owner: user._id,
-            title: undefined,
-            text: undefined,
-            media: undefined
-          };
+  ngAfterViewInit() {
+    this.welcomeUser().subscribe({ error: err => console.error(err) });
+  }
+
+  welcomeUser(): Observable<any> {
+    const loggedInUser = this.userService.loggedInUser;
+    if (loggedInUser && !loggedInUser.profile) {
+      this.isLoading = true;
+      const profileDto: CreateProfileDto = {
+        owner: this.userService.loggedInUser._id,
+        bio: '',
+        publicDataKeys: [ProfileDataKey.Email],
+        data: {
+          email: this.userService.loggedInUser.email
+        }
+      };
+      return this.profileService.createProfile(profileDto).pipe(
+        switchMap((profile: Profile) => {
+          return this.userService.updateUser(loggedInUser._id, {
+            profile: profile._id
+          });
         }),
-        switchMap(() => this.updateFeedDataList())
-      )
-      .subscribe({ error: err => console.error(err) });
+        switchMap(() => {
+          return this.userService.getUserById(loggedInUser._id);
+        }),
+        tap((user: User) => {
+          this.userService.setLoggedInUser(user);
+          this.isLoading = false;
+        }),
+        switchMap(() => this.dialogService.open(this.welcomeCard).onClose),
+        tap(() => {
+          window.location.reload();
+        })
+      );
+    } else {
+      return of(null);
+    }
   }
 
   updateFeedDataList(): Observable<{}> {

@@ -108,10 +108,9 @@
       />
       <label for="description">Text:</label>
       <quill-editor
-        [styles]="{ height: '20vh' }"
         [(ngModel)]="context.post.text"
-        placeholder="What do you want to say?">
-      </quill-editor>
+        [styles]="{ height: '50vh' }"
+      ></quill-editor>
     </nb-card-body>
     <nb-card-footer>
       <nb-actions>
