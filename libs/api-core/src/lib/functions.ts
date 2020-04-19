@@ -1,7 +1,17 @@
 import { PaginationOptions } from './interfaces';
 
+/**
+ * Creates a MongoDB sub-aggregate for paginating and sorting a collection
+ * @param opts pagination opts
+ */
 export function paginationQuery(opts: PaginationOptions): any[] {
-  const facetStage: any = {
+  const facetStage: {
+    $facet: {
+      [key: string]: {
+        [key: string]: string | number | { [key: string]: number };
+      }[];
+    };
+  } = {
     $facet: {
       [`${opts.entity}`]: [
         {
@@ -19,7 +29,7 @@ export function paginationQuery(opts: PaginationOptions): any[] {
     }
   };
 
-  let sortStage: any;
+  let sortStage: { $sort: { [key: string]: number } };
 
   if (opts.sort && (!opts.sortField || !opts.sortOrder)) {
     throw new Error('Sorting requires a sort field and sort order');

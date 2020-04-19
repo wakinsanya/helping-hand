@@ -10,7 +10,7 @@ import { UserService } from '@helping-hand/core/services/user.service';
   templateUrl: './oauth-callback.component.html',
   styleUrls: ['./oauth-callback.component.scss']
 })
-export class OAuth2CallbackComponent implements OnInit, OnDestroy {
+export class OAuth2CallbackComponent implements OnDestroy {
   private redirectUrl: string;
   private destroy$ = new Subject<void>();
 
@@ -23,9 +23,7 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
       .authenticate(this.userService.userProvider)
       .pipe(
         takeUntil(this.destroy$),
-        tap(authResult => {
-          this.redirectUrl = authResult.getRedirect();
-        }),
+        tap(authResult => (this.redirectUrl = authResult.getRedirect())),
         switchMap(authResult => {
           if (authResult.isSuccess() && this.redirectUrl) {
             const token = authResult.getToken();
@@ -55,8 +53,6 @@ export class OAuth2CallbackComponent implements OnInit, OnDestroy {
         error: err => console.error(err)
       });
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.destroy$.next();

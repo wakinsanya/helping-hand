@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   TemplateRef,
   OnDestroy,
   ViewChild,
@@ -9,38 +8,25 @@ import {
 import {
   Post,
   PostQuery,
-  Comment,
   CreatePostDto,
   Profile,
   CreateProfileDto,
-  ProfileDataKey,
-  User
+  ProfileDataKey
 } from '@helping-hand/api-common';
 import { PostService } from '@helping-hand/core/services/post.service';
-import {
-  tap,
-  map,
-  switchMap,
-  filter,
-  mergeMap,
-  toArray,
-  takeUntil
-} from 'rxjs/operators';
+import { tap, map, switchMap, filter, mergeMap, toArray } from 'rxjs/operators';
 import { from, Subject, Observable, of, forkJoin } from 'rxjs';
 import { NbDialogService, NbToastrService, NbDialogRef } from '@nebular/theme';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Router } from '@angular/router';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 
-interface PostComment {
-  post: Post;
-  owner: { firstName: string; lastName: string; pictureUrl: string };
-  commentData: {
-    isVisible: boolean;
-    comments: Comment[];
-    commentsTotalCount: number;
-  };
-  ownerProfile: Profile;
+interface FeedData {
+  post?: Post;
+  ownerFirstName?: string;
+  ownerLastName?: string;
+  ownerPictureUrl?: string;
+  ownerProfile?: Profile;
 }
 
 @Component({
@@ -60,15 +46,8 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
   postsTotalCount = 0;
   createPostDto: CreatePostDto;
   postList: Post[] = [];
-  feedDataList: {
-    post?: Post;
-    ownerFirstName?: string;
-    ownerLastName?: string;
-    ownerPictureUrl?: string;
-    ownerProfile?: Profile;
-  }[] = [];
+  feedDataList: FeedData[] = [];
   isLoading = false;
-  postCommentList: PostComment[] = [];
   private createPostDialogRef: NbDialogRef<any>;
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -88,7 +67,7 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
     this.createPostDto = {
       title: '',
       text: '',
-      owner: (this.userService.loggedInUser || { _id: undefined })._id
+      owner: this.userService.loggedInUser._id
     };
   }
 
@@ -96,69 +75,67 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
     this.welcomeUser().subscribe({ error: err => console.error(err) });
   }
 
+  // setup the user profile if this is first login
   welcomeUser(): Observable<any> {
     const loggedInUser = this.userService.loggedInUser;
     if (loggedInUser && !loggedInUser.profile) {
       this.isLoading = true;
       const profileDto: CreateProfileDto = {
-        owner: this.userService.loggedInUser._id,
         bio: '',
         publicDataKeys: [ProfileDataKey.Email],
+        owner: this.userService.loggedInUser._id,
         data: {
           email: this.userService.loggedInUser.email
         }
       };
       return this.profileService.createProfile(profileDto).pipe(
-        switchMap((profile: Profile) => {
+        switchMap(profile => {
           return this.userService.updateUser(loggedInUser._id, {
             profile: profile._id
           });
         }),
-        switchMap(() => {
-          return this.userService.getUserById(loggedInUser._id);
-        }),
-        tap((user: User) => {
+        switchMap(() => this.userService.getUserById(loggedInUser._id)),
+        tap(user => {
           this.userService.setLoggedInUser(user);
           this.isLoading = false;
         }),
-        switchMap(() => this.dialogService.open(this.welcomeCard).onClose),
-        tap(() => {
-          window.location.reload();
-        })
+        switchMap(() => this.dialogService.open(this.welcomeCard).onClose)
       );
     } else {
       return of(null);
     }
   }
 
+  // refresh the feed data list
   updateFeedDataList(): Observable<{}> {
     return this.postService.getPosts(this.postQuery).pipe(
-      tap(({ postsTotalCount }) => {
-        this.postsTotalCount = postsTotalCount;
-      }),
+      tap(({ postsTotalCount }) => (this.postsTotalCount = postsTotalCount)),
       map(({ posts }) =>
-        posts.map(post => ({
-          post: {
-            ...post,
-            createdAt: new Date(post.createdAt),
-            updatedAt: new Date(post.updatedAt)
-          }
-        }))
+        posts.map(
+          post =>
+            ({
+              post: {
+                ...post,
+                createdAt: new Date(post.createdAt),
+                updatedAt: new Date(post.updatedAt)
+              }
+            } as FeedData)
+        )
       ),
-      switchMap(posts => from(posts).pipe(filter(x => !!x))),
-      mergeMap(data => {
+      switchMap(posts => from(posts).pipe(filter(post => !!post))),
+      mergeMap(feedDataEntry => {
         return forkJoin([
-          this.userService.getUserById(data.post.owner).pipe(
+          this.userService.getUserById(feedDataEntry.post.owner).pipe(
             tap(({ firstName, lastName, pictureUrl }) => {
-              data['ownerFirstName'] = firstName;
-              data['ownerLastName'] = lastName;
-              data['ownerPictureUrl'] = pictureUrl;
+              feedDataEntry.ownerFirstName = firstName;
+              feedDataEntry.ownerLastName = lastName;
+              feedDataEntry.ownerPictureUrl = pictureUrl;
             })
           ),
           this.profileService
-            .getProfileByOwner(data.post.owner)
-            .pipe(tap(profile => (data['ownerProfile'] = profile)))
-        ]).pipe(map(() => data));
+            .getProfileByOwner(feedDataEntry.post.owner)
+            .pipe(tap(profile => (feedDataEntry.ownerProfile = profile)))
+        ]).pipe(map(() => feedDataEntry));
       }),
       toArray(),
       tap(data => (this.feedDataList = data)),
@@ -179,24 +156,25 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
           switchMap(() => this.updateFeedDataList())
         )
         .subscribe({
-          error: e => {
-            console.error(e);
+          error: err => {
+            console.error(err);
             this.toastrService.warning(
               'We were unable to create your post, please try again.'
             );
           }
         });
     } else {
-      this.toastrService.info('A post must have at minimum a title.');
+      this.toastrService.info(
+        'Your post needs to have a title and some content.'
+      );
     }
   }
 
   resetCreatePostBody() {
     this.createPostDto = {
       ...this.createPostDto,
-      title: undefined,
-      text: undefined,
-      media: undefined
+      title: '',
+      text: ''
     };
   }
 

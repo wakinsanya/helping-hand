@@ -7,16 +7,17 @@ import { Subject } from 'rxjs';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbMenuService, NbThemeService } from '@nebular/theme';
 
+enum AppTheme {
+  Light = 'light',
+  Dark = 'dark'
+}
+
 enum PageRoute {
   Feed = '/pages/feed',
   Post = '/pages/post',
   Profile = '/pages/profile',
-  Community = '/pages/community'
-}
-
-enum AppTheme {
-  Light = 'light',
-  Dark = 'dark'
+  Community = '/pages/community',
+  PostManagement = '/pages/post/manage',
 }
 
 @Component({
@@ -32,13 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentAppTheme = AppTheme.Light;
   currentPageRoute: PageRoute;
   private destroy$: Subject<void> = new Subject<void>();
-
-  readonly userContextMenu = [
-    {
-      title: 'Log Out',
-      icon: 'unlock-outline'
-    }
-  ];
 
   constructor(
     private router: Router,

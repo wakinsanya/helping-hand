@@ -31,9 +31,3 @@ export interface PaginationOptions {
   entity: string;
 }
 
-
-interface Filterable {
-  key: string;
-  value: string | string[];
-  range: boolean;
-}

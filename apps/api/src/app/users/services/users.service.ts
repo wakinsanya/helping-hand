@@ -23,12 +23,8 @@ export class UsersService {
     return from(
       this.userModel.findOne({ thirdPartyId: userDto.thirdPartyId })
     ).pipe(
-      mergeMap((userDoc: UserDocument) => {
-        if (userDoc) {
-          return of(userDoc);
-        } else {
-          return from(this.userModel.create(userDto));
-        }
+      mergeMap(userDoc => {
+        return userDoc ? of(userDoc) : from(this.userModel.create(userDto));
       }),
       map((userDoc: UserDocument) => userDoc as User)
     );
@@ -41,9 +37,9 @@ export class UsersService {
   }
 
   updateById(_id: string, userDto: UpdateUserDto): Observable<User> {
-    return from(this.userModel.updateOne({ _id }, { $set: userDto })).pipe(
-      map((userDoc: UserDocument) => userDoc as User)
-    );
+    return from(
+      this.userModel.updateOne({ _id }, { $set: userDto }, { new: true })
+    ).pipe(map((userDoc: UserDocument) => userDoc as User));
   }
 
   list(
