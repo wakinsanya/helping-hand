@@ -15,6 +15,7 @@ declare type ResourceQuery =
   | PostQuery
   | SubscriptionQuery;
 
+  // Build a query string for a given resource
 export function queryString(query: ResourceQuery): string {
   return '?'.concat(
     Object.keys(query)

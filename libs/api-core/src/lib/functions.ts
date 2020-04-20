@@ -2,7 +2,7 @@ import { PaginationOptions } from './interfaces';
 
 /**
  * Creates a MongoDB sub-aggregate for paginating and sorting a collection
- * @param opts pagination opts
+ * @param opts pagination and sort options
  */
 export function paginationQuery(opts: PaginationOptions): any[] {
   const facetStage: {

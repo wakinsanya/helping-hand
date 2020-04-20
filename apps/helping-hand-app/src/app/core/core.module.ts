@@ -14,7 +14,9 @@ import {
   NbIconModule,
   NbSelectModule,
   NbButtonModule,
-  NbTooltipModule
+  NbTooltipModule,
+  NbDialogModule,
+  NbCardModule
 } from '@nebular/theme';
 import { UserService } from './services/user.service';
 import { ProfileService } from './services/profile.service';
@@ -25,9 +27,10 @@ import { RouterModule } from '@angular/router';
 import { CommentService } from './services/comment.service';
 import { PostService } from './services/post.service';
 import { FooterComponent } from './footer/footer.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent],
+  declarations: [HeaderComponent, FooterComponent, ConfirmComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,6 +43,8 @@ import { FooterComponent } from './footer/footer.component';
     NbSelectModule,
     NbButtonModule,
     NbTooltipModule,
+    NbDialogModule.forChild(),
+    NbCardModule,
     RouterModule
   ],
   providers: [
@@ -53,7 +58,8 @@ import { FooterComponent } from './footer/footer.component';
     PostService,
     SubscriptionService
   ],
-  exports: [HeaderComponent, FooterComponent]
+  entryComponents: [ConfirmComponent],
+  exports: [HeaderComponent, FooterComponent, ConfirmComponent]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

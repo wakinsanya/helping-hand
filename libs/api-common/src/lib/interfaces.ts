@@ -58,6 +58,8 @@ export interface Comment {
   readonly metadata: {
     stars: number;
   };
+  readonly createdAt: string | Date;
+  readonly updatedAt: string | Date;
 }
 
 export interface Subscription {
@@ -146,7 +148,7 @@ export interface PostQuery extends PaginationQuery {
 export interface CommentQuery extends PaginationQuery {
   ids?: string[];
   post: string;
-  orderByDate?: boolean;
+  sort?: boolean;
 }
 
 export interface CommentQueryResult {

@@ -17,7 +17,7 @@ enum PageRoute {
   Post = '/pages/post',
   Profile = '/pages/profile',
   Community = '/pages/community',
-  PostManagement = '/pages/post/manage',
+  PostManagement = '/pages/posts/manage',
 }
 
 @Component({

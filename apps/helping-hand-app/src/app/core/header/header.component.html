@@ -18,7 +18,9 @@
         class="header__link"
         routerLink="/pages/feed"
         [ngClass]="{
-          'header__current-link': pageRoute.Feed === currentPageRoute
+          'header__current-link': (
+            pageRoute.Feed === currentPageRoute
+          )
         }"
         >Feed</a
       >
@@ -31,6 +33,16 @@
           'header__current-link': pageRoute.Community === currentPageRoute
         }"
         >Community</a
+      >
+    </nb-action>
+    <nb-action *ngIf="loggedInUser && loggedInUser._id">
+      <a
+        class="header__link"
+        routerLink="/pages/profile"
+        [ngClass]="{
+          'header__current-link': pageRoute.Profile === currentPageRoute
+        }"
+        >Profile</a
       >
     </nb-action>
     <nb-action *ngIf="loggedInUser && loggedInUser._id">

@@ -1,0 +1,24 @@
+<nb-card>
+  <nb-card-body>
+    Are you sure?
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="confirm-opts__wrap">
+      <button
+        nbButton
+        status="danger" shape="round"
+        (click)="respond(false)"
+      >
+        No
+      </button>
+      <button
+        nbButton
+        status="success"
+        shape="round"
+        (click)="respond(true)"
+      >
+        Yes
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -18,7 +18,8 @@ import {
   NbActionsModule,
   NbDialogModule,
   NbPopoverModule,
-  NbToggleModule
+  NbToggleModule,
+  NbTooltipModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -66,7 +67,8 @@ import { PostEditorComponent } from './components/post-editor/post-editor.compon
     NbActionsModule,
     NbPopoverModule,
     NbDialogModule.forChild(),
-    NbToggleModule
+    NbToggleModule,
+    NbTooltipModule
   ],
   exports: [CustomShortDatePipe]
 })

@@ -64,6 +64,8 @@ export class CommentService {
         skip,
         limit,
         sort,
+        sortOrder: 'descending',
+        sortField: 'createdAt',
         entity: 'comments'
       })
     ];

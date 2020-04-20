@@ -22,16 +22,20 @@ import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { Observable, of, forkJoin, from } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
 import { CommentService } from '@helping-hand/core/services/comment.service';
-import {
-  PaginationService,
-  PageDirection
-} from '@helping-hand/core/services/pagination.service';
+import { PageDirection } from '@helping-hand/core/services/pagination.service';
+import { DialogService } from '@helping-hand/core/services/dialog.service';
 
 enum PostActionType {
   Star = 'star',
   Favorite = 'favorite',
   Unstar = 'unstar',
   Unfavorite = 'unfavorite'
+}
+
+interface CommentUser {
+  comment: AppComment;
+  profile: Profile;
+  user: User;
 }
 
 @Component({
@@ -58,15 +62,11 @@ export class PostComponent implements OnInit {
   };
   commentsQuery: CommentQuery = {
     post: '',
-    orderByDate: true,
+    sort: true,
     skip: 0,
-    limit: 1
+    limit: 5
   };
-  commentUserList: {
-    comment: AppComment;
-    profile: Profile;
-    user: User;
-  }[] = [];
+  commentUserList: CommentUser[] = [];
   commentsTotalCount: number;
   currentCommentsPage = 1;
   pageDirection = PageDirection;
@@ -76,9 +76,9 @@ export class PostComponent implements OnInit {
     private postService: PostService,
     private profileService: ProfileService,
     private userService: UserService,
+    private dialogService: DialogService,
     private toastrService: NbToastrService,
-    private commentService: CommentService,
-    private paginationService: PaginationService
+    private commentService: CommentService
   ) {}
 
   ngOnInit() {
@@ -278,14 +278,8 @@ export class PostComponent implements OnInit {
         this.commentsTotalCount = commentsTotalCount;
       }),
       map(({ comments }) => comments.map(comment => ({ comment }))),
-      switchMap(
-        (
-          commentList: {
-            comment: AppComment;
-            profile: Profile;
-            user: User;
-          }[]
-        ) => from(commentList).pipe(filter(entry => !!entry))
+      switchMap((commentList: CommentUser[]) =>
+        from(commentList).pipe(filter(entry => !!entry))
       ),
       mergeMap(data => {
         return forkJoin([
@@ -298,10 +292,15 @@ export class PostComponent implements OnInit {
         ]).pipe(map(() => data));
       }),
       toArray(),
-      tap(
-        (data: { comment: AppComment; profile: Profile; user: User }[]) =>
-          (this.commentUserList = data)
-      )
+      tap((data: CommentUser[]) => {
+        this.commentUserList = data.map(entry => ({
+          ...entry,
+          comment: {
+            ...entry.comment,
+            createdAt: new Date(entry.comment.createdAt)
+          }
+        }));
+      })
     );
   }
 
@@ -318,6 +317,20 @@ export class PostComponent implements OnInit {
         )
         .subscribe({ error: err => console.error(err) });
     }
+  }
+
+  deleteComment(commentId: string) {
+    this.dialogService
+      .confirm()
+      .pipe(
+        filter(({ confirmed }) => confirmed),
+        switchMap(() => this.commentService.deleteComment(commentId)),
+        tap(() => {
+          this.toastrService.success(`We've deleted your comment`);
+        }),
+        switchMap(() => this.getPostComments())
+      )
+      .subscribe({ error: err => console.error(err) });
   }
 
   onPageNav(direction: 'next' | 'prev') {

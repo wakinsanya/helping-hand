@@ -21,7 +21,7 @@ export class PostService {
 
   create(postDto: CreatePostDto): Observable<Post> {
     return from(this.postModel.create(postDto)).pipe(
-      map((postDoc: PostDocument) => postDoc as PostDocument)
+      map((postDoc: PostDocument) => postDoc as Post)
     );
   }
   getById(_id: string): Observable<Post> {
@@ -56,6 +56,8 @@ export class PostService {
         skip,
         limit,
         sort,
+        sortField: 'createdAt',
+        sortOrder: 'descending',
         entity: 'posts'
       })
     ];
