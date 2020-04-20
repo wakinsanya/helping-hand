@@ -5,8 +5,7 @@ import {
   User,
   Profile,
   CommentQuery,
-  Comment as AppComment,
-  CommentQueryResult
+  Comment as AppComment
 } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -50,15 +49,15 @@ export class PostComponent implements OnInit {
   isPostFavorited = false;
   postActionType = PostActionType;
   commentBody = {
-    post: undefined,
+    post: '',
     text: '',
-    owner: undefined,
+    owner: '',
     metadata: {
       stars: 0
     }
   };
   commentsQuery: CommentQuery = {
-    post: undefined,
+    post: '',
     orderByDate: true,
     skip: 0,
     limit: 1
@@ -92,7 +91,7 @@ export class PostComponent implements OnInit {
           this.commentBody.owner = user._id;
         }),
         map(({ profile }) => profile),
-        filter(x => !!x),
+        filter(profileId => !!profileId),
         switchMap(profileId => this.profileService.getProfileById(profileId)),
         tap(profile => (this.loggedInUserProfile = profile))
       )
@@ -110,9 +109,7 @@ export class PostComponent implements OnInit {
     this.commentsQuery.post = postId;
     return this.postService.getPostById(postId).pipe(
       tap(post => (this.post = post)),
-      switchMap(() => {
-        return this.userService.getUserById(this.post.owner);
-      }),
+      switchMap(() => this.userService.getUserById(this.post.owner)),
       tap(user => (this.postOwner = user)),
       switchMap(({ _id }) => this.profileService.getProfileByOwner(_id)),
       tap(profile => (this.postOwnerProfile = profile)),
@@ -236,7 +233,10 @@ export class PostComponent implements OnInit {
       favorites: number;
     }
   ): Observable<{}> {
-    return of({});
+    return this.postService.updatePost(postId, { metadata }).pipe(
+      switchMap(() => this.postService.getPostById(postId)),
+      tap((post: Post) => (this.post = post))
+    );
   }
 
   updateProfileMetadata(
@@ -248,11 +248,9 @@ export class PostComponent implements OnInit {
       starredPosts: string[];
     }
   ): Observable<Profile> {
-    return this.profileService.updateProfile(profileId, { metadata }).pipe(
-      switchMap(() => {
-        return this.profileService.getProfileById(profileId);
-      })
-    );
+    return this.profileService
+      .updateProfile(profileId, { metadata })
+      .pipe(switchMap(() => this.profileService.getProfileById(profileId)));
   }
 
   setupPostMetadata() {
@@ -275,7 +273,6 @@ export class PostComponent implements OnInit {
   }
 
   getPostComments(): Observable<{}> {
-    console.log({ query: this.commentsQuery });
     return this.commentService.getComments(this.commentsQuery).pipe(
       tap(({ commentsTotalCount }) => {
         this.commentsTotalCount = commentsTotalCount;
@@ -288,7 +285,7 @@ export class PostComponent implements OnInit {
             profile: Profile;
             user: User;
           }[]
-        ) => from(commentList).pipe(filter(x => !!x))
+        ) => from(commentList).pipe(filter(entry => !!entry))
       ),
       mergeMap(data => {
         return forkJoin([
@@ -323,15 +320,14 @@ export class PostComponent implements OnInit {
     }
   }
 
-  onPageNav(direction: PageDirection) {
-    const { query, currentPage } = this.paginationService.resolve({
-      direction,
-      query: this.commentsQuery,
-      currentPage: this.currentCommentsPage
-    });
-    this.commentsQuery = query as CommentQuery;
-    this.currentCommentsPage = currentPage;
-
+  onPageNav(direction: 'next' | 'prev') {
+    if (direction === 'next') {
+      this.commentsQuery.skip += this.commentsQuery.limit;
+      this.currentCommentsPage++;
+    } else {
+      this.commentsQuery.skip -= this.commentsQuery.limit;
+      this.currentCommentsPage--;
+    }
     this.getPostComments().subscribe({ error: err => console.error(err) });
   }
 }

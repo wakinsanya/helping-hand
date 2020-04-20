@@ -58,10 +58,10 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private profileService: ProfileService,
-    private toastrService: NbToastrService,
     private userService: UserService,
     private postService: PostService,
+    private profileService: ProfileService,
+    private toastrService: NbToastrService,
     private dialogService: NbDialogService
   ) {
     this.createPostDto = {

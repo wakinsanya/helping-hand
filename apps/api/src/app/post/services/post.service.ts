@@ -31,9 +31,9 @@ export class PostService {
   }
 
   updateById(_id: string, postDto: UpdatePostDto): Observable<Post> {
-    return from(this.postModel.updateOne({ _id }, postDto, { new: true })).pipe(
-      map((postDoc: PostDocument) => postDoc as Post)
-    );
+    return from(
+      this.postModel.updateOne({ _id }, { $set: postDto }, { new: true })
+    ).pipe(map((postDoc: PostDocument) => postDoc as Post));
   }
 
   list(

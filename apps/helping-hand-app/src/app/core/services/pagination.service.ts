@@ -4,7 +4,6 @@ import {
   CommentQuery,
   PostQuery,
   ProfileQuery,
-  SubscriptionQuery
 } from '@helping-hand/api-common';
 import { CommentService } from './comment.service';
 
