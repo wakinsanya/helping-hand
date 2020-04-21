@@ -33,11 +33,12 @@
               isPostStarred ? postActionType.Unstar : postActionType.Star
             )
           "
-          nbButton shape="round"
+          nbButton
+          shape="round"
           [status]="isPostStarred ? 'danger' : 'primary'"
         >
           <nb-icon icon="star-outline"> </nb-icon>
-          {{ isPostStarred ? 'Unstar' : 'Give A Star' }}
+          {{ isPostStarred ? 'Unstar' : 'Give a Star' }}
         </button>
         <button
           size="small"
@@ -50,100 +51,17 @@
                 : postActionType.Favorite
             )
           "
-          nbButton shape="round"
+          nbButton
+          shape="round"
           [status]="isPostFavorited ? 'danger' : 'primary'"
         >
           <nb-icon icon="heart-outline"> </nb-icon>
           {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}
         </button>
       </div>
-      <h5>Comments</h5>
-      <div
-        *ngIf="post?.comments?.length === 0"
-        class="comment-list__placeholder"
-      >
-        <span>Be the first one to leave a comment!</span>
-      </div>
-      <div class="new-comment-input__wrap">
-        <input
-          fullWidth
-          type="text"
-          nbInput
-          [(ngModel)]="commentBody.text"
-          [placeholder]="'Tell ' + postOwner?.firstName + ' what you think!'"
-        />
-      </div>
-      <button
-        nbButton shape="round"
-        fullWidth
-        (click)="postComment()"
-        [disabled]="!commentBody.text"
-      >
-        <nb-icon icon="message-square-outline"></nb-icon>
-        Leave Comment
-      </button>
-      <nb-list>
-        <nb-list-item *ngFor="let entry of commentUserList">
-          <div>
-            <nb-user
-              size="giant"
-              [name]="entry?.user?.firstName + ' ' + entry?.user?.lastName"
-              [picture]="entry?.user?.pictureUrl"
-              [title]="entry?.comment?.createdAt | customShortDate"
-            >
-            </nb-user>
-            <div>
-              <h6>{{ entry?.comment?.text }}</h6>
-            </div>
-          </div>
-          <div
-            class="comment-opts__wrap"
-            *ngIf="loggedInUser?._id === entry?.user?._id"
-          >
-            <button
-              nbButton
-              ghost shape="round"
-              status="basic"
-              nbTooltip="Edit your comment"
-              nbTooltipStatus="info"
-            >
-              <nb-icon icon="edit-outline"></nb-icon>
-            </button>
-            <button
-              nbButton
-              ghost
-              shape="round"
-              status="basic"
-              nbTooltip="Delete your comment"
-              nbTooltipStatus="danger"
-              (click)="deleteComment(entry?.comment?._id)"
-            >
-              <nb-icon icon="trash-2-outline"></nb-icon>
-            </button>
-          </div>
-        </nb-list-item>
-      </nb-list>
-      <div class="comments-pagin__wrap">
-        <button
-        size="small"
-        nbButton shape="round"
-        [disabled]="commentsQuery.skip === 0"
-        (click)="onPageNav('prev')"
-      >
-        <nb-icon icon="chevron-left-outline"></nb-icon>
-        Previous Page
-      </button>
-      <button
-        size="small"
-        nbButton shape="round"
-        (click)="onPageNav('next')"
-        [disabled]="currentCommentsPage * commentsQuery.limit >= commentsTotalCount"
-      >
-        Next Page
-        <nb-icon icon="chevron-right-outline"></nb-icon>
-      </button>
-      </div>
     </nb-card-body>
-    <nb-card-footer> </nb-card-footer>
   </nb-card>
+  <helping-hand-comment-list
+    [postId]="post?._id"
+  ></helping-hand-comment-list>
 </div>

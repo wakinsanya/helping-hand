@@ -1,0 +1,20 @@
+<div class="paginator__container">
+  <button
+    size="small"
+    nbButton shape="round"
+    [disabled]="query.skip === 0"
+    (click)="onPageNav('prev')"
+  >
+    <nb-icon icon="chevron-left-outline"></nb-icon>
+    Previous Page
+  </button>
+  <button
+    size="small"
+    nbButton shape="round"
+    (click)="onPageNav('next')"
+    [disabled]="currentPage * query.limit >= resourceTotalCount"
+  >
+    <nb-icon icon="chevron-right-outline"></nb-icon>
+    Next Page
+  </button>
+</div>

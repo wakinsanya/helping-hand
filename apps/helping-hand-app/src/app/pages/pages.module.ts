@@ -32,6 +32,7 @@ import { PostComponent } from './components/post/post.component';
 import { PostsManagementComponent } from './components/posts-management/posts-management.component';
 import { QuillModule } from 'ngx-quill';
 import { PostEditorComponent } from './components/post-editor/post-editor.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PostEditorComponent } from './components/post-editor/post-editor.compon
     FeedComponent,
     PostComponent,
     PostEditorComponent,
-    PostsManagementComponent
+    PostsManagementComponent,
+    CommentListComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,8 @@
+.paginator__container {
+  display: flex;
+  flex-direction: row;
+  & > button {
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+}

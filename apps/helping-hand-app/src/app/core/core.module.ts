@@ -28,9 +28,10 @@ import { CommentService } from './services/comment.service';
 import { PostService } from './services/post.service';
 import { FooterComponent } from './footer/footer.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, ConfirmComponent],
+  declarations: [HeaderComponent, FooterComponent, ConfirmComponent, PaginatorComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -5,7 +5,8 @@ import {
   User,
   Profile,
   CommentQuery,
-  Comment as AppComment
+  Comment as AppComment,
+  UpdateCommentDto
 } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -312,7 +313,7 @@ export class PostComponent implements OnInit {
           switchMap(() => this.getPostComments()),
           tap(() => {
             this.commentBody.text = '';
-            this.toastrService.show('Comment posted!');
+            this.toastrService.show('Comment posted');
           })
         )
         .subscribe({ error: err => console.error(err) });
@@ -331,6 +332,26 @@ export class PostComponent implements OnInit {
         switchMap(() => this.getPostComments())
       )
       .subscribe({ error: err => console.error(err) });
+  }
+
+  editComment(commentIndex: number) {}
+
+  commitCommentEdit(commentId: string, commentDto: UpdateCommentDto) {
+    this.commentService
+      .updateComment(commentId, commentDto)
+      .pipe(
+        tap(() => {
+          this.toastrService.success(`Done! We've updated your comment`);
+        })
+      )
+      .subscribe({
+        error: err => {
+          this.toastrService.warning(
+            'We were not able to save your changes at this time, please try again.'
+          );
+          console.error(err);
+        }
+      });
   }
 
   onPageNav(direction: 'next' | 'prev') {
