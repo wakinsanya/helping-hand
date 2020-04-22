@@ -92,9 +92,9 @@ export class CreateCommentDto {
 }
 
 export class UpdateCommentDto {
-  readonly text: string;
-  readonly media: string;
-  readonly metadata: {
+  readonly text?: string;
+  readonly media?: string;
+  readonly metadata?: {
     stars: number;
   }
 }

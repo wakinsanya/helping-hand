@@ -18,6 +18,6 @@ export class CustomShortDatePipe implements PipeTransform {
   ];
 
   transform(date: Date): string {
-    return `${this.shortMonths[date.getMonth()]} ${date.getDate()}`;
+    return `${this.shortMonths[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
   }
 }

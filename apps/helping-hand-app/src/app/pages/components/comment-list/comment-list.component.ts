@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { CommentService } from '@helping-hand/core/services/comment.service';
 import {
   CommentQuery,
@@ -10,7 +10,7 @@ import { Observable, from, forkJoin } from 'rxjs';
 import { tap, map, switchMap, filter, mergeMap, toArray } from 'rxjs/operators';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { UserService } from '@helping-hand/core/services/user.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbDialogRef } from '@nebular/theme';
 import { DialogService } from '@helping-hand/core/services/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -58,7 +58,7 @@ export class CommentListComponent implements OnInit {
       post,
       sort: true,
       skip: 0,
-      limit: 2
+      limit: 5
     };
     this.commentBody.post = post;
     this.commentBody.owner = this.userService.loggedInUser._id;
@@ -68,7 +68,7 @@ export class CommentListComponent implements OnInit {
   getComments(): Observable<{}> {
     return this.commentService.getComments(this.commentQuery).pipe(
       tap(({ commentsTotalCount }) => {
-        this.commentsTotalCount = commentsTotalCount;
+        this.commentsTotalCount = commentsTotalCount || 0;
       }),
       map(({ comments }) => comments.map(comment => ({ comment }))),
       switchMap((commentList: CommentUser[]) =>
@@ -133,18 +133,36 @@ export class CommentListComponent implements OnInit {
       .subscribe({ error: err => console.error(err) });
   }
 
-  startCommentEdit(commentIndex: number) {}
+  startCommentEdit(template: TemplateRef<any>, commentIndex: number) {
+    this.dialogService.open(template, {
+      context: {
+        commentIndex,
+        commentId: this.commentUserList[commentIndex].comment._id,
+        commentText: this.commentUserList[commentIndex].comment.text
+      }
+    });
+  }
 
-  saveCommentEdit(commentId: string, commentDto: UpdateCommentDto) {
+  saveCommentEdit(
+    commentId: string,
+    commentText: string,
+    commentIndex: number,
+    dialogRef: NbDialogRef<any>
+  ) {
     this.commentService
-      .updateComment(commentId, commentDto)
+      .updateComment(commentId, {
+        text: commentText
+      } as UpdateCommentDto)
       .pipe(
         tap(() => {
+          this.getComments().subscribe({ error: err => console.error(err) });
           this.toastrService.success(`Done! We've updated your comment`);
+          dialogRef.close();
         })
       )
       .subscribe({
         error: err => {
+          dialogRef.close();
           this.toastrService.warning(
             'We were not able to save your changes at this time, please try again.'
           );

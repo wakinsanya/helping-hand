@@ -35,14 +35,13 @@
           "
           nbButton
           shape="round"
-          [status]="isPostStarred ? 'danger' : 'primary'"
+          [status]="isPostStarred ? 'danger' : 'success'"
         >
           <nb-icon icon="star-outline"> </nb-icon>
           {{ isPostStarred ? 'Unstar' : 'Give a Star' }}
         </button>
         <button
           size="small"
-          status="success"
           hero
           (click)="
             toggleMetadataByKey(
@@ -53,7 +52,7 @@
           "
           nbButton
           shape="round"
-          [status]="isPostFavorited ? 'danger' : 'primary'"
+          [status]="isPostFavorited ? 'danger' : 'info'"
         >
           <nb-icon icon="heart-outline"> </nb-icon>
           {{ isPostFavorited ? 'Unfavourite' : 'Favourite' }}

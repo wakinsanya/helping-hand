@@ -17,6 +17,7 @@
         nbButton
         shape="round"
         fullWidth
+        hero
         (click)="createComment()"
         [disabled]="!commentBody.text"
       >
@@ -24,7 +25,7 @@
         Leave Comment
       </button>
       <nb-list class="comment-list">
-        <nb-list-item *ngFor="let entry of commentUserList">
+        <nb-list-item *ngFor="let entry of commentUserList; let i = index;">
           <div>
             <nb-user
               size="giant"
@@ -50,6 +51,7 @@
               status="basic"
               nbTooltip="Edit your comment"
               nbTooltipStatus="info"
+              (click)="startCommentEdit(commentEditor, i)"
             >
               <nb-icon icon="edit-outline"></nb-icon>
             </button>
@@ -78,3 +80,47 @@
     </nb-card-footer>
   </nb-card>
 </div>
+
+<ng-template #commentEditor let-ref="dialogRef" let-context>
+  <nb-card>
+    <nb-card-header>Edit your comment</nb-card-header>
+    <nb-card-body>
+      <textarea
+        nbInput
+        fullWidth
+        [(ngModel)]="context.commentText"
+      >
+      </textarea>
+    </nb-card-body>
+    <nb-card-footer>
+      <nb-actions>
+        <nb-action>
+          <button
+            nbButton
+            status="warning"
+            shape="round"
+            (click)="ref.close()"
+          >
+            cancel
+          </button>
+        </nb-action>
+        <nb-action>
+          <button
+            nbButton
+            shape="round"
+            (click)="
+              saveCommentEdit(
+                context.commentId,
+                context.commentText,
+                context.commentIndex,
+                ref
+              )
+            "
+          >
+            save
+          </button>
+        </nb-action>
+      </nb-actions>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

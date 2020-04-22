@@ -16,7 +16,6 @@ export class CommunityComponent implements OnInit {
     limit: 10,
     sort: true
   };
-  currentPage = 1;
   userList: User[] = [];
   usersTotalCount: number;
 
@@ -26,23 +25,24 @@ export class CommunityComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.updateUserList().subscribe({ error: e => console.error(e) });
+    this.updateUserList().subscribe({ error: err => console.error(err) });
   }
 
+  // Get and set the current user list
   updateUserList(): Observable<{}> {
     return this.userService.getUsers(this.userQuery).pipe(
       tap(({ usersTotalCount }) => {
-        this.usersTotalCount = usersTotalCount;
+        this.usersTotalCount = usersTotalCount || 0;
       }),
-      switchMap(({ users }) => from(users).pipe(filter(x => !!x))),
-      mergeMap((user: User) => {
+      switchMap(({ users }) => from(users).pipe(filter(user => !!user))),
+      mergeMap(user => {
         return this.profileService.getProfileByOwner(user._id).pipe(
-          tap((profile: Profile) => (user.profileBody = profile)),
+          tap(profile => (user.profileBody = profile)),
           map(() => user)
         );
       }),
       toArray(),
-      tap((users: User[]) => (this.userList = users)),
+      tap(users => (this.userList = users)),
       switchMap(() => of({}))
     );
   }

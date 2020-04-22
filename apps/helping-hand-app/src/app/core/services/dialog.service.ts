@@ -6,10 +6,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DialogService {
-  constructor(private readonly nbDialogService: NbDialogService) {}
+export class DialogService extends NbDialogService {
 
   confirm(): Observable<{ confirmed: boolean }> {
-    return this.nbDialogService.open(ConfirmComponent).onClose;
+    return this.open(ConfirmComponent).onClose;
   }
 }
