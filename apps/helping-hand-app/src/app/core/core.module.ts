@@ -28,10 +28,13 @@ import { CommentService } from './services/comment.service';
 import { PostService } from './services/post.service';
 import { FooterComponent } from './footer/footer.component';
 import { ConfirmComponent } from './confirm/confirm.component';
-import { PaginatorComponent } from './paginator/paginator.component';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, ConfirmComponent, PaginatorComponent],
+  declarations: [
+    HeaderComponent,
+    FooterComponent,
+    ConfirmComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -60,7 +63,11 @@ import { PaginatorComponent } from './paginator/paginator.component';
     SubscriptionService
   ],
   entryComponents: [ConfirmComponent],
-  exports: [HeaderComponent, FooterComponent, ConfirmComponent]
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    ConfirmComponent
+  ]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

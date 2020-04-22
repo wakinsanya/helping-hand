@@ -33,6 +33,7 @@ import { PostsManagementComponent } from './components/posts-management/posts-ma
 import { QuillModule } from 'ngx-quill';
 import { PostEditorComponent } from './components/post-editor/post-editor.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { SharedModule } from '@helping-hand/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
   ],
   imports: [
     CommonModule,
+    SharedModule,
     PagesRoutingModule,
     FormsModule,
     QuillModule,

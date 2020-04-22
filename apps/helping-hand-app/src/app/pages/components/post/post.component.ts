@@ -1,42 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '@helping-hand/core/services/post.service';
-import {
-  Post,
-  User,
-  Profile,
-  CommentQuery,
-  Comment as AppComment,
-  UpdateCommentDto
-} from '@helping-hand/api-common';
+import { Post, User, Profile } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
-import {
-  tap,
-  switchMap,
-  map,
-  filter,
-  first,
-  mergeMap,
-  toArray
-} from 'rxjs/operators';
+import { tap, switchMap, map, filter, first } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
-import { Observable, of, forkJoin, from } from 'rxjs';
-import { NbToastrService } from '@nebular/theme';
-import { CommentService } from '@helping-hand/core/services/comment.service';
-import { PageDirection } from '@helping-hand/core/services/pagination.service';
-import { DialogService } from '@helping-hand/core/services/dialog.service';
+import { Observable, of, forkJoin } from 'rxjs';
 
 enum PostActionType {
   Star = 'star',
   Favorite = 'favorite',
   Unstar = 'unstar',
   Unfavorite = 'unfavorite'
-}
-
-interface CommentUser {
-  comment: AppComment;
-  profile: Profile;
-  user: User;
 }
 
 @Component({
@@ -53,33 +28,12 @@ export class PostComponent implements OnInit {
   isPostStarred = false;
   isPostFavorited = false;
   postActionType = PostActionType;
-  commentBody = {
-    post: '',
-    text: '',
-    owner: '',
-    metadata: {
-      stars: 0
-    }
-  };
-  commentsQuery: CommentQuery = {
-    post: '',
-    sort: true,
-    skip: 0,
-    limit: 5
-  };
-  commentUserList: CommentUser[] = [];
-  commentsTotalCount: number;
-  currentCommentsPage = 1;
-  pageDirection = PageDirection;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private postService: PostService,
     private profileService: ProfileService,
-    private userService: UserService,
-    private dialogService: DialogService,
-    private toastrService: NbToastrService,
-    private commentService: CommentService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -87,27 +41,19 @@ export class PostComponent implements OnInit {
       this.getPostAndOwner(),
       this.userService.loggedInUser$.pipe(
         first(),
-        tap(user => {
-          this.loggedInUser = user;
-          this.commentBody.owner = user._id;
-        }),
+        tap(user => (this.loggedInUser = user)),
         map(({ profile }) => profile),
         filter(profileId => !!profileId),
         switchMap(profileId => this.profileService.getProfileById(profileId)),
         tap(profile => (this.loggedInUserProfile = profile))
       )
     ])
-      .pipe(
-        tap(() => this.setupPostMetadata()),
-        switchMap(() => this.getPostComments())
-      )
+      .pipe(tap(() => this.setupPostMetadata()))
       .subscribe({ error: err => console.error(err) });
   }
 
   getPostAndOwner(): Observable<{}> {
     const postId = this.activatedRoute.snapshot.paramMap.get('postId');
-    this.commentBody.post = postId;
-    this.commentsQuery.post = postId;
     return this.postService.getPostById(postId).pipe(
       tap(post => (this.post = post)),
       switchMap(() => this.userService.getUserById(this.post.owner)),
@@ -209,7 +155,10 @@ export class PostComponent implements OnInit {
       default:
         throw new Error('Unknown action type');
     }
+    this.applyPostAction(jobs);
+  }
 
+  applyPostAction(jobs: Observable<any>[]) {
     forkJoin(jobs)
       .pipe(
         switchMap(() => {
@@ -271,97 +220,5 @@ export class PostComponent implements OnInit {
         this.post._id
       );
     }
-  }
-
-  getPostComments(): Observable<{}> {
-    return this.commentService.getComments(this.commentsQuery).pipe(
-      tap(({ commentsTotalCount }) => {
-        this.commentsTotalCount = commentsTotalCount;
-      }),
-      map(({ comments }) => comments.map(comment => ({ comment }))),
-      switchMap((commentList: CommentUser[]) =>
-        from(commentList).pipe(filter(entry => !!entry))
-      ),
-      mergeMap(data => {
-        return forkJoin([
-          this.profileService
-            .getProfileByOwner(data.comment.owner)
-            .pipe(tap(profile => (data.profile = profile))),
-          this.userService
-            .getUserById(data.comment.owner)
-            .pipe(tap(user => (data.user = user)))
-        ]).pipe(map(() => data));
-      }),
-      toArray(),
-      tap((data: CommentUser[]) => {
-        this.commentUserList = data.map(entry => ({
-          ...entry,
-          comment: {
-            ...entry.comment,
-            createdAt: new Date(entry.comment.createdAt)
-          }
-        }));
-      })
-    );
-  }
-
-  postComment() {
-    if (this.commentBody.text && this.commentBody.owner) {
-      this.commentService
-        .createComment(this.commentBody)
-        .pipe(
-          switchMap(() => this.getPostComments()),
-          tap(() => {
-            this.commentBody.text = '';
-            this.toastrService.show('Comment posted');
-          })
-        )
-        .subscribe({ error: err => console.error(err) });
-    }
-  }
-
-  deleteComment(commentId: string) {
-    this.dialogService
-      .confirm()
-      .pipe(
-        filter(({ confirmed }) => confirmed),
-        switchMap(() => this.commentService.deleteComment(commentId)),
-        tap(() => {
-          this.toastrService.success(`We've deleted your comment`);
-        }),
-        switchMap(() => this.getPostComments())
-      )
-      .subscribe({ error: err => console.error(err) });
-  }
-
-  editComment(commentIndex: number) {}
-
-  commitCommentEdit(commentId: string, commentDto: UpdateCommentDto) {
-    this.commentService
-      .updateComment(commentId, commentDto)
-      .pipe(
-        tap(() => {
-          this.toastrService.success(`Done! We've updated your comment`);
-        })
-      )
-      .subscribe({
-        error: err => {
-          this.toastrService.warning(
-            'We were not able to save your changes at this time, please try again.'
-          );
-          console.error(err);
-        }
-      });
-  }
-
-  onPageNav(direction: 'next' | 'prev') {
-    if (direction === 'next') {
-      this.commentsQuery.skip += this.commentsQuery.limit;
-      this.currentCommentsPage++;
-    } else {
-      this.commentsQuery.skip -= this.commentsQuery.limit;
-      this.currentCommentsPage--;
-    }
-    this.getPostComments().subscribe({ error: err => console.error(err) });
   }
 }

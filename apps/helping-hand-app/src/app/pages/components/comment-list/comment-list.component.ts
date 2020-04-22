@@ -12,11 +12,17 @@ import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { NbToastrService } from '@nebular/theme';
 import { DialogService } from '@helping-hand/core/services/dialog.service';
+import { ActivatedRoute } from '@angular/router';
 
 interface CommentUser {
-  pictureUrl: string;
   comment: Comment;
   profile: Profile;
+  userInfo: {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    pictureUrl: string;
+  };
 }
 
 @Component({
@@ -25,7 +31,6 @@ interface CommentUser {
   styleUrls: ['./comment-list.component.scss']
 })
 export class CommentListComponent implements OnInit {
-  @Input() postId: string;
   commentQuery: CommentQuery;
   commentsTotalCount: number;
   commentUserList: CommentUser[] = [];
@@ -43,18 +48,21 @@ export class CommentListComponent implements OnInit {
     private readonly dialogService: DialogService,
     private readonly toastrService: NbToastrService,
     private readonly commentService: CommentService,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    const post = this.activatedRoute.snapshot.paramMap.get('postId');
     this.commentQuery = {
+      post,
       sort: true,
       skip: 0,
-      limit: 5,
-      post: this.postId
+      limit: 2
     };
+    this.commentBody.post = post;
     this.commentBody.owner = this.userService.loggedInUser._id;
-    this.getComments();
+    this.getComments().subscribe({ error: err => console.error(err) });
   }
 
   getComments(): Observable<{}> {
@@ -71,9 +79,16 @@ export class CommentListComponent implements OnInit {
           this.profileService
             .getProfileByOwner(entry.comment.owner)
             .pipe(tap(profile => (entry.profile = profile))),
-          this.userService
-            .getUserById(entry.comment.owner)
-            .pipe(tap(({ pictureUrl }) => (entry.pictureUrl = pictureUrl)))
+          this.userService.getUserById(entry.comment.owner).pipe(
+            tap(user => {
+              entry.userInfo = {
+                userId: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                pictureUrl: user.pictureUrl
+              };
+            })
+          )
         ]).pipe(map(() => entry));
       }),
       toArray(),
@@ -138,5 +153,8 @@ export class CommentListComponent implements OnInit {
       });
   }
 
-  handlePageChange(data: { query: CommentQuery; currentPage: number }) {}
+  handlePageChange(query: CommentQuery) {
+    this.commentQuery = query;
+    this.getComments().subscribe({ error: err => console.error(err) });
+  }
 }

@@ -76,6 +76,7 @@ import { QuillModule } from 'ngx-quill'
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [CoreModule]
 })
 export class AppModule {}

@@ -60,14 +60,8 @@ export class PostsManagementComponent implements OnInit {
     );
   }
 
-  onPageNav(direction: 'prev' | 'next') {
-    if (direction === 'next') {
-      this.postQuery.skip += this.postQuery.limit;
-      this.currentPage++;
-    } else {
-      this.postQuery.skip -= this.postQuery.limit;
-      this.currentPage--;
-    }
+  handlePageChange(query: PostQuery) {
+    this.postQuery = query;
     this.getUserPosts().subscribe({ error: err => console.error(err) });
   }
 

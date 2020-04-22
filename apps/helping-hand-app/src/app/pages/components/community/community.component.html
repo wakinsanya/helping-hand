@@ -35,26 +35,12 @@
       </nb-list>
     </nb-card-body>
     <nb-card-footer>
-      <div class="user-list__pagin__wrap">
-        <button
-          size="small"
-          nbButton shape="round"
-          [disabled]="userQuery.skip === 0"
-          (click)="onPageNav('prev')"
-        >
-          <nb-icon icon="chevron-left-outline"></nb-icon>
-          Previous Page
-        </button>
-        <button
-          size="small"
-          nbButton shape="round"
-          (click)="onPageNav('next')"
-          [disabled]="currentPage * userQuery.limit >= usersTotalCount"
-        >
-          Next Page
-          <nb-icon icon="chevron-right-outline"></nb-icon>
-        </button>
-      </div>
+      <helping-hand-paginator
+        [query]="userQuery"
+        [resourceTotalCount]="usersTotalCount"
+        (pageChange)="handlePageChange($event)"
+      >
+      </helping-hand-paginator>
     </nb-card-footer>
   </nb-card>
 </div>

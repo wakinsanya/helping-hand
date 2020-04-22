@@ -192,14 +192,8 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
     this.router.navigate(['/pages/posts', postId]);
   }
 
-  onPageNav(direction: 'next' | 'prev') {
-    if (direction === 'next') {
-      this.postQuery.skip += this.postQuery.limit;
-      this.currentPage++;
-    } else {
-      this.postQuery.skip -= this.postQuery.limit;
-      this.currentPage--;
-    }
+  handlePageChage(query: PostQuery) {
+    this.postQuery = query;
     this.updateFeedDataList().subscribe({ error: err => console.error(err) });
   }
 

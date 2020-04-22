@@ -3,7 +3,7 @@
     size="small"
     nbButton shape="round"
     [disabled]="query.skip === 0"
-    (click)="onPageNav('prev')"
+    (click)="onPageNav(paginationDirection.Left)"
   >
     <nb-icon icon="chevron-left-outline"></nb-icon>
     Previous Page
@@ -11,10 +11,10 @@
   <button
     size="small"
     nbButton shape="round"
-    (click)="onPageNav('next')"
+    (click)="onPageNav(paginationDirection.Right)"
     [disabled]="currentPage * query.limit >= resourceTotalCount"
   >
-    <nb-icon icon="chevron-right-outline"></nb-icon>
     Next Page
+    <nb-icon icon="chevron-right-outline"></nb-icon>
   </button>
 </div>

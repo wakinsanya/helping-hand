@@ -85,28 +85,12 @@
           </nb-card-footer>
         </nb-card>
       </div>
-      <div class="feed-list__pagin__wrap">
-        <button
-          size="small"
-          nbButton
-          shape="round"
-          [disabled]="postQuery.skip === 0"
-          (click)="onPageNav('prev')"
-        >
-          <nb-icon icon="chevron-left-outline"></nb-icon>
-          Previous Page
-        </button>
-        <button
-          size="small"
-          nbButton
-          shape="round"
-          (click)="onPageNav('next')"
-          [disabled]="currentPage * postQuery.limit >= postsTotalCount"
-        >
-          Next Page
-          <nb-icon icon="chevron-right-outline"></nb-icon>
-        </button>
-      </div>
+      <helping-hand-paginator
+        [query]="postQuery"
+        [resourceTotalCount]="postsTotalCount"
+        (pageChange)="handlePageChage($event)"
+      >
+      </helping-hand-paginator>
     </ng-template>
 
     <ng-template #postCreateTemplate>

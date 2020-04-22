@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import {
   UserQuery,
   CommentQuery,
@@ -18,28 +18,22 @@ declare type AppQuery = UserQuery | CommentQuery | PostQuery | ProfileQuery;
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent {
   @Input() query: AppQuery;
   @Input() resourceTotalCount: number;
-  @Output() pageChange = new EventEmitter<{ query: AppQuery; currentPage: number }>();
+  @Output() pageChange = new EventEmitter<AppQuery>();
 
-  currentPage = 0;
-
-  constructor() {}
-
-  ngOnInit() {}
+  currentPage = 1;
+  paginationDirection = PageDirection;
 
   onPageNav(direction: PageDirection) {
     if (direction === PageDirection.Left) {
-      this.query.skip += this.query.limit;
-      ++this.currentPage;
+      this.query.skip = Math.max(0, this.query.skip - this.query.limit);
+      this.currentPage = Math.max(1, this.currentPage - 1);
     } else {
-      this.query.skip -= this.query.limit;
-      --this.currentPage;
+      this.query.skip += this.query.limit;
+      this.currentPage += 1;
     }
-    this.pageChange.emit({
-      query: this.query,
-      currentPage: this.currentPage
-    });
+    this.pageChange.emit(this.query);
   }
 }

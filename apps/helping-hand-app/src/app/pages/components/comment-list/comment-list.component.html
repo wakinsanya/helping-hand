@@ -1,16 +1,9 @@
 <div class="comment-list__container">
-
   <nb-card>
     <nb-card-header>
       Comments
     </nb-card-header>
     <nb-card-body>
-      <div
-        *ngIf=!!!commentUserList?.length"
-        class="comment-list__placeholder"
-      >
-        <span>Be the first one to leave a comment</span>
-      </div>
       <div class="new-comment-input__wrap">
         <input
           fullWidth
@@ -24,28 +17,51 @@
         nbButton
         shape="round"
         fullWidth
-        (click)="postComment()"
+        (click)="createComment()"
         [disabled]="!commentBody.text"
       >
         <nb-icon icon="message-square-outline"></nb-icon>
         Leave Comment
       </button>
-      <nb-list>
+      <nb-list class="comment-list">
         <nb-list-item *ngFor="let entry of commentUserList">
           <div>
-            <nb-user size="giant" [name]="entry?.user?.firstName + ' ' + entry?.user?.lastName"
-              [picture]="entry?.user?.pictureUrl" [title]="entry?.comment?.createdAt | customShortDate">
+            <nb-user
+              size="giant"
+              [name]="
+                entry?.userInfo?.firstName + ' ' + entry?.userInfo?.lastName
+              "
+              [picture]="entry?.userInfo.pictureUrl"
+              [title]="entry?.comment?.createdAt | customShortDate"
+            >
             </nb-user>
             <div>
               <h6>{{ entry?.comment?.text }}</h6>
             </div>
           </div>
-          <div class="comment-opts__wrap" *ngIf="loggedInUser?._id === entry?.user?._id">
-            <button nbButton ghost shape="round" status="basic" nbTooltip="Edit your comment" nbTooltipStatus="info">
+          <div
+            class="comment-opts__wrap"
+            *ngIf="commentBody?.owner=== entry?.userInfo?.userId"
+          >
+            <button
+              nbButton
+              ghost
+              shape="round"
+              status="basic"
+              nbTooltip="Edit your comment"
+              nbTooltipStatus="info"
+            >
               <nb-icon icon="edit-outline"></nb-icon>
             </button>
-            <button nbButton ghost shape="round" status="basic" nbTooltip="Delete your comment" nbTooltipStatus="danger"
-              (click)="deleteComment(entry?.comment?._id)">
+            <button
+              nbButton
+              ghost
+              shape="round"
+              status="basic"
+              nbTooltip="Delete your comment"
+              nbTooltipStatus="danger"
+              (click)="deleteComment(entry?.comment?._id)"
+            >
               <nb-icon icon="trash-2-outline"></nb-icon>
             </button>
           </div>
