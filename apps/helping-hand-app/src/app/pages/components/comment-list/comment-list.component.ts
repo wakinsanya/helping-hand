@@ -146,7 +146,6 @@ export class CommentListComponent implements OnInit {
   saveCommentEdit(
     commentId: string,
     commentText: string,
-    commentIndex: number,
     dialogRef: NbDialogRef<any>
   ) {
     this.commentService
