@@ -19,20 +19,24 @@ export class ProfileService {
 
   create(profileDto: CreateProfileDto): Observable<Profile> {
     return from(this.profileModel.create(profileDto)).pipe(
-      map((profileDoc: ProfileDocument) => profileDoc as Profile)
+      map(profileDoc => profileDoc as Profile)
     );
   }
 
   getById(_id: string): Observable<Profile> {
-    return from(this.profileModel.findById( _id )).pipe(
-      map((profileDoc: ProfileDocument) => profileDoc as Profile)
+    return from(this.profileModel.findById(_id)).pipe(
+      map(profileDoc => profileDoc as Profile)
     );
   }
 
   updateById(_id: string, profileDto: UpdateProfileDto): Observable<Profile> {
     return from(
-      this.profileModel.updateOne({ _id }, { $set: profileDto }, { new: true })
-    ).pipe(map((profileDoc: ProfileDocument) => profileDoc as Profile));
+      this.profileModel.findByIdAndUpdate(
+        _id,
+        { ...(profileDto as Profile) },
+        { new: true }
+      )
+    ).pipe(map(profileDoc => profileDoc as Profile));
   }
 
   list(): Observable<Profile[]> {
@@ -48,7 +52,8 @@ export class ProfileService {
   }
 
   getByOwner(ownerId: string): Observable<Profile> {
-    return from(this.profileModel.findOne({ owner: ownerId }))
-      .pipe(map((profileDoc: ProfileDocument) => profileDoc as Profile));
+    return from(this.profileModel.findOne({ owner: ownerId })).pipe(
+      map(profileDoc => profileDoc as Profile)
+    );
   }
 }

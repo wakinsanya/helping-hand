@@ -20,14 +20,18 @@
             "main": "apps/helping-hand-app/src/main.ts",
             "polyfills": "apps/helping-hand-app/src/polyfills.ts",
             "tsConfig": "apps/helping-hand-app/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "apps/helping-hand-app/src/favicon.ico",
               "apps/helping-hand-app/src/assets",
               "apps/helping-hand-app/src/manifest.webmanifest"
             ],
-            "styles": ["apps/helping-hand-app/src/styles.scss"],
-            "scripts": ["./node_modules/quill/dist/quill.min.js"]
+            "styles": [
+              "apps/helping-hand-app/src/styles.scss"
+            ],
+            "scripts": [
+              "./node_modules/quill/dist/quill.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -42,7 +46,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -88,7 +91,10 @@
               "apps/helping-hand-app/tsconfig.app.json",
               "apps/helping-hand-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/helping-hand-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/helping-hand-app/**"
+            ]
           }
         },
         "test": {
@@ -96,7 +102,8 @@
           "options": {
             "jestConfig": "apps/helping-hand-app/jest.config.js",
             "tsConfig": "apps/helping-hand-app/tsconfig.spec.json",
-            "setupFile": "apps/helping-hand-app/src/test-setup.ts"
+            "setupFile": "apps/helping-hand-app/src/test-setup.ts",
+            "passWithNoTests": true
           }
         }
       }
@@ -122,8 +129,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/helping-hand-app-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/helping-hand-app-e2e/**"]
+            "tsConfig": [
+              "apps/helping-hand-app-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/helping-hand-app-e2e/**"
+            ]
           }
         }
       }
@@ -141,7 +153,10 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": [
+              "apps/api/src/assets"
+            ],
+            "buildLibsFromSource": true
           },
           "configurations": {
             "production": {
@@ -170,14 +185,18 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/api/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/api/**"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/api/jest.config.js",
-            "tsConfig": "apps/api/tsconfig.spec.json"
+            "tsConfig": "apps/api/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
@@ -195,14 +214,18 @@
               "libs/api-common/tsconfig.lib.json",
               "libs/api-common/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/api-common/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/api-common/**"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/api-common/jest.config.js",
-            "tsConfig": "libs/api-common/tsconfig.spec.json"
+            "tsConfig": "libs/api-common/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
@@ -220,21 +243,26 @@
               "libs/api-core/tsconfig.lib.json",
               "libs/api-core/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/api-core/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/api-core/**"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/api-core/jest.config.js",
-            "tsConfig": "libs/api-core/tsconfig.spec.json"
+            "tsConfig": "libs/api-core/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "analytics": "28cbb8ef-abc0-499d-9a52-b302309db0cf"
   },
   "schematics": {
     "@nrwl/angular:application": {

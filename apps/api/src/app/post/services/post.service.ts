@@ -21,28 +21,23 @@ export class PostService {
 
   create(postDto: CreatePostDto): Observable<Post> {
     return from(this.postModel.create(postDto)).pipe(
-      map((postDoc: PostDocument) => postDoc as Post)
+      map(postDoc => postDoc as Post)
     );
   }
   getById(_id: string): Observable<Post> {
     return from(this.postModel.findOne({ _id })).pipe(
-      map((postDoc: PostDocument) => postDoc as Post)
+      map(postDoc => postDoc as Post)
     );
   }
 
   updateById(_id: string, postDto: UpdatePostDto): Observable<Post> {
     return from(
-      this.postModel.updateOne(
-        { _id },
-        {
-          $set: {
-            ...postDto,
-            edited: true
-          }
-        },
+      this.postModel.findByIdAndUpdate(
+        _id,
+        { ...(postDto as Post) },
         { new: true }
       )
-    ).pipe(map((postDoc: PostDocument) => postDoc as Post));
+    ).pipe(map(postDoc => postDoc as Post));
   }
 
   list(
