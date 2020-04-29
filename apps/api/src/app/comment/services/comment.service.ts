@@ -33,7 +33,16 @@ export class CommentService {
 
   updateById(_id: string, commentDto: UpdateCommentDto): Observable<Comment> {
     return from(
-      this.commentModel.updateOne({ _id }, commentDto, { new: true })
+      this.commentModel.updateOne(
+        { _id },
+        {
+          $set: {
+            ...commentDto,
+            edited: true
+          }
+        },
+        { new: true }
+      )
     ).pipe(map((commentDoc: CommentDocument) => commentDoc as Comment));
   }
 
@@ -45,9 +54,7 @@ export class CommentService {
     limit: number
   ): Observable<CommentQueryResult> {
     const matchStage: any = {
-      $match: {
-
-      }
+      $match: {}
     };
 
     if (owner) {

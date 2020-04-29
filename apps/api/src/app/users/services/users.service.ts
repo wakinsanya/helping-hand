@@ -52,7 +52,7 @@ export class UsersService {
       ...paginationQuery({
         skip,
         limit,
-        sort,
+        sort: true,
         sortOrder: 'ascending',
         sortField: 'firstName',
         entity: 'users'
@@ -70,7 +70,14 @@ export class UsersService {
     return from(this.userModel.aggregate(pipeline)).pipe(
       map((data: UserQueryAggregationResult[]) => {
         return data && data.length
-          ? data[0]
+          ? {
+              users: data[0].users
+                .map(userDoc => userDoc as User)
+                .sort(({ firstName: a }, { firstName: b }) =>
+                  a.localeCompare(b)
+                ),
+              usersTotalCount: data[0].usersTotalCount
+            }
           : {
               users: [],
               usersTotalCount: 0
