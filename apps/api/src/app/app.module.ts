@@ -17,10 +17,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
-    CacheModule.register({
-      ttl: 5,
-      max: 10
-    }),
     UsersModule,
     ConfigModule,
     MediaModule,
@@ -35,11 +31,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    }
+    AppService
   ]
 })
 export class AppModule {}

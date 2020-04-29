@@ -6,6 +6,7 @@ import { tap, switchMap, map, filter, first } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
 import { Observable, of, forkJoin } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 enum PostActionType {
   Star = 'star',
@@ -30,10 +31,11 @@ export class PostComponent implements OnInit {
   postActionType = PostActionType;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private postService: PostService,
-    private profileService: ProfileService,
-    private userService: UserService
+    private readonly title: Title,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly postService: PostService,
+    private readonly profileService: ProfileService,
+    private readonly userService: UserService
   ) {}
 
   ngOnInit() {
@@ -55,7 +57,10 @@ export class PostComponent implements OnInit {
   getPostAndOwner(): Observable<{}> {
     const postId = this.activatedRoute.snapshot.paramMap.get('postId');
     return this.postService.getPostById(postId).pipe(
-      tap(post => (this.post = post)),
+      tap(post => {
+        this.post = post;
+        this.title.setTitle(post.title);
+      }),
       switchMap(() => this.userService.getUserById(this.post.owner)),
       tap(user => (this.postOwner = user)),
       switchMap(({ _id }) => this.profileService.getProfileByOwner(_id)),

@@ -5,8 +5,8 @@
 // Helping Hand theme
 $nb-themes: nb-register-theme(
   (
-    font-family-primary: 'Inter',
-    font-family-secondary: 'Inter',
+    font-family-primary: unquote('-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'),
+    font-family-secondary: font-family-primary,
     color-primary-100: #ceface,
     color-primary-200: #9ef6a8,
     color-primary-300: #6be685,
@@ -90,8 +90,8 @@ $nb-themes: nb-register-theme(
 // Helping Hand Dark Theme
 $nb-themes: nb-register-theme(
   (
-    font-family-primary: 'Inter',
-    font-family-secondary: 'Inter',
+    font-family-primary: unquote('-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'),
+    font-family-secondary: font-family-primary,
     color-primary-100: #ceface,
     color-primary-200: #9ef6a8,
     color-primary-300: #6be685,
@@ -103,7 +103,7 @@ $nb-themes: nb-register-theme(
     color-primary-900: #035344,
     color-primary-transparent-100: rgba(19, 174, 83, 0.08),
     color-primary-transparent-200: rgba(19, 174, 83, 0.16),
-  color-primary-transparent-300: rgba(19, 174, 83, 0.24),
+    color-primary-transparent-300: rgba(19, 174, 83, 0.24),
     color-primary-transparent-400: rgba(19, 174, 83, 0.32),
     color-primary-transparent-500: rgba(19, 174, 83, 0.4),
     color-primary-transparent-600: rgba(19, 174, 83, 0.48),
