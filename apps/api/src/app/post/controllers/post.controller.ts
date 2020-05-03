@@ -31,17 +31,19 @@ export class PostController {
 
   @Get()
   list(
+    @Query('posts') posts: string,
     @Query('owner') owner: string,
     @Query('sort') sort: string,
     @Query('skip') skip: string,
     @Query('limit') limit: string
   ): Observable<PostQueryResult> {
-    return this.postService.list(
+    return this.postService.list({
       owner,
-      sort === 'true',
-      parseInt(skip, 10),
-      parseInt(limit, 10)
-    );
+      sort: sort === 'true',
+      skip: parseInt(skip, 10),
+      limit: parseInt(limit, 10),
+      posts: posts ? posts.split(',') : undefined,
+    });
   }
 
   @Get(':postId')

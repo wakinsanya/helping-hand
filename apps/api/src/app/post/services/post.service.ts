@@ -40,28 +40,35 @@ export class PostService {
     ).pipe(map(postDoc => postDoc as Post));
   }
 
-  list(
-    owner: string,
-    sort: boolean,
-    skip: number,
-    limit: number
-  ): Observable<PostQueryResult> {
+  list(filter: {
+    posts?: string[],
+    owner?: string,
+    sort?: boolean,
+    skip?: number,
+    limit?: number
+  }): Observable<PostQueryResult> {
     const matchStage: any = {
       $match: {}
     };
 
-    if (owner) {
-      matchStage.$match.owner = Types.ObjectId(owner);
+    if (filter.owner) {
+      matchStage.$match.owner = Types.ObjectId(filter.owner);
+    }
+
+    if (filter.posts) {
+      matchStage.$match._id = {
+        $in: filter.posts.map(id => Types.ObjectId(id))
+      }
     }
 
     const pipeline = [
       matchStage,
       ...paginationQuery({
-        skip,
-        limit,
-        sort,
+        skip: filter.skip,
+        limit: filter.limit,
+        sort: filter.sort,
         sortField: 'createdAt',
-        sortOrder: 'descending',
+        sortOrder: 'ascending',
         entity: 'posts'
       })
     ];

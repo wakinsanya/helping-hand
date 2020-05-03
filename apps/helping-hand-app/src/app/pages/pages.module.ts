@@ -19,7 +19,8 @@ import {
   NbDialogModule,
   NbPopoverModule,
   NbToggleModule,
-  NbTooltipModule
+  NbTooltipModule,
+  NbSelectModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 import { FavorRequestListComponent } from './components/favor-request-list/favor-request-list.component';
@@ -71,6 +72,7 @@ import { SharedModule } from '@helping-hand/shared/shared.module';
     NbActionsModule,
     NbPopoverModule,
     NbDialogModule.forChild(),
+    NbSelectModule,
     NbToggleModule,
     NbTooltipModule
   ],

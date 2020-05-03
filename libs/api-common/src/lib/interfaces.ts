@@ -140,7 +140,9 @@ export interface SubscriptionQuery {
 }
 
 export interface PostQuery extends PaginationQuery {
+  posts?: string[];
   owner?: string;
+  sort?: boolean;
   orderByVotes?: boolean;
   orderByDate?: boolean;
 }

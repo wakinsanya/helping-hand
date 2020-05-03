@@ -35,6 +35,19 @@
     </ng-template>
     <ng-template #postListTemplate>
       <h1>Recent Posts</h1>
+      <nb-select
+        (selectedChange)="handleFilterChange($event)"
+        shape="round"
+        multiple
+        status="success"
+        placeholder="Filter posts">
+        <nb-option
+          *ngFor="let opt of filterOpts"
+          [value]="opt"
+        >
+          {{ opt }}
+        </nb-option>
+      </nb-select>
       <div
         class="feed-list__post__wrap"
         *ngFor="let entry of feedDataList; let i = index"

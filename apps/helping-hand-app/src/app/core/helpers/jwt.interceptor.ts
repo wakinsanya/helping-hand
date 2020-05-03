@@ -10,7 +10,7 @@ import { UserService } from '../services/user.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   intercept(
     request: HttpRequest<any>,

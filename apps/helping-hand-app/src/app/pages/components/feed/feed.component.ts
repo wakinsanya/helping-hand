@@ -29,6 +29,11 @@ interface FeedData {
   ownerProfile?: Profile;
 }
 
+enum FilterOpts {
+  Starred = 'starred',
+  Favorited = 'favorited'
+}
+
 @Component({
   selector: 'helping-hand-feed',
   templateUrl: './feed.component.html',
@@ -48,7 +53,9 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
   postList: Post[] = [];
   feedDataList: FeedData[] = [];
   isLoading = false;
+  filterOpts = Object.values(FilterOpts);
   private createPostDialogRef: NbDialogRef<any>;
+  private userProfile: Profile;
   private destroy$: Subject<void> = new Subject<void>();
 
   @ViewChild('welcomeCard', { static: true }) welcomeCard: TemplateRef<any>;
@@ -73,7 +80,15 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.welcomeUser()
-      .pipe(switchMap(() => this.updateFeedDataList()))
+      .pipe(
+        switchMap(() => this.updateFeedDataList()),
+        switchMap(() => {
+          return this.profileService.getProfileByOwner(
+            this.userService.loggedInUser._id
+          );
+        }),
+        tap(profile => (this.userProfile = profile))
+      )
       .subscribe({ error: err => console.error(err) });
   }
 
@@ -190,6 +205,24 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
   navigateToPost(postIndex: number) {
     const postId = this.feedDataList[postIndex].post._id;
     this.router.navigate(['/pages/posts', postId]);
+  }
+
+  handleFilterChange(opts: FilterOpts[]) {
+    const posts: string[] = [];
+
+    if (opts.includes(FilterOpts.Favorited)) {
+      posts.push(...this.userProfile.metadata.favoritePosts);
+    }
+
+    if (opts.includes(FilterOpts.Starred)) {
+      posts.push(...this.userProfile.metadata.starredPosts);
+    }
+    this.postQuery = {
+      ...this.postQuery,
+      posts
+    };
+    console.log(this.postQuery);
+    this.updateFeedDataList().subscribe({ error: err => console.error(err) });
   }
 
   handlePageChage(query: PostQuery) {
