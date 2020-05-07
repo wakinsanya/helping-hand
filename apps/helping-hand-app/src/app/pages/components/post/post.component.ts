@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PostService } from '@helping-hand/core/services/post.service';
 import { Post, User, Profile } from '@helping-hand/api-common';
 import { ActivatedRoute } from '@angular/router';
@@ -22,6 +22,7 @@ enum PostActionType {
 })
 export class PostComponent implements OnInit {
   post: Post;
+  isHelping = false;
   postOwner: User;
   loggedInUser: User;
   postOwnerProfile: Profile;
@@ -30,11 +31,14 @@ export class PostComponent implements OnInit {
   isPostFavorited = false;
   postActionType = PostActionType;
 
+  @ViewChild('postContainer', { static: true })
+  postContainer: ElementRef;
+
   constructor(
     private readonly title: Title,
     private readonly activatedRoute: ActivatedRoute,
     private readonly postService: PostService,
-    private readonly profileService: ProfileService,
+    readonly profileService: ProfileService,
     private readonly userService: UserService
   ) {}
 
@@ -225,5 +229,12 @@ export class PostComponent implements OnInit {
         this.post._id
       );
     }
+  }
+
+  toggleHelpingView() {
+    this.isHelping = !this.isHelping;
+    this.postContainer.nativeElement.scrollIntoView({
+      behavior: 'smooth'
+    });
   }
 }

@@ -4,6 +4,7 @@ import { UserQuery, User, Profile } from '@helping-hand/api-common';
 import { tap, mergeMap, switchMap, filter, toArray, map } from 'rxjs/operators';
 import { Observable, of, from } from 'rxjs';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'helping-hand-community',
@@ -21,8 +22,11 @@ export class CommunityComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private profileService: ProfileService
-  ) {}
+    private profileService: ProfileService,
+    private readonly title: Title
+  ) {
+    this.title.setTitle('Community');
+  }
 
   ngOnInit() {
     this.updateUserList().subscribe({ error: err => console.error(err) });

@@ -21,7 +21,7 @@
       routerLink="/pages/posts/manage"
     >
       <nb-icon icon="options-outline"></nb-icon>
-      Manage Your Favour Requests
+      Manage Favour Requests
     </button>
     <ng-container
       *ngTemplateOutlet="
@@ -40,11 +40,9 @@
         shape="round"
         multiple
         status="success"
-        placeholder="Filter favours">
-        <nb-option
-          *ngFor="let opt of filterOpts"
-          [value]="opt"
-        >
+        placeholder="Filter favours"
+      >
+        <nb-option *ngFor="let opt of filterOpts" [value]="opt">
           {{ opt }}
         </nb-option>
       </nb-select>
@@ -56,10 +54,7 @@
         <nb-card class="feed-list__post-card">
           <nb-card-header>{{ entry?.post?.title }}</nb-card-header>
           <nb-card-body>
-            <div
-              class="post__wrap"
-              [innerHTML]="entry?.post?.text"
-            ></div>
+            <div class="post__wrap" [innerHTML]="entry?.post?.text"></div>
             <!-- <ng-container
               *ngTemplateOutlet="
                 entry?.post?.text?.length > 2000 ? partialText : fullText
@@ -109,7 +104,7 @@
     <ng-template #postCreateTemplate>
       <nb-card>
         <nb-card-header>
-          Ask a favour
+          How can the community help?
         </nb-card-header>
         <nb-card-body>
           <div class="create-post-form__container">
@@ -123,11 +118,14 @@
               shape="round"
               placeholder="Tell people how they can help"
             />
-            <label for="description">Text:</label>
-            <quill-editor
-              [(ngModel)]="createPostDto.text"
-              placeholder="You can provide more information here about your favour request">
-            </quill-editor>
+            <label for="description">Provide more information about what you need help with:</label>
+            <div class="editor__wrap">
+              <quill-editor
+                [(ngModel)]="createPostDto.text"
+                placeholder=""
+              >
+              </quill-editor>
+            </div>
           </div>
         </nb-card-body>
         <nb-card-footer>
@@ -151,10 +149,10 @@
       </p>
       <p>
         <b>Important:</b> by default Helping Hand shares your email with other
-        memebers of the community so that they're able to interact with you.
-        We recommend that you go to the profile tab and customize how
-        you prefer for other users to contact you e.g provide your instagram
-        username instead.
+        memebers of the community so that they're able to interact with you. We
+        recommend that you go to the profile tab and customize how you prefer
+        for other users to contact you e.g provide your instagram username
+        instead.
       </p>
       <p>Thank you for checking out Helping Hand!</p>
     </nb-card-body>

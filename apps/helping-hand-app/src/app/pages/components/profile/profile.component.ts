@@ -10,6 +10,7 @@ import { tap, map, switchMap, filter, first } from 'rxjs/operators';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Subject } from 'rxjs';
 import { NbToastrService } from '@nebular/theme';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'helping-hand-profile',
@@ -32,8 +33,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private toastrService: NbToastrService,
     private profileService: ProfileService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private readonly title: Title
+  ) {
+    this.title.setTitle('Profile');
+  }
 
   ngOnInit() {
     this.userService.loggedInUser$

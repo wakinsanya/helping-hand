@@ -3,7 +3,7 @@
 }
 
 .comment-list__placeholder {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .new-comment-input__wrap {
@@ -24,7 +24,6 @@
   }
 }
 
-
 .comments-pagin__wrap {
   display: flex;
   flex-direction: row;
@@ -32,4 +31,28 @@
     margin-right: 20px;
     margin-top: 20px;
   }
+}
+
+.help-btn__wrap {
+  margin-top: 20px;
+  & > button {
+    animation: pulsate 2s infinite;
+  }
+}
+
+@keyframes pulsate {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(0, 0, 0, 0);
+  }
+}
+
+.view-info-btn__wrap {
+  width: 100%;
+}
+
+.post-cotainer {
+  max-width: 90vw !important;
 }

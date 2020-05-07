@@ -20,6 +20,7 @@ import { NbDialogService, NbToastrService, NbDialogRef } from '@nebular/theme';
 import { UserService } from '@helping-hand/core/services/user.service';
 import { Router } from '@angular/router';
 import { ProfileService } from '@helping-hand/core/services/profile.service';
+import { Title } from '@angular/platform-browser';
 
 interface FeedData {
   post?: Post;
@@ -69,13 +70,15 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
     private postService: PostService,
     private profileService: ProfileService,
     private toastrService: NbToastrService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private readonly title: Title
   ) {
     this.createPostDto = {
       title: '',
       text: '',
       owner: this.userService.loggedInUser._id
     };
+    this.title.setTitle('Recent Favours');
   }
 
   ngAfterViewInit() {

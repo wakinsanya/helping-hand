@@ -89,14 +89,16 @@
         name="postTitle"
         type="text"
         nbInput
+        shape="round"
         fullWidth
         placeholder="Short title describing what your post is about"
       />
       <label for="description">Text:</label>
-      <quill-editor
+      <div class="editor__wrap">
+        <quill-editor
         [(ngModel)]="context.post.text"
-        [styles]="{ height: '75vh' }"
       ></quill-editor>
+      </div>
     </nb-card-body>
     <nb-card-footer>
       <nb-actions>
