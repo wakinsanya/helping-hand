@@ -87,7 +87,7 @@
             <h3>We're glad your deciding to offer some help!</h3>
           </nb-card-header>
           <nb-card-body>
-            <h3>Get in touch with {{ loggedInUser?.firstName }} 👇</h3>
+            <h3>Get in touch with {{ postOwner?.firstName }} 👇</h3>
             <nb-list *ngIf="postOwnerProfile?.publicDataKeys">
               <nb-list-item *ngFor="let key of postOwnerProfile.publicDataKeys">
                 <div class="view-info-btn__wrap">

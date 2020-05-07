@@ -51,7 +51,7 @@
         *ngFor="let entry of feedDataList; let i = index"
         (click)="navigateToPost(i)"
       >
-        <nb-card class="feed-list__post-card">
+        <nb-card class="feed-list__post-card" acccent="success">
           <nb-card-header>{{ entry?.post?.title }}</nb-card-header>
           <nb-card-body>
             <div class="post__wrap" [innerHTML]="entry?.post?.text"></div>
