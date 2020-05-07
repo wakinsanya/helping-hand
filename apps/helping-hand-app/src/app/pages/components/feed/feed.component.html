@@ -9,7 +9,7 @@
         fullWidth
         (click)="startPostCreation(postCreateTemplate)"
       >
-        <nb-icon icon="plus-outline"></nb-icon>Create Post
+        <nb-icon icon="plus-outline"></nb-icon>Ask for a favour
       </button>
     </div>
     <button
@@ -21,7 +21,7 @@
       routerLink="/pages/posts/manage"
     >
       <nb-icon icon="options-outline"></nb-icon>
-      Manage Your Posts
+      Manage Your Favour Requests
     </button>
     <ng-container
       *ngTemplateOutlet="
@@ -31,16 +31,16 @@
       "
     ></ng-container>
     <ng-template #noPostListTemplate>
-      <h4 class="feed-list__no-feed-placeholder">No Posts Yet</h4>
+      <h4 class="feed-list__no-feed-placeholder">No Favour Requests Yet</h4>
     </ng-template>
     <ng-template #postListTemplate>
-      <h1>Recent Posts</h1>
+      <h1>Recent Favour Requests</h1>
       <nb-select
         (selectedChange)="handleFilterChange($event)"
         shape="round"
         multiple
         status="success"
-        placeholder="Filter posts">
+        placeholder="Filter favours">
         <nb-option
           *ngFor="let opt of filterOpts"
           [value]="opt"
@@ -78,8 +78,8 @@
           </nb-card-body>
           <nb-card-footer>
             <nb-actions size="small" accent="primary" responsive>
-              <nb-action
-                ><nb-user
+              <nb-action>
+                <nb-user
                   badgePosition="bottom end"
                   badgeStatus="warning"
                   [badgeText]="
@@ -109,7 +109,7 @@
     <ng-template #postCreateTemplate>
       <nb-card>
         <nb-card-header>
-          Create a post
+          Ask a favour
         </nb-card-header>
         <nb-card-body>
           <div class="create-post-form__container">
@@ -121,20 +121,19 @@
               nbInput
               fullWidth
               shape="round"
-              placeholder="Short title describing what your post is about"
+              placeholder="Tell people how they can help"
             />
             <label for="description">Text:</label>
             <quill-editor
-              [styles]="{height: '50vh'}"
               [(ngModel)]="createPostDto.text"
-              placeholder="What do you want to say?">
+              placeholder="You can provide more information here about your favour request">
             </quill-editor>
           </div>
         </nb-card-body>
         <nb-card-footer>
           <button nbButton shape="round" fullWidth (click)="createPost()" hero>
             <nb-icon icon="checkmark-circle-outline"></nb-icon>
-            Post
+            Ask Favour
           </button>
         </nb-card-footer>
       </nb-card>

@@ -8,9 +8,9 @@ import { PostsManagementComponent } from './components/posts-management/posts-ma
 
 const routes: Routes = [
   {
-    path: 'feed',
+    path: 'favours',
     component: FeedComponent,
-    data: { state: 'feed', animation: 'fade' }
+    data: { state: 'favours', animation: 'fade' }
   },
   {
     path: 'profile',
@@ -32,7 +32,7 @@ const routes: Routes = [
     component: PostComponent,
     data: { state: 'post' }
   },
-  { path: '**', pathMatch: 'full', redirectTo: 'pages/feed',  data: { state: 'feed', animation: 'fade' } }
+  { path: '**', pathMatch: 'full', redirectTo: 'pages/favours',  data: { state: 'favours', animation: 'fade' } }
 ];
 
 @NgModule({

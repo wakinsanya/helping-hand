@@ -16,13 +16,13 @@
     <nb-action *ngIf="loggedInUser && loggedInUser._id">
       <a
         class="header__link"
-        routerLink="/pages/feed"
+        routerLink="/pages/favours"
         [ngClass]="{
           'header__current-link': (
             pageRoute.Feed === currentPageRoute
           )
         }"
-        >Feed</a
+        >Favours</a
       >
     </nb-action>
     <nb-action *ngIf="loggedInUser && loggedInUser._id">

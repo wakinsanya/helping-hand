@@ -13,7 +13,7 @@ enum AppTheme {
 }
 
 enum PageRoute {
-  Feed = '/pages/feed',
+  Feed = '/pages/favours',
   Post = '/pages/post',
   Profile = '/pages/profile',
   Community = '/pages/community',

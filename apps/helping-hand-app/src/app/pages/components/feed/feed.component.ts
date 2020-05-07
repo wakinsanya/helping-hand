@@ -171,7 +171,9 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
           tap(() => {
             this.resetCreatePostBody();
             this.createPostDialogRef.close();
-            this.toastrService.success('Your post has been created!');
+            this.toastrService.success(
+              'Your favour request has been created!'
+            );
           }),
           switchMap(() => this.updateFeedDataList())
         )
@@ -179,13 +181,13 @@ export class FeedComponent implements AfterViewInit, OnDestroy {
           error: err => {
             console.error(err);
             this.toastrService.warning(
-              'We were unable to create your post, please try again.'
+              'We were unable to create your favour request, please try again.'
             );
           }
         });
     } else {
       this.toastrService.info(
-        'Your post needs to have a title and some content.'
+        'Your favour request needs to have a title'
       );
     }
   }

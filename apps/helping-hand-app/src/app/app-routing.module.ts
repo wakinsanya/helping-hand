@@ -15,8 +15,8 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'pages/feed',
-    data: { state: 'feed' }
+    redirectTo: 'pages/favours',
+    data: { state: 'favours' }
   }
 ];
 
