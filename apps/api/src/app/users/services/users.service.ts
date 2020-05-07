@@ -49,6 +49,11 @@ export class UsersService {
     limit: number
   ): Observable<UserQueryResult> {
     const pipeline = [
+      {
+        $sort: {
+          firstName: 1
+        }
+      },
       ...paginationQuery({
         skip,
         limit,

@@ -63,12 +63,17 @@ export class PostService {
 
     const pipeline = [
       matchStage,
+      {
+        $sort: {
+          createdAt: -1
+        }
+      },
       ...paginationQuery({
         skip: filter.skip,
         limit: filter.limit,
         sort: filter.sort,
         sortField: 'createdAt',
-        sortOrder: 'ascending',
+        sortOrder: 'descending',
         entity: 'posts'
       })
     ];
