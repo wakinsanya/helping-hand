@@ -1,4 +1,5 @@
-# Helping Hand
+# Helping Hand 
+Student: William Akinsanya | Supervisor: Mel Ó Cinnéide
 
 You’re ready to go hillwalking, but you have a blister on your foot and you’ve no plaster to put on it. People nearby probably have plasters with them and would be happy to share with you. You’re in a hotel room with your daughter; she has a high fever but you’ve no paracetamol in your luggage. Many people in the hotel have paracetamol, but who to ask? You’ve moved house. You have a bottle of wine to celebrate, but no corkscrew. Your car won’t start; you need a set of jump leads. Someone nearby must have a set, but who to ask? 
 
